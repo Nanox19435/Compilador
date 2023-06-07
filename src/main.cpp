@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Lexer.hpp"
+#include "TypeTab.hpp"
 
 using namespace std;
 using namespace C_1;

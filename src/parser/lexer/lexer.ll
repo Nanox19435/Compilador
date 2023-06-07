@@ -42,6 +42,7 @@ WHITESPACE [ \t\n]
 "para"          { return FOR; }
 "sino"          { return ELSE; }
 "proto"         { return PROTO; }
+"ent"           { return INT; }
 "dec32"         { return F32; }
 "dec64"         { return F64; }
 "logico"        { return BOOL; }
