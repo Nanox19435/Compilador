@@ -2006,3 +2006,9 @@ void yyfree (void * ptr )
 int yyFlexLexer::yywrap(){
     return 1;
 }
+
+int Lexer::lexwrap(yy::Parser::value_type *t)
+{
+    cout << t << endl;
+    return yylex();
+}
