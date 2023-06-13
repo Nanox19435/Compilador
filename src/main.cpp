@@ -4,7 +4,6 @@
 #include "TypeTab.hpp"
 
 using namespace std;
-using namespace C_1;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {

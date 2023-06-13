@@ -9,7 +9,7 @@ using namespace std;
 
 %option c++
 %option outfile="Lexer.cpp"
-%option yyclass="C_1::Lexer"
+%option yyclass="Lexer"
 
 COMMENT ("//".*|"/*"([^\*]|"*"*[^"/"])*"*/")
 ESP [áćéǵíḱĺḿńóṕŕśúẃýźÁĆÉǴÍḰĹḾŃÓṔŔŚÚẂÝŹäëḧïöẗüẅẍÿÄËḦÏÖÜẄẌŸñÑ]
@@ -24,7 +24,7 @@ WHITESPACE [ \t\n]
 %%
 {WHITESPACE}    {}
 {COMMENT}       {}
-"\."            { return DOT; }
+"\."            { return PUNTO; }
 {INT}           { return INTV; }
 {FLOAT}         { return FLOATV; }
 {RUNA}          { return RUNA; }
