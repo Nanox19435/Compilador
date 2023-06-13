@@ -1,5 +1,6 @@
 #ifndef __SCANNER_HPP__
 #define __SCANNER_HPP__ 1
+#include "Parser.hpp"
 
 #if !defined(yyFlexLexerOnce)
 #include <FlexLexer.h>
@@ -12,6 +13,7 @@ public:
 
     using FlexLexer::yylex;
     virtual int yylex();
+    virtual int lexwrap(yy::Parser::value_type *t);
 
 private:
     const int ERROR = -1;

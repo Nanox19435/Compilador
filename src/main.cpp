@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include "Parser.hpp"
 #include "Lexer.hpp"
 #include "TypeTab.hpp"
 

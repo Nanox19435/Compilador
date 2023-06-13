@@ -45,7 +45,7 @@
 #ifndef YY_YY_PARSER_HPP_INCLUDED
 # define YY_YY_PARSER_HPP_INCLUDED
 // "%code requires" blocks.
-#line 6 "parser.yy"
+#line 7 "parser.yy"
 
     
     class Lexer;
@@ -197,7 +197,7 @@ namespace yy {
 
 
   /// A Bison parser.
-  class parser
+  class Parser
   {
   public:
 #ifdef YYSTYPE
@@ -628,7 +628,7 @@ switch (yykind)
       /// The user-facing name of this symbol.
       const char *name () const YY_NOEXCEPT
       {
-        return parser::symbol_name (this->kind ());
+        return Parser::symbol_name (this->kind ());
       }
 #endif // #if YYDEBUG || 0
 
@@ -734,14 +734,14 @@ switch (yykind)
     };
 
     /// Build a parser object.
-    parser (Lexer &lexer_yyarg);
-    virtual ~parser ();
+    Parser (Lexer &lexer_yyarg);
+    virtual ~Parser ();
 
 #if 201103L <= YY_CPLUSPLUS
     /// Non copyable.
-    parser (const parser&) = delete;
+    Parser (const Parser&) = delete;
     /// Non copyable.
-    parser& operator= (const parser&) = delete;
+    Parser& operator= (const Parser&) = delete;
 #endif
 
     /// Parse.  An alias for parse ().
@@ -1011,9 +1011,9 @@ switch (yykind)
   private:
 #if YY_CPLUSPLUS < 201103L
     /// Non copyable.
-    parser (const parser&);
+    Parser (const Parser&);
     /// Non copyable.
-    parser& operator= (const parser&);
+    Parser& operator= (const Parser&);
 #endif
 
 

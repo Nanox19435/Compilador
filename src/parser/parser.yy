@@ -2,6 +2,7 @@
 %language "c++"
 %header "Parser.hpp"
 %output "Parser.cpp"
+%define api.parser.class {Parser}
 
 %code requires{
     
@@ -18,8 +19,7 @@
 
     #include "Lexer.hpp"
     
-    int yylex(void);
-    int yyerror(const char *s);
+    #define yylex lexer.lexwrap
 }
 
 %define api.value.type variant
@@ -51,5 +51,5 @@ valor:
 
 void yy::Parser::error(const std::string &err_message)
 {
-    cerr << "Error: " << err_message << " at " << lexer.getLine() << " whith token " << lexer.getVal() << endl;
+    cerr << "Error: " << err_message << " at " << lexer.lineno() << " whith token " << lexer.YYText() << endl;
 }
