@@ -43,10 +43,10 @@ WHITESPACE [ \t\n]
                     lval->build<std::string>(text);
                     return tokens::CADENA; 
                 }
-"("              { return LPAR; }
-")"              { return RPAR; }
-"{"              { return LCB; }
-"}"              { return RCB; }
+"("             { return LPAR; }
+")"             { return RPAR; }
+"{"             { return LCB; }
+"}"             { return RCB; }
 ","             { return COMA; }
 ";"             { return PYC; }
 "si"            { return IF; }
