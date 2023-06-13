@@ -19,19 +19,19 @@
 
     #include "Lexer.hpp"
     
-    #define yylex lexer.lexwrap
+    #define yylex lexer.yylex
 }
 
 %define api.value.type variant
 %define parse.assert
 
-%token <std::string> ID CADENA
-%token <std::string> NUMERO
-%token <std::string> RUNA 
-%token INT F32 F64
+%token <std::string> ID CADENA RUNA
+%token <int> ENTERO
+%token <float> F32
+%token <double> F64
 %token LKEY RKEY PYC COMA
 
-%left MAS
+%token MAS
 
 %type declaracion
 %type<std::string> valor
@@ -41,15 +41,17 @@
 %%
 declaracion:
     valor MAS valor {
-        cout << "reconocido" << endl;
+        cout << $1 << $3 << endl;
     }
     ;
 valor:
-    CADENA { $$ = $1; }
+    CADENA { 
+        $$ = $1;
+        }
     ;
 %%
 
 void yy::Parser::error(const std::string &err_message)
 {
-    cerr << "Error: " << err_message << " at " << lexer.lineno() << " whith token " << lexer.YYText() << endl;
+    cerr << "Error: " << err_message << " at " << lexer.lineno() << " with token " << lexer.YYText() << endl;
 }

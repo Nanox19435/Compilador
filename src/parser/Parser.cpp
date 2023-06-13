@@ -50,7 +50,7 @@
 
     #include "Lexer.hpp"
     
-    #define yylex lexer.lexwrap
+    #define yylex lexer.yylex
 
 #line 56 "Parser.cpp"
 
@@ -156,9 +156,20 @@ namespace yy {
   {
     switch (this->kind ())
     {
+      case symbol_kind::S_F64: // F64
+        value.copy< double > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_F32: // F32
+        value.copy< float > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        value.copy< int > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         value.copy< std::string > (YY_MOVE (that.value));
@@ -195,9 +206,20 @@ namespace yy {
     super_type::move (s);
     switch (this->kind ())
     {
+      case symbol_kind::S_F64: // F64
+        value.move< double > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_F32: // F32
+        value.move< float > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        value.move< int > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         value.move< std::string > (YY_MOVE (s.value));
@@ -303,9 +325,20 @@ namespace yy {
   {
     switch (that.kind ())
     {
+      case symbol_kind::S_F64: // F64
+        value.YY_MOVE_OR_COPY< double > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_F32: // F32
+        value.YY_MOVE_OR_COPY< float > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        value.YY_MOVE_OR_COPY< int > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
@@ -326,9 +359,20 @@ namespace yy {
   {
     switch (that.kind ())
     {
+      case symbol_kind::S_F64: // F64
+        value.move< double > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_F32: // F32
+        value.move< float > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        value.move< int > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         value.move< std::string > (YY_MOVE (that.value));
@@ -349,9 +393,20 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
+      case symbol_kind::S_F64: // F64
+        value.copy< double > (that.value);
+        break;
+
+      case symbol_kind::S_F32: // F32
+        value.copy< float > (that.value);
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        value.copy< int > (that.value);
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         value.copy< std::string > (that.value);
@@ -370,9 +425,20 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
+      case symbol_kind::S_F64: // F64
+        value.move< double > (that.value);
+        break;
+
+      case symbol_kind::S_F32: // F32
+        value.move< float > (that.value);
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        value.move< int > (that.value);
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         value.move< std::string > (that.value);
@@ -631,9 +697,20 @@ namespace yy {
          when using variants.  */
       switch (yyr1_[yyn])
     {
+      case symbol_kind::S_F64: // F64
+        yylhs.value.emplace< double > ();
+        break;
+
+      case symbol_kind::S_F32: // F32
+        yylhs.value.emplace< float > ();
+        break;
+
+      case symbol_kind::S_ENTERO: // ENTERO
+        yylhs.value.emplace< int > ();
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_RUNA: // RUNA
       case symbol_kind::S_valor: // valor
         yylhs.value.emplace< std::string > ();
@@ -656,19 +733,21 @@ namespace yy {
   case 2: // declaracion: valor MAS valor
 #line 43 "parser.yy"
                     {
-        cout << "reconocido" << endl;
+        cout << yystack_[2].value.as < std::string > () << yystack_[0].value.as < std::string > () << endl;
     }
-#line 662 "Parser.cpp"
+#line 739 "Parser.cpp"
     break;
 
   case 3: // valor: CADENA
 #line 48 "parser.yy"
-           { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 668 "Parser.cpp"
+           { 
+        yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
+        }
+#line 747 "Parser.cpp"
     break;
 
 
-#line 672 "Parser.cpp"
+#line 751 "Parser.cpp"
 
             default:
               break;
@@ -857,14 +936,14 @@ namespace yy {
 
 
 
-  const signed char Parser::yypact_ninf_ = -13;
+  const signed char Parser::yypact_ninf_ = -12;
 
   const signed char Parser::yytable_ninf_ = -1;
 
   const signed char
   Parser::yypact_[] =
   {
-      -4,   -13,     1,   -12,   -13,    -4,   -13
+      -4,   -12,     1,   -11,   -12,    -4,   -12
   };
 
   const signed char
@@ -876,7 +955,7 @@ namespace yy {
   const signed char
   Parser::yypgoto_[] =
   {
-     -13,   -13,    -2
+     -12,   -12,    -2
   };
 
   const signed char
@@ -894,19 +973,19 @@ namespace yy {
   const signed char
   Parser::yycheck_[] =
   {
-       4,     0,    14,     5
+       4,     0,    13,     5
   };
 
   const signed char
   Parser::yystos_[] =
   {
-       0,     4,    16,    17,     0,    14,    17
+       0,     4,    15,    16,     0,    13,    16
   };
 
   const signed char
   Parser::yyr1_[] =
   {
-       0,    15,    16,    17
+       0,    14,    15,    16
   };
 
   const signed char
@@ -922,9 +1001,9 @@ namespace yy {
   const char*
   const Parser::yytname_[] =
   {
-  "\"end of file\"", "error", "\"invalid token\"", "ID", "CADENA",
-  "NUMERO", "RUNA", "INT", "F32", "F64", "LKEY", "RKEY", "PYC", "COMA",
-  "MAS", "$accept", "declaracion", "valor", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "ID", "CADENA", "RUNA",
+  "ENTERO", "F32", "F64", "LKEY", "RKEY", "PYC", "COMA", "MAS", "$accept",
+  "declaracion", "valor", YY_NULLPTR
   };
 #endif
 
@@ -998,10 +1077,10 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14
+       5,     6,     7,     8,     9,    10,    11,    12,    13
     };
     // Last valid token kind.
-    const int code_max = 269;
+    const int code_max = 268;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1012,12 +1091,12 @@ namespace yy {
   }
 
 } // yy
-#line 1016 "Parser.cpp"
+#line 1095 "Parser.cpp"
 
-#line 50 "parser.yy"
+#line 52 "parser.yy"
 
 
 void yy::Parser::error(const std::string &err_message)
 {
-    cerr << "Error: " << err_message << " at " << lexer.lineno() << " whith token " << lexer.YYText() << endl;
+    cerr << "Error: " << err_message << " at " << lexer.lineno() << " with token " << lexer.YYText() << endl;
 }

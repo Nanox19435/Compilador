@@ -5,6 +5,10 @@ using namespace std;
 
 #include "tokens.hpp"
 #include "Lexer.hpp"
+
+#undef YY_DECL
+#define YY_DECL int Lexer::yylex(yy::Parser::value_type *const lval)
+using tokens = yy::Parser::token;
 %}
 
 %option c++
@@ -16,7 +20,7 @@ ESP [áćéǵíḱĺḿńóṕŕśúẃýźÁĆÉǴÍḰĹḾŃÓṔŔŚÚẂÝ�
 ID ([_$a-zA-Z]|{ESP})([_$0-9a-zA-Z]|{ESP})*
 INT (([0-9]("_")?)*[0-9])
 FLOAT (({INT}?"."[0-9]*(("e"|"E")("+"|"-")?{INT})?)|({INT}("e"|"E")("+"|"-")?{INT}))
-CHAR ({ESP}|[a-zA-Z.;\+\*\-/;=_]|\\[abfnrtv\\\'\"])
+CHAR ({ESP}|[a-zA-Z.;\+\*\-/;=_ !]|\\[abfnrtv\\\'\"])
 RUNA ('{CHAR}'|\"{CHAR}\")
 STR (\"{CHAR}*\")
 WHITESPACE [ \t\n]
@@ -27,12 +31,22 @@ WHITESPACE [ \t\n]
 "\."            { return PUNTO; }
 {INT}           { return INTV; }
 {FLOAT}         { return FLOATV; }
-{RUNA}          { return RUNA; }
-{STR}           { return STR; }
-\(              { return LPAR; }
-\)              { return RPAR; }
-\{              { return LCB; }
-\}              { return RCB; }
+{RUNA}          { 
+                    string text = yytext;
+					text = text.substr(1, text.size()-2);
+                    lval->build<std::string>(text);
+                    return tokens::RUNA;  
+                }
+{STR}           {
+                    string text = yytext;
+					text = text.substr(1, text.size()-2);
+                    lval->build<std::string>(text);
+                    return tokens::CADENA; 
+                }
+"("              { return LPAR; }
+")"              { return RPAR; }
+"{"              { return LCB; }
+"}"              { return RCB; }
 ","             { return COMA; }
 ";"             { return PYC; }
 "si"            { return IF; }
@@ -64,10 +78,10 @@ WHITESPACE [ \t\n]
 "*="            { return PASIG; }
 "/="            { return DASIG; }
 "%="            { return MASIG; }
-\+              { return MAS;  }
+"+"             { return tokens::MAS; }
 "-"             { return MENOS; }
-\*              { return MUL; }
-\/              { return DIV; }
+"*"              { return MUL; }
+"/"              { return DIV; }
 "%"             { return MOD; }            
 "||"            { return OR; }
 "&&"            { return AND; }
@@ -85,10 +99,4 @@ WHITESPACE [ \t\n]
 
 int yyFlexLexer::yywrap(){
     return 1;
-}
-
-int Lexer::lexwrap(yy::Parser::value_type *t)
-{
-    cout << t << endl;
-    return yylex();
 }

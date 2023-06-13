@@ -16,12 +16,9 @@ int main(int argc, char *argv[]) {
     fb.open(string(argv[1]), ios::in);
     istream in(&fb);
     Lexer lexer(&in);
-    int token = lexer.yylex();
+    yy::Parser parser(lexer);
 
-    while(token != 0) {
-        cout << token << ", " << lexer.YYText() << endl;
-        token = lexer.yylex();
-    }
+    parser.parse();
 
     fb.close();
     return 0;

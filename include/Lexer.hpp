@@ -12,8 +12,8 @@ public:
     Lexer(std::istream *in) : yyFlexLexer(in){};
 
     using FlexLexer::yylex;
-    virtual int yylex();
-    virtual int lexwrap(yy::Parser::value_type *t);
+    virtual int yylex(yy::Parser::value_type *const lval);
+    //virtual int lexwrap(yy::Parser::value_type *t);
 
 private:
     const int ERROR = -1;
