@@ -22,25 +22,43 @@
     #define yylex lexer.yylex
 }
 
+%define api.token.raw
+%define api.token.constructor
 %define api.value.type variant
 %define parse.assert
 
 %token <std::string> ID CADENA RUNA
 %token <int> INTV
-%token <string> FLOAT
+%token <std::string> FVAL
 %token <bool> TRUE FALSE
-%token LBRACE RBRACE PYC COMA
+%token VOID BOOL INT F32 F64
+%token PYC COL COMA
+%nonassoc VAR CONST PROTO IF ELSE FOR CASE SWITCH DEFAULT STRUCT FUNC RETURN STOP CONTINUE PRINT READ 
 
-%left MAS
+%right ASIG SASIG RASIG PASIG DASIG MASIG
+%right AMP
 
-%type programa
-%type declaraciones declaracion
+%left OR
+%left AND
+%left EQ NEQ
+%left LESS GREAT LEQ GEQ
+%left PLUS SUB
+%left MUL DIV MOD
+%left NEG
+
+%left INCR DECR
+%left DOT
+
+%nonassoc LPAR RPAR LBRACE RBRACE LBRACK RBRACK
+
+
+%type <std::string> programa
 
 %start programa
 
 %%
 programa:
-    MAS {}
+    PLUS { $$ = "+"; }
     ;
 %%
 

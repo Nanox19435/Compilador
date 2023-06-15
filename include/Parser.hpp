@@ -410,20 +410,19 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // F64
-      char dummy1[sizeof (double)];
+      // TRUE
+      // FALSE
+      char dummy1[sizeof (bool)];
 
-      // F32
-      char dummy2[sizeof (float)];
-
-      // ENTERO
-      char dummy3[sizeof (int)];
+      // INTV
+      char dummy2[sizeof (int)];
 
       // ID
       // CADENA
       // RUNA
-      // valor
-      char dummy4[sizeof (std::string)];
+      // FVAL
+      // programa
+      char dummy3[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -468,19 +467,69 @@ namespace yy {
       {
         YYEMPTY = -2,
     YYEOF = 0,                     // "end of file"
-    YYerror = 256,                 // error
-    YYUNDEF = 257,                 // "invalid token"
-    ID = 258,                      // ID
-    CADENA = 259,                  // CADENA
-    RUNA = 260,                    // RUNA
-    ENTERO = 261,                  // ENTERO
-    F32 = 262,                     // F32
-    F64 = 263,                     // F64
-    LKEY = 264,                    // LKEY
-    RKEY = 265,                    // RKEY
-    PYC = 266,                     // PYC
-    COMA = 267,                    // COMA
-    MAS = 268                      // MAS
+    YYerror = 1,                   // error
+    YYUNDEF = 2,                   // "invalid token"
+    ID = 3,                        // ID
+    CADENA = 4,                    // CADENA
+    RUNA = 5,                      // RUNA
+    INTV = 6,                      // INTV
+    FVAL = 7,                      // FVAL
+    TRUE = 8,                      // TRUE
+    FALSE = 9,                     // FALSE
+    VOID = 10,                     // VOID
+    BOOL = 11,                     // BOOL
+    INT = 12,                      // INT
+    F32 = 13,                      // F32
+    F64 = 14,                      // F64
+    PYC = 15,                      // PYC
+    COL = 16,                      // COL
+    COMA = 17,                     // COMA
+    VAR = 18,                      // VAR
+    CONST = 19,                    // CONST
+    PROTO = 20,                    // PROTO
+    IF = 21,                       // IF
+    ELSE = 22,                     // ELSE
+    FOR = 23,                      // FOR
+    CASE = 24,                     // CASE
+    SWITCH = 25,                   // SWITCH
+    DEFAULT = 26,                  // DEFAULT
+    STRUCT = 27,                   // STRUCT
+    FUNC = 28,                     // FUNC
+    RETURN = 29,                   // RETURN
+    STOP = 30,                     // STOP
+    CONTINUE = 31,                 // CONTINUE
+    PRINT = 32,                    // PRINT
+    READ = 33,                     // READ
+    ASIG = 34,                     // ASIG
+    SASIG = 35,                    // SASIG
+    RASIG = 36,                    // RASIG
+    PASIG = 37,                    // PASIG
+    DASIG = 38,                    // DASIG
+    MASIG = 39,                    // MASIG
+    AMP = 40,                      // AMP
+    OR = 41,                       // OR
+    AND = 42,                      // AND
+    EQ = 43,                       // EQ
+    NEQ = 44,                      // NEQ
+    LESS = 45,                     // LESS
+    GREAT = 46,                    // GREAT
+    LEQ = 47,                      // LEQ
+    GEQ = 48,                      // GEQ
+    PLUS = 49,                     // PLUS
+    SUB = 50,                      // SUB
+    MUL = 51,                      // MUL
+    DIV = 52,                      // DIV
+    MOD = 53,                      // MOD
+    NEG = 54,                      // NEG
+    INCR = 55,                     // INCR
+    DECR = 56,                     // DECR
+    DOT = 57,                      // DOT
+    LPAR = 58,                     // LPAR
+    RPAR = 59,                     // RPAR
+    LBRACE = 60,                   // LBRACE
+    RBRACE = 61,                   // RBRACE
+    LBRACK = 62,                   // LBRACK
+    RBRACK = 63                    // RBRACK
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -497,7 +546,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 14, ///< Number of tokens.
+        YYNTOKENS = 64, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -505,17 +554,66 @@ namespace yy {
         S_ID = 3,                                // ID
         S_CADENA = 4,                            // CADENA
         S_RUNA = 5,                              // RUNA
-        S_ENTERO = 6,                            // ENTERO
-        S_F32 = 7,                               // F32
-        S_F64 = 8,                               // F64
-        S_LKEY = 9,                              // LKEY
-        S_RKEY = 10,                             // RKEY
-        S_PYC = 11,                              // PYC
-        S_COMA = 12,                             // COMA
-        S_MAS = 13,                              // MAS
-        S_YYACCEPT = 14,                         // $accept
-        S_declaracion = 15,                      // declaracion
-        S_valor = 16                             // valor
+        S_INTV = 6,                              // INTV
+        S_FVAL = 7,                              // FVAL
+        S_TRUE = 8,                              // TRUE
+        S_FALSE = 9,                             // FALSE
+        S_VOID = 10,                             // VOID
+        S_BOOL = 11,                             // BOOL
+        S_INT = 12,                              // INT
+        S_F32 = 13,                              // F32
+        S_F64 = 14,                              // F64
+        S_PYC = 15,                              // PYC
+        S_COL = 16,                              // COL
+        S_COMA = 17,                             // COMA
+        S_VAR = 18,                              // VAR
+        S_CONST = 19,                            // CONST
+        S_PROTO = 20,                            // PROTO
+        S_IF = 21,                               // IF
+        S_ELSE = 22,                             // ELSE
+        S_FOR = 23,                              // FOR
+        S_CASE = 24,                             // CASE
+        S_SWITCH = 25,                           // SWITCH
+        S_DEFAULT = 26,                          // DEFAULT
+        S_STRUCT = 27,                           // STRUCT
+        S_FUNC = 28,                             // FUNC
+        S_RETURN = 29,                           // RETURN
+        S_STOP = 30,                             // STOP
+        S_CONTINUE = 31,                         // CONTINUE
+        S_PRINT = 32,                            // PRINT
+        S_READ = 33,                             // READ
+        S_ASIG = 34,                             // ASIG
+        S_SASIG = 35,                            // SASIG
+        S_RASIG = 36,                            // RASIG
+        S_PASIG = 37,                            // PASIG
+        S_DASIG = 38,                            // DASIG
+        S_MASIG = 39,                            // MASIG
+        S_AMP = 40,                              // AMP
+        S_OR = 41,                               // OR
+        S_AND = 42,                              // AND
+        S_EQ = 43,                               // EQ
+        S_NEQ = 44,                              // NEQ
+        S_LESS = 45,                             // LESS
+        S_GREAT = 46,                            // GREAT
+        S_LEQ = 47,                              // LEQ
+        S_GEQ = 48,                              // GEQ
+        S_PLUS = 49,                             // PLUS
+        S_SUB = 50,                              // SUB
+        S_MUL = 51,                              // MUL
+        S_DIV = 52,                              // DIV
+        S_MOD = 53,                              // MOD
+        S_NEG = 54,                              // NEG
+        S_INCR = 55,                             // INCR
+        S_DECR = 56,                             // DECR
+        S_DOT = 57,                              // DOT
+        S_LPAR = 58,                             // LPAR
+        S_RPAR = 59,                             // RPAR
+        S_LBRACE = 60,                           // LBRACE
+        S_RBRACE = 61,                           // RBRACE
+        S_LBRACK = 62,                           // LBRACK
+        S_RBRACK = 63,                           // RBRACK
+        S_YYACCEPT = 64,                         // $accept
+        S_programa = 65                          // programa
       };
     };
 
@@ -550,22 +648,20 @@ namespace yy {
       {
         switch (this->kind ())
     {
-      case symbol_kind::S_F64: // F64
-        value.move< double > (std::move (that.value));
+      case symbol_kind::S_TRUE: // TRUE
+      case symbol_kind::S_FALSE: // FALSE
+        value.move< bool > (std::move (that.value));
         break;
 
-      case symbol_kind::S_F32: // F32
-        value.move< float > (std::move (that.value));
-        break;
-
-      case symbol_kind::S_ENTERO: // ENTERO
+      case symbol_kind::S_INTV: // INTV
         value.move< int > (std::move (that.value));
         break;
 
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
-      case symbol_kind::S_valor: // valor
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -591,24 +687,12 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, double&& v)
+      basic_symbol (typename Base::kind_type t, bool&& v)
         : Base (t)
         , value (std::move (v))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const double& v)
-        : Base (t)
-        , value (v)
-      {}
-#endif
-
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, float&& v)
-        : Base (t)
-        , value (std::move (v))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const float& v)
+      basic_symbol (typename Base::kind_type t, const bool& v)
         : Base (t)
         , value (v)
       {}
@@ -662,22 +746,20 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
-      case symbol_kind::S_F64: // F64
-        value.template destroy< double > ();
+      case symbol_kind::S_TRUE: // TRUE
+      case symbol_kind::S_FALSE: // FALSE
+        value.template destroy< bool > ();
         break;
 
-      case symbol_kind::S_F32: // F32
-        value.template destroy< float > ();
-        break;
-
-      case symbol_kind::S_ENTERO: // ENTERO
+      case symbol_kind::S_INTV: // INTV
         value.template destroy< int > ();
         break;
 
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
-      case symbol_kind::S_valor: // valor
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         value.template destroy< std::string > ();
         break;
 
@@ -780,31 +862,19 @@ switch (yykind)
 #if !defined _MSC_VER || defined __clang__
         YY_ASSERT (tok == token::YYEOF
                    || (token::YYerror <= tok && tok <= token::YYUNDEF)
-                   || (token::LKEY <= tok && tok <= token::MAS));
+                   || (token::VOID <= tok && tok <= token::RBRACK));
 #endif
       }
 #if 201103L <= YY_CPLUSPLUS
-      symbol_type (int tok, double v)
+      symbol_type (int tok, bool v)
         : super_type (token_kind_type (tok), std::move (v))
 #else
-      symbol_type (int tok, const double& v)
+      symbol_type (int tok, const bool& v)
         : super_type (token_kind_type (tok), v)
 #endif
       {
 #if !defined _MSC_VER || defined __clang__
-        YY_ASSERT (tok == token::F64);
-#endif
-      }
-#if 201103L <= YY_CPLUSPLUS
-      symbol_type (int tok, float v)
-        : super_type (token_kind_type (tok), std::move (v))
-#else
-      symbol_type (int tok, const float& v)
-        : super_type (token_kind_type (tok), v)
-#endif
-      {
-#if !defined _MSC_VER || defined __clang__
-        YY_ASSERT (tok == token::F32);
+        YY_ASSERT ((token::TRUE <= tok && tok <= token::FALSE));
 #endif
       }
 #if 201103L <= YY_CPLUSPLUS
@@ -816,7 +886,7 @@ switch (yykind)
 #endif
       {
 #if !defined _MSC_VER || defined __clang__
-        YY_ASSERT (tok == token::ENTERO);
+        YY_ASSERT (tok == token::INTV);
 #endif
       }
 #if 201103L <= YY_CPLUSPLUS
@@ -828,7 +898,8 @@ switch (yykind)
 #endif
       {
 #if !defined _MSC_VER || defined __clang__
-        YY_ASSERT ((token::ID <= tok && tok <= token::RUNA));
+        YY_ASSERT ((token::ID <= tok && tok <= token::RUNA)
+                   || tok == token::FVAL);
 #endif
       }
     };
@@ -974,76 +1045,136 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_ENTERO (int v)
+      make_INTV (int v)
       {
-        return symbol_type (token::ENTERO, std::move (v));
+        return symbol_type (token::INTV, std::move (v));
       }
 #else
       static
       symbol_type
-      make_ENTERO (const int& v)
+      make_INTV (const int& v)
       {
-        return symbol_type (token::ENTERO, v);
+        return symbol_type (token::INTV, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_F32 (float v)
+      make_FVAL (std::string v)
       {
-        return symbol_type (token::F32, std::move (v));
+        return symbol_type (token::FVAL, std::move (v));
       }
 #else
       static
       symbol_type
-      make_F32 (const float& v)
+      make_FVAL (const std::string& v)
       {
-        return symbol_type (token::F32, v);
+        return symbol_type (token::FVAL, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_F64 (double v)
+      make_TRUE (bool v)
       {
-        return symbol_type (token::F64, std::move (v));
+        return symbol_type (token::TRUE, std::move (v));
       }
 #else
       static
       symbol_type
-      make_F64 (const double& v)
+      make_TRUE (const bool& v)
       {
-        return symbol_type (token::F64, v);
+        return symbol_type (token::TRUE, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_LKEY ()
+      make_FALSE (bool v)
       {
-        return symbol_type (token::LKEY);
+        return symbol_type (token::FALSE, std::move (v));
       }
 #else
       static
       symbol_type
-      make_LKEY ()
+      make_FALSE (const bool& v)
       {
-        return symbol_type (token::LKEY);
+        return symbol_type (token::FALSE, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_RKEY ()
+      make_VOID ()
       {
-        return symbol_type (token::RKEY);
+        return symbol_type (token::VOID);
       }
 #else
       static
       symbol_type
-      make_RKEY ()
+      make_VOID ()
       {
-        return symbol_type (token::RKEY);
+        return symbol_type (token::VOID);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_BOOL ()
+      {
+        return symbol_type (token::BOOL);
+      }
+#else
+      static
+      symbol_type
+      make_BOOL ()
+      {
+        return symbol_type (token::BOOL);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INT ()
+      {
+        return symbol_type (token::INT);
+      }
+#else
+      static
+      symbol_type
+      make_INT ()
+      {
+        return symbol_type (token::INT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_F32 ()
+      {
+        return symbol_type (token::F32);
+      }
+#else
+      static
+      symbol_type
+      make_F32 ()
+      {
+        return symbol_type (token::F32);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_F64 ()
+      {
+        return symbol_type (token::F64);
+      }
+#else
+      static
+      symbol_type
+      make_F64 ()
+      {
+        return symbol_type (token::F64);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1064,6 +1195,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_COL ()
+      {
+        return symbol_type (token::COL);
+      }
+#else
+      static
+      symbol_type
+      make_COL ()
+      {
+        return symbol_type (token::COL);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_COMA ()
       {
         return symbol_type (token::COMA);
@@ -1079,16 +1225,691 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_MAS ()
+      make_VAR ()
       {
-        return symbol_type (token::MAS);
+        return symbol_type (token::VAR);
       }
 #else
       static
       symbol_type
-      make_MAS ()
+      make_VAR ()
       {
-        return symbol_type (token::MAS);
+        return symbol_type (token::VAR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CONST ()
+      {
+        return symbol_type (token::CONST);
+      }
+#else
+      static
+      symbol_type
+      make_CONST ()
+      {
+        return symbol_type (token::CONST);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PROTO ()
+      {
+        return symbol_type (token::PROTO);
+      }
+#else
+      static
+      symbol_type
+      make_PROTO ()
+      {
+        return symbol_type (token::PROTO);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_IF ()
+      {
+        return symbol_type (token::IF);
+      }
+#else
+      static
+      symbol_type
+      make_IF ()
+      {
+        return symbol_type (token::IF);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ELSE ()
+      {
+        return symbol_type (token::ELSE);
+      }
+#else
+      static
+      symbol_type
+      make_ELSE ()
+      {
+        return symbol_type (token::ELSE);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_FOR ()
+      {
+        return symbol_type (token::FOR);
+      }
+#else
+      static
+      symbol_type
+      make_FOR ()
+      {
+        return symbol_type (token::FOR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CASE ()
+      {
+        return symbol_type (token::CASE);
+      }
+#else
+      static
+      symbol_type
+      make_CASE ()
+      {
+        return symbol_type (token::CASE);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SWITCH ()
+      {
+        return symbol_type (token::SWITCH);
+      }
+#else
+      static
+      symbol_type
+      make_SWITCH ()
+      {
+        return symbol_type (token::SWITCH);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DEFAULT ()
+      {
+        return symbol_type (token::DEFAULT);
+      }
+#else
+      static
+      symbol_type
+      make_DEFAULT ()
+      {
+        return symbol_type (token::DEFAULT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRUCT ()
+      {
+        return symbol_type (token::STRUCT);
+      }
+#else
+      static
+      symbol_type
+      make_STRUCT ()
+      {
+        return symbol_type (token::STRUCT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_FUNC ()
+      {
+        return symbol_type (token::FUNC);
+      }
+#else
+      static
+      symbol_type
+      make_FUNC ()
+      {
+        return symbol_type (token::FUNC);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RETURN ()
+      {
+        return symbol_type (token::RETURN);
+      }
+#else
+      static
+      symbol_type
+      make_RETURN ()
+      {
+        return symbol_type (token::RETURN);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STOP ()
+      {
+        return symbol_type (token::STOP);
+      }
+#else
+      static
+      symbol_type
+      make_STOP ()
+      {
+        return symbol_type (token::STOP);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CONTINUE ()
+      {
+        return symbol_type (token::CONTINUE);
+      }
+#else
+      static
+      symbol_type
+      make_CONTINUE ()
+      {
+        return symbol_type (token::CONTINUE);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PRINT ()
+      {
+        return symbol_type (token::PRINT);
+      }
+#else
+      static
+      symbol_type
+      make_PRINT ()
+      {
+        return symbol_type (token::PRINT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_READ ()
+      {
+        return symbol_type (token::READ);
+      }
+#else
+      static
+      symbol_type
+      make_READ ()
+      {
+        return symbol_type (token::READ);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ASIG ()
+      {
+        return symbol_type (token::ASIG);
+      }
+#else
+      static
+      symbol_type
+      make_ASIG ()
+      {
+        return symbol_type (token::ASIG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SASIG ()
+      {
+        return symbol_type (token::SASIG);
+      }
+#else
+      static
+      symbol_type
+      make_SASIG ()
+      {
+        return symbol_type (token::SASIG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RASIG ()
+      {
+        return symbol_type (token::RASIG);
+      }
+#else
+      static
+      symbol_type
+      make_RASIG ()
+      {
+        return symbol_type (token::RASIG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PASIG ()
+      {
+        return symbol_type (token::PASIG);
+      }
+#else
+      static
+      symbol_type
+      make_PASIG ()
+      {
+        return symbol_type (token::PASIG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DASIG ()
+      {
+        return symbol_type (token::DASIG);
+      }
+#else
+      static
+      symbol_type
+      make_DASIG ()
+      {
+        return symbol_type (token::DASIG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MASIG ()
+      {
+        return symbol_type (token::MASIG);
+      }
+#else
+      static
+      symbol_type
+      make_MASIG ()
+      {
+        return symbol_type (token::MASIG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_AMP ()
+      {
+        return symbol_type (token::AMP);
+      }
+#else
+      static
+      symbol_type
+      make_AMP ()
+      {
+        return symbol_type (token::AMP);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_OR ()
+      {
+        return symbol_type (token::OR);
+      }
+#else
+      static
+      symbol_type
+      make_OR ()
+      {
+        return symbol_type (token::OR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_AND ()
+      {
+        return symbol_type (token::AND);
+      }
+#else
+      static
+      symbol_type
+      make_AND ()
+      {
+        return symbol_type (token::AND);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_EQ ()
+      {
+        return symbol_type (token::EQ);
+      }
+#else
+      static
+      symbol_type
+      make_EQ ()
+      {
+        return symbol_type (token::EQ);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_NEQ ()
+      {
+        return symbol_type (token::NEQ);
+      }
+#else
+      static
+      symbol_type
+      make_NEQ ()
+      {
+        return symbol_type (token::NEQ);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LESS ()
+      {
+        return symbol_type (token::LESS);
+      }
+#else
+      static
+      symbol_type
+      make_LESS ()
+      {
+        return symbol_type (token::LESS);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_GREAT ()
+      {
+        return symbol_type (token::GREAT);
+      }
+#else
+      static
+      symbol_type
+      make_GREAT ()
+      {
+        return symbol_type (token::GREAT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LEQ ()
+      {
+        return symbol_type (token::LEQ);
+      }
+#else
+      static
+      symbol_type
+      make_LEQ ()
+      {
+        return symbol_type (token::LEQ);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_GEQ ()
+      {
+        return symbol_type (token::GEQ);
+      }
+#else
+      static
+      symbol_type
+      make_GEQ ()
+      {
+        return symbol_type (token::GEQ);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PLUS ()
+      {
+        return symbol_type (token::PLUS);
+      }
+#else
+      static
+      symbol_type
+      make_PLUS ()
+      {
+        return symbol_type (token::PLUS);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SUB ()
+      {
+        return symbol_type (token::SUB);
+      }
+#else
+      static
+      symbol_type
+      make_SUB ()
+      {
+        return symbol_type (token::SUB);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MUL ()
+      {
+        return symbol_type (token::MUL);
+      }
+#else
+      static
+      symbol_type
+      make_MUL ()
+      {
+        return symbol_type (token::MUL);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DIV ()
+      {
+        return symbol_type (token::DIV);
+      }
+#else
+      static
+      symbol_type
+      make_DIV ()
+      {
+        return symbol_type (token::DIV);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MOD ()
+      {
+        return symbol_type (token::MOD);
+      }
+#else
+      static
+      symbol_type
+      make_MOD ()
+      {
+        return symbol_type (token::MOD);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_NEG ()
+      {
+        return symbol_type (token::NEG);
+      }
+#else
+      static
+      symbol_type
+      make_NEG ()
+      {
+        return symbol_type (token::NEG);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INCR ()
+      {
+        return symbol_type (token::INCR);
+      }
+#else
+      static
+      symbol_type
+      make_INCR ()
+      {
+        return symbol_type (token::INCR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DECR ()
+      {
+        return symbol_type (token::DECR);
+      }
+#else
+      static
+      symbol_type
+      make_DECR ()
+      {
+        return symbol_type (token::DECR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DOT ()
+      {
+        return symbol_type (token::DOT);
+      }
+#else
+      static
+      symbol_type
+      make_DOT ()
+      {
+        return symbol_type (token::DOT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LPAR ()
+      {
+        return symbol_type (token::LPAR);
+      }
+#else
+      static
+      symbol_type
+      make_LPAR ()
+      {
+        return symbol_type (token::LPAR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RPAR ()
+      {
+        return symbol_type (token::RPAR);
+      }
+#else
+      static
+      symbol_type
+      make_RPAR ()
+      {
+        return symbol_type (token::RPAR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LBRACE ()
+      {
+        return symbol_type (token::LBRACE);
+      }
+#else
+      static
+      symbol_type
+      make_LBRACE ()
+      {
+        return symbol_type (token::LBRACE);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RBRACE ()
+      {
+        return symbol_type (token::RBRACE);
+      }
+#else
+      static
+      symbol_type
+      make_RBRACE ()
+      {
+        return symbol_type (token::RBRACE);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LBRACK ()
+      {
+        return symbol_type (token::LBRACK);
+      }
+#else
+      static
+      symbol_type
+      make_LBRACK ()
+      {
+        return symbol_type (token::LBRACK);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RBRACK ()
+      {
+        return symbol_type (token::RBRACK);
+      }
+#else
+      static
+      symbol_type
+      make_RBRACK ()
+      {
+        return symbol_type (token::RBRACK);
       }
 #endif
 
@@ -1395,9 +2216,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 3,     ///< Last index in yytable_.
-      yynnts_ = 3,  ///< Number of nonterminal symbols.
-      yyfinal_ = 4 ///< Termination state number.
+      yylast_ = 1,     ///< Last index in yytable_.
+      yynnts_ = 2,  ///< Number of nonterminal symbols.
+      yyfinal_ = 3 ///< Termination state number.
     };
 
 
@@ -1406,9 +2227,152 @@ switch (yykind)
 
   };
 
+  inline
+  Parser::symbol_kind_type
+  Parser::yytranslate_ (int t) YY_NOEXCEPT
+  {
+    return static_cast<symbol_kind_type> (t);
+  }
+
+  // basic_symbol.
+  template <typename Base>
+  Parser::basic_symbol<Base>::basic_symbol (const basic_symbol& that)
+    : Base (that)
+    , value ()
+  {
+    switch (this->kind ())
+    {
+      case symbol_kind::S_TRUE: // TRUE
+      case symbol_kind::S_FALSE: // FALSE
+        value.copy< bool > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_INTV: // INTV
+        value.copy< int > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_CADENA: // CADENA
+      case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
+        value.copy< std::string > (YY_MOVE (that.value));
+        break;
+
+      default:
+        break;
+    }
+
+  }
+
+
+
+
+  template <typename Base>
+  Parser::symbol_kind_type
+  Parser::basic_symbol<Base>::type_get () const YY_NOEXCEPT
+  {
+    return this->kind ();
+  }
+
+
+  template <typename Base>
+  bool
+  Parser::basic_symbol<Base>::empty () const YY_NOEXCEPT
+  {
+    return this->kind () == symbol_kind::S_YYEMPTY;
+  }
+
+  template <typename Base>
+  void
+  Parser::basic_symbol<Base>::move (basic_symbol& s)
+  {
+    super_type::move (s);
+    switch (this->kind ())
+    {
+      case symbol_kind::S_TRUE: // TRUE
+      case symbol_kind::S_FALSE: // FALSE
+        value.move< bool > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_INTV: // INTV
+        value.move< int > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_CADENA: // CADENA
+      case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
+        value.move< std::string > (YY_MOVE (s.value));
+        break;
+
+      default:
+        break;
+    }
+
+  }
+
+  // by_kind.
+  inline
+  Parser::by_kind::by_kind () YY_NOEXCEPT
+    : kind_ (symbol_kind::S_YYEMPTY)
+  {}
+
+#if 201103L <= YY_CPLUSPLUS
+  inline
+  Parser::by_kind::by_kind (by_kind&& that) YY_NOEXCEPT
+    : kind_ (that.kind_)
+  {
+    that.clear ();
+  }
+#endif
+
+  inline
+  Parser::by_kind::by_kind (const by_kind& that) YY_NOEXCEPT
+    : kind_ (that.kind_)
+  {}
+
+  inline
+  Parser::by_kind::by_kind (token_kind_type t) YY_NOEXCEPT
+    : kind_ (yytranslate_ (t))
+  {}
+
+
+
+  inline
+  void
+  Parser::by_kind::clear () YY_NOEXCEPT
+  {
+    kind_ = symbol_kind::S_YYEMPTY;
+  }
+
+  inline
+  void
+  Parser::by_kind::move (by_kind& that)
+  {
+    kind_ = that.kind_;
+    that.clear ();
+  }
+
+  inline
+  Parser::symbol_kind_type
+  Parser::by_kind::kind () const YY_NOEXCEPT
+  {
+    return kind_;
+  }
+
+
+  inline
+  Parser::symbol_kind_type
+  Parser::by_kind::type_get () const YY_NOEXCEPT
+  {
+    return this->kind ();
+  }
+
 
 } // yy
-#line 1412 "Parser.hpp"
+#line 2376 "Parser.hpp"
 
 
 
