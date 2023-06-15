@@ -148,138 +148,6 @@ namespace yy {
   | symbol.  |
   `---------*/
 
-  // basic_symbol.
-  template <typename Base>
-  Parser::basic_symbol<Base>::basic_symbol (const basic_symbol& that)
-    : Base (that)
-    , value ()
-  {
-    switch (this->kind ())
-    {
-      case symbol_kind::S_TRUE: // TRUE
-      case symbol_kind::S_FALSE: // FALSE
-        value.copy< bool > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_INTV: // INTV
-        value.copy< int > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_ID: // ID
-      case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_RUNA: // RUNA
-        value.copy< std::string > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_FLOAT: // FLOAT
-        value.copy< string > (YY_MOVE (that.value));
-        break;
-
-      default:
-        break;
-    }
-
-  }
-
-
-
-
-  template <typename Base>
-  Parser::symbol_kind_type
-  Parser::basic_symbol<Base>::type_get () const YY_NOEXCEPT
-  {
-    return this->kind ();
-  }
-
-
-  template <typename Base>
-  bool
-  Parser::basic_symbol<Base>::empty () const YY_NOEXCEPT
-  {
-    return this->kind () == symbol_kind::S_YYEMPTY;
-  }
-
-  template <typename Base>
-  void
-  Parser::basic_symbol<Base>::move (basic_symbol& s)
-  {
-    super_type::move (s);
-    switch (this->kind ())
-    {
-      case symbol_kind::S_TRUE: // TRUE
-      case symbol_kind::S_FALSE: // FALSE
-        value.move< bool > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_INTV: // INTV
-        value.move< int > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_ID: // ID
-      case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_RUNA: // RUNA
-        value.move< std::string > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_FLOAT: // FLOAT
-        value.move< string > (YY_MOVE (s.value));
-        break;
-
-      default:
-        break;
-    }
-
-  }
-
-  // by_kind.
-  Parser::by_kind::by_kind () YY_NOEXCEPT
-    : kind_ (symbol_kind::S_YYEMPTY)
-  {}
-
-#if 201103L <= YY_CPLUSPLUS
-  Parser::by_kind::by_kind (by_kind&& that) YY_NOEXCEPT
-    : kind_ (that.kind_)
-  {
-    that.clear ();
-  }
-#endif
-
-  Parser::by_kind::by_kind (const by_kind& that) YY_NOEXCEPT
-    : kind_ (that.kind_)
-  {}
-
-  Parser::by_kind::by_kind (token_kind_type t) YY_NOEXCEPT
-    : kind_ (yytranslate_ (t))
-  {}
-
-
-
-  void
-  Parser::by_kind::clear () YY_NOEXCEPT
-  {
-    kind_ = symbol_kind::S_YYEMPTY;
-  }
-
-  void
-  Parser::by_kind::move (by_kind& that)
-  {
-    kind_ = that.kind_;
-    that.clear ();
-  }
-
-  Parser::symbol_kind_type
-  Parser::by_kind::kind () const YY_NOEXCEPT
-  {
-    return kind_;
-  }
-
-
-  Parser::symbol_kind_type
-  Parser::by_kind::type_get () const YY_NOEXCEPT
-  {
-    return this->kind ();
-  }
-
 
 
   // by_state.
@@ -337,6 +205,8 @@ namespace yy {
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
@@ -371,6 +241,8 @@ namespace yy {
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         value.move< std::string > (YY_MOVE (that.value));
         break;
 
@@ -405,6 +277,8 @@ namespace yy {
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         value.copy< std::string > (that.value);
         break;
 
@@ -437,6 +311,8 @@ namespace yy {
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         value.move< std::string > (that.value);
         break;
 
@@ -624,7 +500,8 @@ namespace yy {
         try
 #endif // YY_EXCEPTIONS
           {
-            yyla.kind_ = yytranslate_ (yylex (&yyla.value));
+            symbol_type yylookahead (yylex ());
+            yyla.move (yylookahead);
           }
 #if YY_EXCEPTIONS
         catch (const syntax_error& yyexc)
@@ -709,6 +586,8 @@ namespace yy {
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_CADENA: // CADENA
       case symbol_kind::S_RUNA: // RUNA
+      case symbol_kind::S_FVAL: // FVAL
+      case symbol_kind::S_programa: // programa
         yylhs.value.emplace< std::string > ();
         break;
 
@@ -730,14 +609,14 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // programa: MAS
-#line 43 "parser.yy"
-        {}
-#line 737 "Parser.cpp"
+  case 2: // programa: PLUS
+#line 61 "parser.yy"
+         { yylhs.value.as < std::string > () = "+"; }
+#line 596 "Parser.cpp"
     break;
 
 
-#line 741 "Parser.cpp"
+#line 600 "Parser.cpp"
 
             default:
               break;
@@ -926,14 +805,14 @@ namespace yy {
 
 
 
-  const signed char Parser::yypact_ninf_ = -15;
+  const signed char Parser::yypact_ninf_ = -50;
 
   const signed char Parser::yytable_ninf_ = -1;
 
   const signed char
   Parser::yypact_[] =
   {
-     -14,   -15,     1,   -15
+     -49,   -50,     1,   -50
   };
 
   const signed char
@@ -945,7 +824,7 @@ namespace yy {
   const signed char
   Parser::yypgoto_[] =
   {
-     -15,   -15
+     -50,   -50
   };
 
   const signed char
@@ -963,19 +842,19 @@ namespace yy {
   const signed char
   Parser::yycheck_[] =
   {
-      14,     0
+      49,     0
   };
 
   const signed char
   Parser::yystos_[] =
   {
-       0,    14,    16,     0
+       0,    49,    65,     0
   };
 
   const signed char
   Parser::yyr1_[] =
   {
-       0,    15,    16
+       0,    64,    65
   };
 
   const signed char
@@ -992,8 +871,13 @@ namespace yy {
   const Parser::yytname_[] =
   {
   "\"end of file\"", "error", "\"invalid token\"", "ID", "CADENA", "RUNA",
-  "INTV", "FLOAT", "TRUE", "FALSE", "LKEY", "RKEY", "PYC", "COMA", "MAS",
-  "$accept", "programa", YY_NULLPTR
+  "INTV", "FVAL", "TRUE", "FALSE", "VOID", "BOOL", "INT", "F32", "F64",
+  "PYC", "COL", "COMA", "VAR", "CONST", "PROTO", "IF", "ELSE", "FOR",
+  "CASE", "SWITCH", "DEFAULT", "STRUCT", "FUNC", "RETURN", "STOP",
+  "CONTINUE", "PRINT", "READ", "ASIG", "SASIG", "RASIG", "PASIG", "DASIG",
+  "MASIG", "AMP", "OR", "AND", "EQ", "NEQ", "LESS", "GREAT", "LEQ", "GEQ",
+  "PLUS", "SUB", "MUL", "DIV", "MOD", "NEG", "INCR", "DECR", "DOT", "LPAR",
+  "RPAR", "LBRACE", "RBRACE", "LBRACK", "RBRACK", "$accept", "programa", YY_NULLPTR
   };
 #endif
 
@@ -1002,7 +886,7 @@ namespace yy {
   const signed char
   Parser::yyrline_[] =
   {
-       0,    43,    43
+       0,    61,    61
   };
 
   void
@@ -1032,58 +916,11 @@ namespace yy {
   }
 #endif // YYDEBUG
 
-  Parser::symbol_kind_type
-  Parser::yytranslate_ (int t) YY_NOEXCEPT
-  {
-    // YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to
-    // TOKEN-NUM as returned by yylex.
-    static
-    const signed char
-    translate_table[] =
-    {
-       0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14
-    };
-    // Last valid token kind.
-    const int code_max = 269;
-
-    if (t <= 0)
-      return symbol_kind::S_YYEOF;
-    else if (t <= code_max)
-      return static_cast <symbol_kind_type> (translate_table[t]);
-    else
-      return symbol_kind::S_YYUNDEF;
-  }
 
 } // yy
-#line 1085 "Parser.cpp"
+#line 902 "Parser.cpp"
 
-#line 45 "parser.yy"
+#line 63 "parser.yy"
 
 
 void yy::Parser::error(const std::string &err_message)

@@ -60,6 +60,7 @@ WHITESPACE [ \t\n]
 "}"             { return tokens::RBRACE; }
 ","             { return tokens::COMA; }
 ";"             { return tokens::PYC; }
+":"             { return tokens::COL; }
 "si"            { return tokens::IF; }
 "int"           { return tokens::INT; }
 "var"           { return tokens::VAR; }
@@ -89,26 +90,26 @@ WHITESPACE [ \t\n]
 "*="            { return tokens::PASIG; }
 "/="            { return tokens::DASIG; }
 "%="            { return tokens::MASIG; }
-"+"             { return tokens::MAS; }
-"-"             { return TOKENS::MENOS; }
-"*"             { return TOKENS::MUL; }
-"/"             { return TOKENS::DIV; }
-"%"             { return TOKENS::MOD; }            
-"||"            { return TOKENS::OR; }
-"&&"            { return TOKENS::AND; }
-"=="            { return TOKENS::EQ; }
-"!="            { return TOKENS::NEQ; }
-"<="            { return TOKENS::LEQ; }
-">="            { return TOKENS::GEQ; }
-"<"             { return TOKENS::LESS ;}
-">"             { return TOKENS::GREAT; }
-"="             { return TOKENS::ASIG; }
-"!"             { return TOKENS::NEG; }
-"&"             { return TOKENS::AMP; }
+"+"             { return tokens::PLUS; }
+"-"             { return tokens::SUB; }
+"*"             { return tokens::MUL; }
+"/"             { return tokens::DIV; }
+"%"             { return tokens::MOD; }            
+"||"            { return tokens::OR; }
+"&&"            { return tokens::AND; }
+"=="            { return tokens::EQ; }
+"!="            { return tokens::NEQ; }
+"<="            { return tokens::LEQ; }
+">="            { return tokens::GEQ; }
+"<"             { return tokens::LESS; }
+">"             { return tokens::GREAT; }
+"="             { return tokens::ASIG; }
+"!"             { return tokens::NEG; }
+"&"             { return tokens::AMP; }
 {ID}            { 
                     string str = yytext;
                     lval->build<string>(str);
-                    return TOKENS::ID; }
+                    return tokens::ID; }
 .               { 
                     // TODO: implementar un sistema que aborte el análisis léxico al encontrar 10 errores.
                     cout << "Error léxico en cadena: " << yytext << " en la línea: "<< lineno();
