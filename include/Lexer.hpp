@@ -1,6 +1,7 @@
 #ifndef __SCANNER_HPP__
 #define __SCANNER_HPP__ 1
 #include "Parser.hpp"
+#include <algorithm>
 
 #if !defined(yyFlexLexerOnce)
 #include <FlexLexer.h>

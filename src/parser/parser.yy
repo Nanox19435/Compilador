@@ -26,28 +26,21 @@
 %define parse.assert
 
 %token <std::string> ID CADENA RUNA
-%token <int> ENTERO
-%token <float> F32
-%token <double> F64
-%token LKEY RKEY PYC COMA
+%token <int> INTV
+%token <string> FLOAT
+%token <bool> TRUE FALSE
+%token LBRACE RBRACE PYC COMA
 
-%token MAS
+%left MAS
 
-%type declaracion
-%type<std::string> valor
+%type programa
+%type declaraciones declaracion
 
-%start declaracion
+%start programa
 
 %%
-declaracion:
-    valor MAS valor {
-        cout << $1 << $3 << endl;
-    }
-    ;
-valor:
-    CADENA { 
-        $$ = $1;
-        }
+programa:
+    MAS {}
     ;
 %%
 
