@@ -12,9 +12,12 @@ Type::Type(string name, int size)
 
 TypeTab::TypeTab()
 {
-    types[0] = Type("ent", 4); 
-    types[1] = Type("dec32", 4);
-    types[2] = Type("dec64", 8);
+    types[0] = Type("bool", 1);
+    types[1] = Type("ent", 4); 
+    types[2] = Type("dec32", 4);
+    types[3] = Type("dec64", 8);
+    types[4] = Type("runa", -1);
+    types[5] = Type("cadena", -1);
 }
 
 TypeTab::~TypeTab() {}

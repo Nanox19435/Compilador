@@ -8,6 +8,10 @@
     
     class Lexer;
     
+    struct literal {
+        int type;
+        void* data;
+    };
 }
 
 %parse-param { Lexer &lexer }
@@ -27,13 +31,13 @@
 %define api.value.type variant
 %define parse.assert
 
-%token <std::string> ID CADENA RUNA
+%token <std::string> ID STR CHAR
 %token <int> INTV
-%token <std::string> FVAL
+%token <std::string> F32V F64V
 %token <bool> TRUE FALSE
 %token VOID BOOL INT F32 F64
 %token PYC COL COMA
-%nonassoc VAR CONST PROTO IF ELSE FOR CASE SWITCH DEFAULT STRUCT FUNC RETURN STOP CONTINUE PRINT READ 
+%nonassoc VAR CONST PROTO IF ELSE FOR CASE SWITCH DEFAULT STRUCT FUNC RETURN BREAK CONTINUE PRINT READ 
 
 %right ASIG SASIG RASIG PASIG DASIG MASIG
 %right AMP
@@ -54,8 +58,7 @@
 
 %type programa
 %type declaraciones declaracion
-
-%start programa
+%type <literal> literal 
 %start programa
 
 %%
@@ -204,7 +207,7 @@ expr_casos:
     | expr_caso {}
     ;
 expr_caso:
-    caso COLON lista_sentencias {}
+    caso COL lista_sentencias {}
     ;
 caso:
     CASE expresion {}
@@ -222,8 +225,7 @@ sentencia_return:
     | RETURN {}
     ;
 izq:
-    ID
-    | ID dato_miembro {}
+    ID dato_miembro {}
     | ID parte_arreglo {}
     | ID llamada_funcion {}
     ;
@@ -237,7 +239,6 @@ parte_arreglo:
     ;
 llamada_funcion:
     LPAR args RPAR {}
-    | /*empty*/
     ;
 args:
     lista_args {}
@@ -248,39 +249,85 @@ lista_args:
     | expresion {}
     ;
 expresion:
-    expresion op_binario expresion {}
+    expresion OR expresion {}
+    | expresion AND expresion {}
+    | expresion EQ expresion {}
+    | expresion NEQ expresion {}
+    | expresion LESS expresion {}
+    | expresion LEQ expresion {}
+    | expresion GREAT expresion {}
+    | expresion GEQ expresion {}
+    | expresion PLUS expresion {}
+    | expresion SUB expresion {}
+    | expresion MUL expresion {}
+    | expresion DIV expresion {}
+    | expresion MOD expresion {}
     | izq {}
-    //| op_unario expr_unaria {} este está raro
+    //| op_unario expr_unaria {} este está raro no sé que quieren acá
     | literal {}
     | LPAR expresion RPAR {}
     | conversion {}
     ;
-op_binario:
-    OR
-    | AND {}
-    | EQ {}
-    | NEQ {}
-    | LESS {}
-    | LEQ {}
-    | GREAT {}
-    | GEQ {}
-    | SUM {}
-    | SUB {}
-    | MUL {}
-    | DIV {}
-    | MOD {}
-;
 conversion:
     nombre_tipo LPAR expresion RPAR {}
     ;
 literal:
-    INTV { $$ = $1;}
-    | F32V {}
-    | F64V {}
-    | CADENA { $$ = $1; }
-    | RUNA { $$ = $1; }
-    | VERDADERO { $$ = true; }
-    | FALSO { $$ = false; }
+    TRUE 
+    { 
+        literal l; 
+        l.type = 0;
+        l.data = &$1;
+
+        $$ = l;
+    }
+    | FALSE 
+    { 
+        literal l; 
+        l.type = 0;
+        l.data = &$1;
+
+        $$ = l;
+    }
+    | INTV 
+    { 
+        literal l; 
+        l.type = 1;
+        l.data = &$1;
+
+        $$ = l;
+    }
+    | F32V 
+    { 
+        literal l; 
+        l.type = 2;
+        l.data = &$1;
+
+        $$ = l;
+    }
+    | F64V 
+    { 
+        literal l; 
+        l.type = 3;
+        l.data = &$1;
+
+        $$ = l;
+    }
+    | CHAR 
+    { 
+        literal l; 
+        l.type = 4;
+        l.data = &$1;
+
+        $$ = l;
+    }
+    | STR 
+    { 
+        literal l; 
+        l.type = 5;
+        l.data = &$1;
+
+        $$ = l;
+    }
     ;
 %%
 

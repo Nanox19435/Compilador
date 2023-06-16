@@ -50,8 +50,12 @@
     
     class Lexer;
     
+    struct literal {
+        int type;
+        void* data;
+    };
 
-#line 55 "Parser.hpp"
+#line 59 "Parser.hpp"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -191,7 +195,7 @@
 #endif
 
 namespace yy {
-#line 195 "Parser.hpp"
+#line 199 "Parser.hpp"
 
 
 
@@ -417,12 +421,15 @@ namespace yy {
       // INTV
       char dummy2[sizeof (int)];
 
+      // literal
+      char dummy3[sizeof (literal)];
+
       // ID
-      // CADENA
-      // RUNA
-      // FVAL
-      // programa
-      char dummy3[sizeof (std::string)];
+      // STR
+      // CHAR
+      // F32V
+      // F64V
+      char dummy4[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -470,66 +477,67 @@ namespace yy {
     YYerror = 1,                   // error
     YYUNDEF = 2,                   // "invalid token"
     ID = 3,                        // ID
-    CADENA = 4,                    // CADENA
-    RUNA = 5,                      // RUNA
+    STR = 4,                       // STR
+    CHAR = 5,                      // CHAR
     INTV = 6,                      // INTV
-    FVAL = 7,                      // FVAL
-    TRUE = 8,                      // TRUE
-    FALSE = 9,                     // FALSE
-    VOID = 10,                     // VOID
-    BOOL = 11,                     // BOOL
-    INT = 12,                      // INT
-    F32 = 13,                      // F32
-    F64 = 14,                      // F64
-    PYC = 15,                      // PYC
-    COL = 16,                      // COL
-    COMA = 17,                     // COMA
-    VAR = 18,                      // VAR
-    CONST = 19,                    // CONST
-    PROTO = 20,                    // PROTO
-    IF = 21,                       // IF
-    ELSE = 22,                     // ELSE
-    FOR = 23,                      // FOR
-    CASE = 24,                     // CASE
-    SWITCH = 25,                   // SWITCH
-    DEFAULT = 26,                  // DEFAULT
-    STRUCT = 27,                   // STRUCT
-    FUNC = 28,                     // FUNC
-    RETURN = 29,                   // RETURN
-    STOP = 30,                     // STOP
-    CONTINUE = 31,                 // CONTINUE
-    PRINT = 32,                    // PRINT
-    READ = 33,                     // READ
-    ASIG = 34,                     // ASIG
-    SASIG = 35,                    // SASIG
-    RASIG = 36,                    // RASIG
-    PASIG = 37,                    // PASIG
-    DASIG = 38,                    // DASIG
-    MASIG = 39,                    // MASIG
-    AMP = 40,                      // AMP
-    OR = 41,                       // OR
-    AND = 42,                      // AND
-    EQ = 43,                       // EQ
-    NEQ = 44,                      // NEQ
-    LESS = 45,                     // LESS
-    GREAT = 46,                    // GREAT
-    LEQ = 47,                      // LEQ
-    GEQ = 48,                      // GEQ
-    PLUS = 49,                     // PLUS
-    SUB = 50,                      // SUB
-    MUL = 51,                      // MUL
-    DIV = 52,                      // DIV
-    MOD = 53,                      // MOD
-    NEG = 54,                      // NEG
-    INCR = 55,                     // INCR
-    DECR = 56,                     // DECR
-    DOT = 57,                      // DOT
-    LPAR = 58,                     // LPAR
-    RPAR = 59,                     // RPAR
-    LBRACE = 60,                   // LBRACE
-    RBRACE = 61,                   // RBRACE
-    LBRACK = 62,                   // LBRACK
-    RBRACK = 63                    // RBRACK
+    F32V = 7,                      // F32V
+    F64V = 8,                      // F64V
+    TRUE = 9,                      // TRUE
+    FALSE = 10,                    // FALSE
+    VOID = 11,                     // VOID
+    BOOL = 12,                     // BOOL
+    INT = 13,                      // INT
+    F32 = 14,                      // F32
+    F64 = 15,                      // F64
+    PYC = 16,                      // PYC
+    COL = 17,                      // COL
+    COMA = 18,                     // COMA
+    VAR = 19,                      // VAR
+    CONST = 20,                    // CONST
+    PROTO = 21,                    // PROTO
+    IF = 22,                       // IF
+    ELSE = 23,                     // ELSE
+    FOR = 24,                      // FOR
+    CASE = 25,                     // CASE
+    SWITCH = 26,                   // SWITCH
+    DEFAULT = 27,                  // DEFAULT
+    STRUCT = 28,                   // STRUCT
+    FUNC = 29,                     // FUNC
+    RETURN = 30,                   // RETURN
+    BREAK = 31,                    // BREAK
+    CONTINUE = 32,                 // CONTINUE
+    PRINT = 33,                    // PRINT
+    READ = 34,                     // READ
+    ASIG = 35,                     // ASIG
+    SASIG = 36,                    // SASIG
+    RASIG = 37,                    // RASIG
+    PASIG = 38,                    // PASIG
+    DASIG = 39,                    // DASIG
+    MASIG = 40,                    // MASIG
+    AMP = 41,                      // AMP
+    OR = 42,                       // OR
+    AND = 43,                      // AND
+    EQ = 44,                       // EQ
+    NEQ = 45,                      // NEQ
+    LESS = 46,                     // LESS
+    GREAT = 47,                    // GREAT
+    LEQ = 48,                      // LEQ
+    GEQ = 49,                      // GEQ
+    PLUS = 50,                     // PLUS
+    SUB = 51,                      // SUB
+    MUL = 52,                      // MUL
+    DIV = 53,                      // DIV
+    MOD = 54,                      // MOD
+    NEG = 55,                      // NEG
+    INCR = 56,                     // INCR
+    DECR = 57,                     // DECR
+    DOT = 58,                      // DOT
+    LPAR = 59,                     // LPAR
+    RPAR = 60,                     // RPAR
+    LBRACE = 61,                   // LBRACE
+    RBRACE = 62,                   // RBRACE
+    LBRACK = 63,                   // LBRACK
+    RBRACK = 64                    // RBRACK
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -546,74 +554,121 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 64, ///< Number of tokens.
+        YYNTOKENS = 65, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
         S_ID = 3,                                // ID
-        S_CADENA = 4,                            // CADENA
-        S_RUNA = 5,                              // RUNA
+        S_STR = 4,                               // STR
+        S_CHAR = 5,                              // CHAR
         S_INTV = 6,                              // INTV
-        S_FVAL = 7,                              // FVAL
-        S_TRUE = 8,                              // TRUE
-        S_FALSE = 9,                             // FALSE
-        S_VOID = 10,                             // VOID
-        S_BOOL = 11,                             // BOOL
-        S_INT = 12,                              // INT
-        S_F32 = 13,                              // F32
-        S_F64 = 14,                              // F64
-        S_PYC = 15,                              // PYC
-        S_COL = 16,                              // COL
-        S_COMA = 17,                             // COMA
-        S_VAR = 18,                              // VAR
-        S_CONST = 19,                            // CONST
-        S_PROTO = 20,                            // PROTO
-        S_IF = 21,                               // IF
-        S_ELSE = 22,                             // ELSE
-        S_FOR = 23,                              // FOR
-        S_CASE = 24,                             // CASE
-        S_SWITCH = 25,                           // SWITCH
-        S_DEFAULT = 26,                          // DEFAULT
-        S_STRUCT = 27,                           // STRUCT
-        S_FUNC = 28,                             // FUNC
-        S_RETURN = 29,                           // RETURN
-        S_STOP = 30,                             // STOP
-        S_CONTINUE = 31,                         // CONTINUE
-        S_PRINT = 32,                            // PRINT
-        S_READ = 33,                             // READ
-        S_ASIG = 34,                             // ASIG
-        S_SASIG = 35,                            // SASIG
-        S_RASIG = 36,                            // RASIG
-        S_PASIG = 37,                            // PASIG
-        S_DASIG = 38,                            // DASIG
-        S_MASIG = 39,                            // MASIG
-        S_AMP = 40,                              // AMP
-        S_OR = 41,                               // OR
-        S_AND = 42,                              // AND
-        S_EQ = 43,                               // EQ
-        S_NEQ = 44,                              // NEQ
-        S_LESS = 45,                             // LESS
-        S_GREAT = 46,                            // GREAT
-        S_LEQ = 47,                              // LEQ
-        S_GEQ = 48,                              // GEQ
-        S_PLUS = 49,                             // PLUS
-        S_SUB = 50,                              // SUB
-        S_MUL = 51,                              // MUL
-        S_DIV = 52,                              // DIV
-        S_MOD = 53,                              // MOD
-        S_NEG = 54,                              // NEG
-        S_INCR = 55,                             // INCR
-        S_DECR = 56,                             // DECR
-        S_DOT = 57,                              // DOT
-        S_LPAR = 58,                             // LPAR
-        S_RPAR = 59,                             // RPAR
-        S_LBRACE = 60,                           // LBRACE
-        S_RBRACE = 61,                           // RBRACE
-        S_LBRACK = 62,                           // LBRACK
-        S_RBRACK = 63,                           // RBRACK
-        S_YYACCEPT = 64,                         // $accept
-        S_programa = 65                          // programa
+        S_F32V = 7,                              // F32V
+        S_F64V = 8,                              // F64V
+        S_TRUE = 9,                              // TRUE
+        S_FALSE = 10,                            // FALSE
+        S_VOID = 11,                             // VOID
+        S_BOOL = 12,                             // BOOL
+        S_INT = 13,                              // INT
+        S_F32 = 14,                              // F32
+        S_F64 = 15,                              // F64
+        S_PYC = 16,                              // PYC
+        S_COL = 17,                              // COL
+        S_COMA = 18,                             // COMA
+        S_VAR = 19,                              // VAR
+        S_CONST = 20,                            // CONST
+        S_PROTO = 21,                            // PROTO
+        S_IF = 22,                               // IF
+        S_ELSE = 23,                             // ELSE
+        S_FOR = 24,                              // FOR
+        S_CASE = 25,                             // CASE
+        S_SWITCH = 26,                           // SWITCH
+        S_DEFAULT = 27,                          // DEFAULT
+        S_STRUCT = 28,                           // STRUCT
+        S_FUNC = 29,                             // FUNC
+        S_RETURN = 30,                           // RETURN
+        S_BREAK = 31,                            // BREAK
+        S_CONTINUE = 32,                         // CONTINUE
+        S_PRINT = 33,                            // PRINT
+        S_READ = 34,                             // READ
+        S_ASIG = 35,                             // ASIG
+        S_SASIG = 36,                            // SASIG
+        S_RASIG = 37,                            // RASIG
+        S_PASIG = 38,                            // PASIG
+        S_DASIG = 39,                            // DASIG
+        S_MASIG = 40,                            // MASIG
+        S_AMP = 41,                              // AMP
+        S_OR = 42,                               // OR
+        S_AND = 43,                              // AND
+        S_EQ = 44,                               // EQ
+        S_NEQ = 45,                              // NEQ
+        S_LESS = 46,                             // LESS
+        S_GREAT = 47,                            // GREAT
+        S_LEQ = 48,                              // LEQ
+        S_GEQ = 49,                              // GEQ
+        S_PLUS = 50,                             // PLUS
+        S_SUB = 51,                              // SUB
+        S_MUL = 52,                              // MUL
+        S_DIV = 53,                              // DIV
+        S_MOD = 54,                              // MOD
+        S_NEG = 55,                              // NEG
+        S_INCR = 56,                             // INCR
+        S_DECR = 57,                             // DECR
+        S_DOT = 58,                              // DOT
+        S_LPAR = 59,                             // LPAR
+        S_RPAR = 60,                             // RPAR
+        S_LBRACE = 61,                           // LBRACE
+        S_RBRACE = 62,                           // RBRACE
+        S_LBRACK = 63,                           // LBRACK
+        S_RBRACK = 64,                           // RBRACK
+        S_YYACCEPT = 65,                         // $accept
+        S_programa = 66,                         // programa
+        S_declaraciones = 67,                    // declaraciones
+        S_declaracion = 68,                      // declaracion
+        S_decl_const = 69,                       // decl_const
+        S_lista_id_const = 70,                   // lista_id_const
+        S_decl_var = 71,                         // decl_var
+        S_lista_id = 72,                         // lista_id
+        S_decl_proto = 73,                       // decl_proto
+        S_lista_tipos = 74,                      // lista_tipos
+        S_tipos = 75,                            // tipos
+        S_decl_func = 76,                        // decl_func
+        S_tipo = 77,                             // tipo
+        S_nombre_tipo = 78,                      // nombre_tipo
+        S_79_1 = 79,                             // $@1
+        S_tipo_arreglo = 80,                     // tipo_arreglo
+        S_tipo_estructura = 81,                  // tipo_estructura
+        S_decl_campo = 82,                       // decl_campo
+        S_lista_param = 83,                      // lista_param
+        S_decl_params = 84,                      // decl_params
+        S_decl_param = 85,                       // decl_param
+        S_tipo_param = 86,                       // tipo_param
+        S_tipo_param_arr = 87,                   // tipo_param_arr
+        S_bloque = 88,                           // bloque
+        S_lista_sentencias = 89,                 // lista_sentencias
+        S_sentencia = 90,                        // sentencia
+        S_decl_loc = 91,                         // decl_loc
+        S_sentencia_simple = 92,                 // sentencia_simple
+        S_asig = 93,                             // asig
+        S_incdec = 94,                           // incdec
+        S_op_asig = 95,                          // op_asig
+        S_sentencia_if = 96,                     // sentencia_if
+        S_sentencia_switch = 97,                 // sentencia_switch
+        S_expr_casos = 98,                       // expr_casos
+        S_expr_caso = 99,                        // expr_caso
+        S_caso = 100,                            // caso
+        S_sentencia_for = 101,                   // sentencia_for
+        S_clausula_for = 102,                    // clausula_for
+        S_sentencia_return = 103,                // sentencia_return
+        S_izq = 104,                             // izq
+        S_dato_miembro = 105,                    // dato_miembro
+        S_parte_arreglo = 106,                   // parte_arreglo
+        S_llamada_funcion = 107,                 // llamada_funcion
+        S_args = 108,                            // args
+        S_lista_args = 109,                      // lista_args
+        S_expresion = 110,                       // expresion
+        S_conversion = 111,                      // conversion
+        S_literal = 112                          // literal
       };
     };
 
@@ -657,11 +712,15 @@ namespace yy {
         value.move< int > (std::move (that.value));
         break;
 
+      case symbol_kind::S_literal: // literal
+        value.move< literal > (std::move (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_RUNA: // RUNA
-      case symbol_kind::S_FVAL: // FVAL
-      case symbol_kind::S_programa: // programa
+      case symbol_kind::S_STR: // STR
+      case symbol_kind::S_CHAR: // CHAR
+      case symbol_kind::S_F32V: // F32V
+      case symbol_kind::S_F64V: // F64V
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -705,6 +764,18 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const int& v)
+        : Base (t)
+        , value (v)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, literal&& v)
+        : Base (t)
+        , value (std::move (v))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const literal& v)
         : Base (t)
         , value (v)
       {}
@@ -755,11 +826,15 @@ switch (yykind)
         value.template destroy< int > ();
         break;
 
+      case symbol_kind::S_literal: // literal
+        value.template destroy< literal > ();
+        break;
+
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_RUNA: // RUNA
-      case symbol_kind::S_FVAL: // FVAL
-      case symbol_kind::S_programa: // programa
+      case symbol_kind::S_STR: // STR
+      case symbol_kind::S_CHAR: // CHAR
+      case symbol_kind::S_F32V: // F32V
+      case symbol_kind::S_F64V: // F64V
         value.template destroy< std::string > ();
         break;
 
@@ -898,8 +973,8 @@ switch (yykind)
 #endif
       {
 #if !defined _MSC_VER || defined __clang__
-        YY_ASSERT ((token::ID <= tok && tok <= token::RUNA)
-                   || tok == token::FVAL);
+        YY_ASSERT ((token::ID <= tok && tok <= token::CHAR)
+                   || (token::F32V <= tok && tok <= token::F64V));
 #endif
       }
     };
@@ -1015,31 +1090,31 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_CADENA (std::string v)
+      make_STR (std::string v)
       {
-        return symbol_type (token::CADENA, std::move (v));
+        return symbol_type (token::STR, std::move (v));
       }
 #else
       static
       symbol_type
-      make_CADENA (const std::string& v)
+      make_STR (const std::string& v)
       {
-        return symbol_type (token::CADENA, v);
+        return symbol_type (token::STR, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_RUNA (std::string v)
+      make_CHAR (std::string v)
       {
-        return symbol_type (token::RUNA, std::move (v));
+        return symbol_type (token::CHAR, std::move (v));
       }
 #else
       static
       symbol_type
-      make_RUNA (const std::string& v)
+      make_CHAR (const std::string& v)
       {
-        return symbol_type (token::RUNA, v);
+        return symbol_type (token::CHAR, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1060,16 +1135,31 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_FVAL (std::string v)
+      make_F32V (std::string v)
       {
-        return symbol_type (token::FVAL, std::move (v));
+        return symbol_type (token::F32V, std::move (v));
       }
 #else
       static
       symbol_type
-      make_FVAL (const std::string& v)
+      make_F32V (const std::string& v)
       {
-        return symbol_type (token::FVAL, v);
+        return symbol_type (token::F32V, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_F64V (std::string v)
+      {
+        return symbol_type (token::F64V, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_F64V (const std::string& v)
+      {
+        return symbol_type (token::F64V, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1405,16 +1495,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_STOP ()
+      make_BREAK ()
       {
-        return symbol_type (token::STOP);
+        return symbol_type (token::BREAK);
       }
 #else
       static
       symbol_type
-      make_STOP ()
+      make_BREAK ()
       {
-        return symbol_type (token::STOP);
+        return symbol_type (token::BREAK);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1924,7 +2014,7 @@ switch (yykind)
 
 
     /// Stored state numbers (used for stacks).
-    typedef signed char state_type;
+    typedef unsigned char state_type;
 
     /// Compute post-reduction state.
     /// \param yystate   the current state
@@ -1939,7 +2029,7 @@ switch (yykind)
     /// \param yyvalue   the value to check
     static bool yy_table_value_is_error_ (int yyvalue) YY_NOEXCEPT;
 
-    static const signed char yypact_ninf_;
+    static const short yypact_ninf_;
     static const signed char yytable_ninf_;
 
     /// Convert a scanner token kind \a t to a symbol kind.
@@ -1956,7 +2046,7 @@ switch (yykind)
     // Tables.
     // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
     // STATE-NUM.
-    static const signed char yypact_[];
+    static const short yypact_[];
 
     // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
     // Performed when YYTABLE does not specify something else to do.  Zero
@@ -1964,17 +2054,17 @@ switch (yykind)
     static const signed char yydefact_[];
 
     // YYPGOTO[NTERM-NUM].
-    static const signed char yypgoto_[];
+    static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const unsigned char yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const signed char yytable_[];
+    static const short yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
     // state STATE-NUM.
@@ -1989,7 +2079,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const signed char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -2216,8 +2306,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1,     ///< Last index in yytable_.
-      yynnts_ = 2,  ///< Number of nonterminal symbols.
+      yylast_ = 528,     ///< Last index in yytable_.
+      yynnts_ = 48,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
 
@@ -2251,11 +2341,15 @@ switch (yykind)
         value.copy< int > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_literal: // literal
+        value.copy< literal > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_RUNA: // RUNA
-      case symbol_kind::S_FVAL: // FVAL
-      case symbol_kind::S_programa: // programa
+      case symbol_kind::S_STR: // STR
+      case symbol_kind::S_CHAR: // CHAR
+      case symbol_kind::S_F32V: // F32V
+      case symbol_kind::S_F64V: // F64V
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2299,11 +2393,15 @@ switch (yykind)
         value.move< int > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_literal: // literal
+        value.move< literal > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_CADENA: // CADENA
-      case symbol_kind::S_RUNA: // RUNA
-      case symbol_kind::S_FVAL: // FVAL
-      case symbol_kind::S_programa: // programa
+      case symbol_kind::S_STR: // STR
+      case symbol_kind::S_CHAR: // CHAR
+      case symbol_kind::S_F32V: // F32V
+      case symbol_kind::S_F64V: // F64V
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2372,7 +2470,7 @@ switch (yykind)
 
 
 } // yy
-#line 2376 "Parser.hpp"
+#line 2474 "Parser.hpp"
 
 
 

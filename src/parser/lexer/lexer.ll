@@ -36,23 +36,29 @@ WHITESPACE [ \t\n]
                     lval->build<int>(literal);
                     return tokens::INTV; 
                 }
+{FLOAT}"f"      { 
+                    string str = yytext;
+                    str.erase(remove(str.begin(), str.end(), '_'), str.end());
+                    lval->build<string>(str);
+                    return tokens::F32V; 
+                }
 {FLOAT}         { 
                     string str = yytext;
                     str.erase(remove(str.begin(), str.end(), '_'), str.end());
                     lval->build<string>(str);
-                    return tokens::FVAL; 
+                    return tokens::F64V; 
                 }
 {RUNA}          { 
                     string str = yytext;
 					str = str.substr(1, str.size()-2);
                     lval->build<string>(str);
-                    return tokens::RUNA;  
+                    return tokens::CHAR;  
                 }
 {STR}           {
                     string str = yytext;
 					str = str.substr(1, str.size()-2);
                     lval->build<string>(str);
-                    return tokens::CADENA; 
+                    return tokens::STR; 
                 }
 "("             { return tokens::LPAR; }
 ")"             { return tokens::RPAR; }
@@ -79,10 +85,15 @@ WHITESPACE [ \t\n]
 "imprimir"      { return tokens::PRINT; }
 "leer"          { return tokens::READ;}          
 "devolver"      { return tokens::RETURN;}
-"detener"       { return tokens::STOP;}
+"detener"       { return tokens::BREAK;}
 "continuar"     { return tokens::CONTINUE;}
-"verdadero"     { return tokens::TRUE; }
-"falso"         { return tokens::FALSE; }
+"verdadero"     { 
+                    lval->build<bool>(true);
+                    return tokens::TRUE; }
+"falso"         { 
+                    lval->build<bool>(true);
+                    return tokens::FALSE; 
+                }
 "++"            { return tokens::INCR; }
 "--"            { return tokens::DECR; }
 "+="            { return tokens::SASIG; }
