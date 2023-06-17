@@ -66,7 +66,7 @@ programa:
     declaraciones {}
     ;
 declaraciones: 
-    declaraciones declaracion {}
+    declaraciones {declaracion.tipo = declaraciones.tipo} declaracion 
     | /* empty */ {}
     ;
 declaracion:
@@ -86,8 +86,8 @@ decl_var:
     VAR tipo lista_id {}
     ;
 lista_id:
-    lista_id COMA ID {}
-    | ID {}
+     lista_id COMA {id.tipo = L.tipo} ID
+    | ID {id.tipo = lista_id.tipo} ID
     ;
 decl_proto:
     PROTO tipo ID LPAR lista_tipos RPAR {}
