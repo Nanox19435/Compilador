@@ -57,8 +57,11 @@
 
 
 %type programa
-%type declaraciones declaracion
+%type <declaraciones> declaraciones 
+%type <declaracion> declaracion
 %type <literal> literal 
+%type <expresion> expresion 
+%type <lista_id> lista_id 
 %start programa
 
 %%
@@ -66,7 +69,7 @@ programa:
     declaraciones {}
     ;
 declaraciones: 
-    declaraciones {declaracion.tipo = declaraciones.tipo} declaracion 
+    declaraciones {$2.type = $1.type} declaracion 
     | /* empty */ {}
     ;
 declaracion:
@@ -249,10 +252,38 @@ lista_args:
     | expresion {}
     ;
 expresion:
-    expresion OR expresion {}
-    | expresion AND expresion {}
-    | expresion EQ expresion {}
-    | expresion NEQ expresion {}
+    expresion OR expresion { 
+        if ($1.type == 0 == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data || $3.data;
+        } else {
+            /*error*/
+        }
+       }
+    | expresion AND expresion {
+        if ($1.type == 0 == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data && $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion EQ expresion {
+        if ($1.type == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data == $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion NEQ expresion {
+        if ($1.type == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data != $3.data;
+        } else {
+            /*error*/
+        }
+    }
     | expresion LESS expresion {}
     | expresion LEQ expresion {}
     | expresion GREAT expresion {}
