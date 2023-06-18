@@ -61,7 +61,7 @@
 %type <declaracion> declaracion
 %type <literal> literal 
 %type <expresion> expresion 
-%type <lista_id> lista_id 
+%type lista_id 
 %start programa
 
 %%
@@ -89,8 +89,8 @@ decl_var:
     VAR tipo lista_id {}
     ;
 lista_id:
-     lista_id COMA {id.tipo = L.tipo} ID
-    | ID {id.tipo = lista_id.tipo} ID
+    {$1.type = $$.type} lista_id COMA {ID.tipo = $$.type} ID
+    | ID {id.type = $$.type} ID
     ;
 decl_proto:
     PROTO tipo ID LPAR lista_tipos RPAR {}
@@ -273,6 +273,8 @@ expresion:
             $$.type = 0 ;
             $$.data = $1.data == $3.data;
         } else {
+            $$.type = 0 ;
+            $$.data = FALSE;
             /*error*/
         }
     }
@@ -282,6 +284,8 @@ expresion:
             $$.data = $1.data != $3.data;
         } else {
             /*error*/
+            $$.type = 0 ;
+            $$.data = TRUE;
         }
     }
     | expresion LESS expresion {}
