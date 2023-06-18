@@ -199,9 +199,32 @@ op_asig:
     | MASIG {}
     ;
 sentencia_if:
-    IF expresion bloque {}
-    | IF expresion bloque ELSE bloque {}
+    IF expresion bloque {
+      if($2.type==0){
+        if($2.data){
+          $$.type=$3.type;
+          $$.data=$3.data;
+        }  
+      }else{
+        /*error*/
+      }  
+
+    }
+    | IF expresion bloque ELSE bloque {
+       if($2.type==0) && ($3.type==$5.type){ // aqui tengo duda de si es necesario que los bloques sean del mismo tipo
+         if($2.data){
+           $$.type=$3.type;
+           $$.data=$3.data;
+         }else{
+           $$.type=$5.type;
+           $$.type=$5.data;
+         }   
+       }else{
+        /*error*/
+       }
+    }
     ;
+
 sentencia_switch:
     SWITCH sentencia_simple LBRACE expr_casos RBRACE {}
     ;
