@@ -27,17 +27,12 @@ class Driver
         Lexer *lexer = nullptr;
         yy::Parser *parser = nullptr;
 public:
-    Driver(/* args */);
+    Driver(string flename);
     ~Driver();
+    
+    /* Agrega una nueva instrucción de 3 direcciones.*/
+    void push_quad(Quad q);
+    void push_quad(OPERATOR op, string arg1, string arg2, string res);
 };
-
-Driver::Driver(/* args */)
-{
-}
-
-Driver::~Driver()
-{
-}
-
 
 #endif
