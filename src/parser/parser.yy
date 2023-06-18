@@ -7,6 +7,7 @@
 %code requires{
     
     class Lexer;
+    class Driver;
     
     struct literal {
         int type;
@@ -15,6 +16,7 @@
 }
 
 %parse-param { Lexer &lexer }
+%parse-param { Driver &driver}
 
 %code{
     #include <iostream>
@@ -22,6 +24,7 @@
     using namespace std;
 
     #include "Lexer.hpp"
+    #include "Driver.hpp"
     
     #define yylex lexer.yylex
 }
@@ -66,7 +69,7 @@ programa:
     declaraciones {}
     ;
 declaraciones: 
-    declaraciones {declaracion.tipo = declaraciones.tipo} declaracion 
+    declaraciones declaracion 
     | /* empty */ {}
     ;
 declaracion:
@@ -86,8 +89,8 @@ decl_var:
     VAR tipo lista_id {}
     ;
 lista_id:
-     lista_id COMA {id.tipo = L.tipo} ID
-    | ID {id.tipo = lista_id.tipo} ID
+     lista_id COMA ID
+    | ID
     ;
 decl_proto:
     PROTO tipo ID LPAR lista_tipos RPAR {}

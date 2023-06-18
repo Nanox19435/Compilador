@@ -16,7 +16,6 @@ class Driver
 {
     private:
         int numTemp = 0;
-        int numLabel = 0;
         int numStr = 0;
         int numConst = 0;
 
@@ -24,20 +23,28 @@ class Driver
         int global_dir;
 
         vector<Quad> icode;
-        Lexer *lexer = nullptr;
+        vector<int> labels;
         yy::Parser *parser = nullptr;
 public:
-    Driver(/* args */);
+    Driver(string flename);
     ~Driver();
+
+    //Funciones para código intermedio.
+    string newIdStr();
+    string newLabel();
+    string newTmp();
+
+    /*Realiza el análisis semántico y sintáctico*/
+    void parse();
+    
+    /* Agrega una nueva instrucción de 3 direcciones.*/
+    void push_quad(Quad q);
+    void push_quad(OPERATOR op, string arg1, string arg2, string res);
+    /* Informa de la ocurrencia de un error léxico, como una discrepancia de tipos.*/
+    void error(string msg);
+
+    /* Regresa en forma de string el código intermedio que se generó.*/
+    string getICode();
 };
-
-Driver::Driver(/* args */)
-{
-}
-
-Driver::~Driver()
-{
-}
-
 
 #endif

@@ -49,13 +49,14 @@
 
     
     class Lexer;
+    class Driver;
     
     struct literal {
         int type;
         void* data;
     };
 
-#line 59 "Parser.hpp"
+#line 60 "Parser.hpp"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -195,7 +196,7 @@
 #endif
 
 namespace yy {
-#line 199 "Parser.hpp"
+#line 200 "Parser.hpp"
 
 
 
@@ -980,7 +981,7 @@ switch (yykind)
     };
 
     /// Build a parser object.
-    Parser (Lexer &lexer_yyarg);
+    Parser (Lexer &lexer_yyarg, Driver &driver_yyarg);
     virtual ~Parser ();
 
 #if 201103L <= YY_CPLUSPLUS
@@ -2314,6 +2315,7 @@ switch (yykind)
 
     // User arguments.
     Lexer &lexer;
+    Driver &driver;
 
   };
 
@@ -2470,7 +2472,7 @@ switch (yykind)
 
 
 } // yy
-#line 2474 "Parser.hpp"
+#line 2476 "Parser.hpp"
 
 
 
