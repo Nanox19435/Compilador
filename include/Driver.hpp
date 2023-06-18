@@ -38,8 +38,8 @@ public:
     void parse();
     
     /* Agrega una nueva instrucción de 3 direcciones.*/
-    void push_quad(Quad q);
-    void push_quad(OPERATOR op, string arg1, string arg2, string res);
+    void pushQuad(Quad q);
+    void pushQuad(OPERATOR op, string arg1, string arg2, string res);
     /* Informa de la ocurrencia de un error léxico, como una discrepancia de tipos.*/
     void error(string msg);
 

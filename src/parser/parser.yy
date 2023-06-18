@@ -16,7 +16,7 @@
 
     struct expresion {
         int type;
-        void* data;
+        string temp;
     };
 
     struct lista_id {
@@ -70,8 +70,6 @@
 
 
 %type programa
-%type <declaraciones> declaraciones 
-%type <declaracion> declaracion
 %type <literal> literal 
 %type <expresion> expresion 
 %type lista_id 
@@ -266,15 +264,19 @@ lista_args:
     ;
 expresion:
     expresion OR expresion { 
-        if ($1.type == 0 == $3.type) {
+        if ($1.type == 0 && 0 == $3.type) {
             $$.type = 0 ;
-            $$.data = $1.data || $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(OR, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles"); 
         }
        }
     | expresion AND expresion {
-        if ($1.type == 0 == $3.type) {
+        if ($1.type == 0 && 0 == $3.type) {
             $$.type = 0 ;
             $$.data = $1.data && $3.data;
         } else {

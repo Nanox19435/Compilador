@@ -33,11 +33,11 @@ void Driver::parse() {
     parser->parse();
 }
 
-void Driver::push_quad(Quad q) {
+void Driver::pushQuad(Quad q) {
     icode.push_back(q);
 }
 
-void Driver::push_quad(OPERATOR op, string arg1, string arg2, string res) {
+void Driver::pushQuad(OPERATOR op, string arg1, string arg2, string res) {
     Quad q = Quad(op, arg1, arg2, res);
     icode.push_back(q);
 }
