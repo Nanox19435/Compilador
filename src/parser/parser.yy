@@ -13,6 +13,16 @@
         int type;
         void* data;
     };
+
+    struct expresion {
+        int type;
+        void* data;
+    };
+
+    struct lista_id {
+        int type;
+        int index;
+    };
 }
 
 %parse-param { Lexer &lexer }
@@ -60,8 +70,11 @@
 
 
 %type programa
-%type declaraciones declaracion
+%type <declaraciones> declaraciones 
+%type <declaracion> declaracion
 %type <literal> literal 
+%type <expresion> expresion 
+%type lista_id 
 %start programa
 
 %%
@@ -252,23 +265,120 @@ lista_args:
     | expresion {}
     ;
 expresion:
-    expresion OR expresion {}
-    | expresion AND expresion {}
-    | expresion EQ expresion {}
-    | expresion NEQ expresion {}
-    | expresion LESS expresion {}
-    | expresion LEQ expresion {}
-    | expresion GREAT expresion {}
-    | expresion GEQ expresion {}
-    | expresion PLUS expresion {}
-    | expresion SUB expresion {}
-    | expresion MUL expresion {}
-    | expresion DIV expresion {}
-    | expresion MOD expresion {}
+    expresion OR expresion { 
+        if ($1.type == 0 == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data || $3.data;
+        } else {
+            /*error*/
+        }
+       }
+    | expresion AND expresion {
+        if ($1.type == 0 == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data && $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion EQ expresion {
+        if ($1.type == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data == $3.data;
+        } else {
+            $$.type = 0 ;
+            $$.data = FALSE;
+            /*error*/
+        }
+    }
+    | expresion NEQ expresion {
+        if ($1.type == $3.type) {
+            $$.type = 0 ;
+            $$.data = $1.data != $3.data;
+        } else {
+            /*error*/
+            $$.type = 0 ;
+            $$.data = TRUE;
+        }
+    }
+    | expresion LESS expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data < $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion LEQ expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data <= $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion GREAT expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data > $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion GEQ expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data >= $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion PLUS expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data + $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion SUB expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data - $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion MUL expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data * $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion DIV expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data / $3.data;
+        } else {
+            /*error*/
+        }
+    }
+    | expresion MOD expresion {
+        if ($1.type == 1 == $3.type) {
+            $$.type = 1 ;
+            $$.data = $1.data / $3.data;
+        } else {
+            /*error*/
+        }
+    }
     | izq {}
     //| op_unario expr_unaria {} este está raro no sé que quieren acá
     | literal {}
-    | LPAR expresion RPAR {}
+    | LPAR expresion RPAR {
+        $$.data = $2.data ;
+    }
     | conversion {}
     ;
 conversion:
