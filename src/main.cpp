@@ -3,6 +3,7 @@
 #include "Parser.hpp"
 #include "Lexer.hpp"
 #include "TypeTab.hpp"
+#include "Driver.hpp"
 
 using namespace std;
 
@@ -12,14 +13,10 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    filebuf fb;
-    fb.open(string(argv[1]), ios::in);
-    istream in(&fb);
-    Lexer lexer(&in);
-    yy::Parser parser(lexer);
+    Driver driver = Driver(string(argv[1]));
 
-    parser.parse();
+    driver.parse();
+    cout << driver.getICode() << endl;
 
-    fb.close();
     return 0;
 }

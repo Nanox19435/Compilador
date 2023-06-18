@@ -3,15 +3,29 @@
 #include "Driver.hpp"
 #include "Lexer.hpp"
 #include "Parser.hpp"
+#include "Quad.hpp"
 
 Driver::Driver(string filename) {
     filebuf fb;
     fb.open(filename, ios::in);
     istream in(&fb);
     
-    lexer = new Lexer(&in);
-    parser = new yy::Parser(*lexer);
+    Lexer lexer(&in);
+    parser = new yy::Parser(lexer, *this);
 };
+
+string Driver::newLabel() {
+    labels.push_back(icode.size());
+    return "L" + to_string(labels.size());
+}
+
+string Driver::newTmp() {
+    return "t" + numTemp++;
+}
+
+void Driver::parse() {
+    parser->parse();
+}
 
 void Driver::push_quad(Quad q) {
     icode.push_back(q);
@@ -20,4 +34,33 @@ void Driver::push_quad(Quad q) {
 void Driver::push_quad(OPERATOR op, string arg1, string arg2, string res) {
     Quad q = Quad(op, arg1, arg2, res);
     icode.push_back(q);
+}
+
+string Driver::getICode() {
+    string code = "";
+    int lab = 0;
+    bool b = false;
+    for (int i = 0; i < icode.size(); i++)
+    {
+        Quad instruction = icode[i];
+
+        if (i < labels[lab]) 
+        {
+            ++lab;
+
+        } 
+        else if (i == labels[lab])
+        {
+            code += "L" + to_string(lab) + ": ";
+            b = true;
+            lab++;
+        }
+        else if (b)
+        {
+            code += "    ";
+        }
+
+        code += instruction.genCode() + "\n";
+    }
+    
 }
