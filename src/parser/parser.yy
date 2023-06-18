@@ -278,101 +278,145 @@ expresion:
     | expresion AND expresion {
         if ($1.type == 0 && 0 == $3.type) {
             $$.type = 0 ;
-            $$.data = $1.data && $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(AND, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles"); 
         }
     }
     | expresion EQ expresion {
         if ($1.type == $3.type) {
             $$.type = 0 ;
-            $$.data = $1.data == $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(EQ, a, b, $$.temp);
         } else {
-            $$.type = 0 ;
-            $$.data = FALSE;
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion NEQ expresion {
         if ($1.type == $3.type) {
             $$.type = 0 ;
-            $$.data = $1.data != $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(NEQ, a, b, $$.temp);
         } else {
             /*error*/
-            $$.type = 0 ;
-            $$.data = TRUE;
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion LESS expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data < $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(LESS, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion LEQ expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data <= $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(LEQ, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion GREAT expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data > $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(GREAT, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion GEQ expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data >= $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(GEQ, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion PLUS expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data + $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(PLUS, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion SUB expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data - $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(SUB, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion MUL expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data * $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(MUL, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion DIV expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data / $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(DIV, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | expresion MOD expresion {
-        if ($1.type == 1 == $3.type) {
+        if ($1.type == 1 && $3.type == 1) {
             $$.type = 1 ;
-            $$.data = $1.data / $3.data;
+            string a = $1.temp;
+            string b = $2.temp;
+            $$.temp = driver.newTmp();
+            driver.pushQuad(MOD, a, b, $$.temp);
         } else {
             /*error*/
+            driver.error("Tipos incompatibles");
         }
     }
     | izq {}
