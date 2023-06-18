@@ -17,6 +17,10 @@ Quad::Quad(OPERATOR op, string arg1, bool mutArg1, string arg2, bool mutArg2, st
     this->mutArg2 = mutArg2;
 }
 
+Quad::~Quad()
+{
+}
+
 string Quad::genCode() {
     switch (op)
         {

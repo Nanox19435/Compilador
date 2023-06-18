@@ -14,6 +14,12 @@ Driver::Driver(string filename) {
     parser = new yy::Parser(lexer, *this);
 };
 
+
+Driver::~Driver() {
+    delete (parser);
+    parser = nullptr;
+}
+
 string Driver::newLabel() {
     labels.push_back(icode.size());
     return "L" + to_string(labels.size());
@@ -40,7 +46,8 @@ string Driver::getICode() {
     string code = "";
     int lab = 0;
     bool b = false;
-    for (int i = 0; i < icode.size(); i++)
+    int size = icode.size();
+    for (int i = 0; i < size; i++)
     {
         Quad instruction = icode[i];
 
@@ -63,4 +70,5 @@ string Driver::getICode() {
         code += instruction.genCode() + "\n";
     }
     
+    return code;
 }
