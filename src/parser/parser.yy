@@ -12,6 +12,16 @@
         int type;
         void* data;
     };
+
+    struct expresion {
+        int type;
+        void* data;
+    };
+
+    struct lista_id {
+        int type;
+        int index;
+    };
 }
 
 %parse-param { Lexer &lexer }
