@@ -27,6 +27,10 @@
         int type;
         int size;
     };
+    struct nombre_tipo {
+        int type;
+        void* name;
+    }
 }
 
 %parse-param { Lexer &lexer }
@@ -81,6 +85,7 @@
 %type <expresion> expresion 
 %type <vector<std::string>> lista_id 
 %type <tipo_arreglo<std::int>> tipo_arreglo
+%type <nombre_tipo> nombre_tipo
 %start programa
 
 %%
@@ -146,12 +151,24 @@ tipo:
     ;
 nombre_tipo: //falta una producción para buscar una estructura definida por el usuario.
     nombre_tipo {}
-    CHAR {}
-    | INT {}
-    | F32 {}
-    | F64 {}
-    | STR {}
-    | BOOL {}
+    CHAR {
+        $$.tipo = 6;
+    }
+    | INT {
+        $$.tipo = 1;
+    }
+    | F32 {
+        $$.tipo = 7;
+    }
+    | F64 {
+        $$.tipo = 8;
+    }
+    | STR {
+        $$.tipo = 5;
+    }
+    | BOOL {
+        $$.tipo = 0;
+    }
     | VOID {}
     ;
 tipo_arreglo:

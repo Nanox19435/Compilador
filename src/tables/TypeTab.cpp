@@ -18,6 +18,7 @@ TypeTab::TypeTab()
     types[3] = Type("dec64", 8);
     types[4] = Type("runa", -1);
     types[5] = Type("cadena", -1);
+    types[6] = Type("char", 1);
 }
 
 TypeTab::~TypeTab() {}

@@ -69,8 +69,12 @@
         int type;
         int size;
     };
+    struct nombre_tipo {
+        int type;
+        void* name;
+    }
 
-#line 74 "Parser.hpp"
+#line 78 "Parser.hpp"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -210,7 +214,7 @@
 #endif
 
 namespace yy {
-#line 214 "Parser.hpp"
+#line 218 "Parser.hpp"
 
 
 
@@ -442,18 +446,21 @@ namespace yy {
       // literal
       char dummy4[sizeof (literal)];
 
+      // nombre_tipo
+      char dummy5[sizeof (nombre_tipo)];
+
       // ID
       // STR
       // CHAR
       // F32V
       // F64V
-      char dummy5[sizeof (std::string)];
+      char dummy6[sizeof (std::string)];
 
       // tipo_arreglo
-      char dummy6[sizeof (tipo_arreglo<std::int>)];
+      char dummy7[sizeof (tipo_arreglo<std::int>)];
 
       // lista_id
-      char dummy7[sizeof (vector<std::string>)];
+      char dummy8[sizeof (vector<std::string>)];
     };
 
     /// The size of the largest semantic type.
@@ -744,6 +751,10 @@ namespace yy {
         value.move< literal > (std::move (that.value));
         break;
 
+      case symbol_kind::S_nombre_tipo: // nombre_tipo
+        value.move< nombre_tipo > (std::move (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_STR: // STR
       case symbol_kind::S_CHAR: // CHAR
@@ -830,6 +841,18 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, nombre_tipo&& v)
+        : Base (t)
+        , value (std::move (v))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const nombre_tipo& v)
+        : Base (t)
+        , value (v)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, std::string&& v)
         : Base (t)
         , value (std::move (v))
@@ -904,6 +927,10 @@ switch (yykind)
 
       case symbol_kind::S_literal: // literal
         value.template destroy< literal > ();
+        break;
+
+      case symbol_kind::S_nombre_tipo: // nombre_tipo
+        value.template destroy< nombre_tipo > ();
         break;
 
       case symbol_kind::S_ID: // ID
@@ -2434,6 +2461,10 @@ switch (yykind)
         value.copy< literal > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_nombre_tipo: // nombre_tipo
+        value.copy< nombre_tipo > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_STR: // STR
       case symbol_kind::S_CHAR: // CHAR
@@ -2496,6 +2527,10 @@ switch (yykind)
 
       case symbol_kind::S_literal: // literal
         value.move< literal > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_nombre_tipo: // nombre_tipo
+        value.move< nombre_tipo > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_ID: // ID
@@ -2579,7 +2614,7 @@ switch (yykind)
 
 
 } // yy
-#line 2583 "Parser.hpp"
+#line 2618 "Parser.hpp"
 
 
 
