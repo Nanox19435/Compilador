@@ -56,7 +56,17 @@
         void* data;
     };
 
-#line 60 "Parser.hpp"
+    struct expresion {
+        int type;
+        string temp;
+    };
+
+    struct lista_id {
+        int type;
+        int index;
+    };
+
+#line 70 "Parser.hpp"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -196,7 +206,7 @@
 #endif
 
 namespace yy {
-#line 200 "Parser.hpp"
+#line 210 "Parser.hpp"
 
 
 
@@ -419,18 +429,24 @@ namespace yy {
       // FALSE
       char dummy1[sizeof (bool)];
 
+      // expresion
+      char dummy2[sizeof (expresion)];
+
       // INTV
-      char dummy2[sizeof (int)];
+      char dummy3[sizeof (int)];
 
       // literal
-      char dummy3[sizeof (literal)];
+      char dummy4[sizeof (literal)];
 
       // ID
       // STR
       // CHAR
       // F32V
       // F64V
-      char dummy4[sizeof (std::string)];
+      char dummy5[sizeof (std::string)];
+
+      // lista_id
+      char dummy6[sizeof (vector<std::string>)];
     };
 
     /// The size of the largest semantic type.
@@ -709,6 +725,10 @@ namespace yy {
         value.move< bool > (std::move (that.value));
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.move< expresion > (std::move (that.value));
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.move< int > (std::move (that.value));
         break;
@@ -723,6 +743,10 @@ namespace yy {
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.move< std::string > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.move< vector<std::string> > (std::move (that.value));
         break;
 
       default:
@@ -753,6 +777,18 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const bool& v)
+        : Base (t)
+        , value (v)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, expresion&& v)
+        : Base (t)
+        , value (std::move (v))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const expresion& v)
         : Base (t)
         , value (v)
       {}
@@ -794,6 +830,18 @@ namespace yy {
       {}
 #endif
 
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, vector<std::string>&& v)
+        : Base (t)
+        , value (std::move (v))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const vector<std::string>& v)
+        : Base (t)
+        , value (v)
+      {}
+#endif
+
       /// Destroy the symbol.
       ~basic_symbol ()
       {
@@ -823,6 +871,10 @@ switch (yykind)
         value.template destroy< bool > ();
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.template destroy< expresion > ();
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.template destroy< int > ();
         break;
@@ -837,6 +889,10 @@ switch (yykind)
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.template destroy< std::string > ();
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.template destroy< vector<std::string> > ();
         break;
 
       default:
@@ -2339,6 +2395,10 @@ switch (yykind)
         value.copy< bool > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.copy< expresion > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.copy< int > (YY_MOVE (that.value));
         break;
@@ -2353,6 +2413,10 @@ switch (yykind)
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.copy< std::string > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.copy< vector<std::string> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -2391,6 +2455,10 @@ switch (yykind)
         value.move< bool > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.move< expresion > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.move< int > (YY_MOVE (s.value));
         break;
@@ -2405,6 +2473,10 @@ switch (yykind)
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.move< std::string > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.move< vector<std::string> > (YY_MOVE (s.value));
         break;
 
       default:
@@ -2472,7 +2544,7 @@ switch (yykind)
 
 
 } // yy
-#line 2476 "Parser.hpp"
+#line 2548 "Parser.hpp"
 
 
 

@@ -42,6 +42,21 @@ void Driver::pushQuad(OPERATOR op, string arg1, string arg2, string res) {
     icode.push_back(q);
 }
 
+bool Driver::validateID(string id) {
+    return ts.has(id);
+}
+
+vector<string> Driver::idVec(string id) {
+    vector<string> result;
+    if (ts.has(id)) {
+        
+    } else {
+        /*error*/
+    }
+
+    return result;
+}
+
 string Driver::getICode() {
     string code = "";
     int lab = 0;
