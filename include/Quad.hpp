@@ -19,6 +19,7 @@ enum OPERATOR {
     OP_SUB,
     OP_MUL,
     OP_DIV,
+    OP_MOD,
     COPY,
     FTOI,
     ITOF,

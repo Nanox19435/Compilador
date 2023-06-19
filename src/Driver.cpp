@@ -5,67 +5,78 @@
 #include "Parser.hpp"
 #include "Quad.hpp"
 
-Driver::Driver(string filename) {
+Driver::Driver(string filename)
+{
     filebuf fb;
     fb.open(filename, ios::in);
     istream in(&fb);
-    
+
     lexer = new Lexer(&in);
     parser = new yy::Parser(*lexer, *this);
-
-
 };
 
-
-Driver::~Driver() {
+Driver::~Driver()
+{
     delete (parser);
     parser = nullptr;
     delete (lexer);
     lexer = nullptr;
 }
 
-string Driver::newLabel() {
+string Driver::newLabel()
+{
     labels.push_back(icode.size());
     return "L" + to_string(labels.size());
 }
 
-string Driver::newTmp() {
+string Driver::newTmp()
+{
     return "t" + numTemp++;
 }
 
-int Driver::parse() {
+int Driver::parse()
+{
     return parser->parse();
 }
 
-void Driver::pushQuad(Quad q) {
+void Driver::pushQuad(Quad q)
+{
     icode.push_back(q);
 }
 
-void Driver::pushQuad(OPERATOR op, string arg1, string arg2, string res) {
+void Driver::pushQuad(OPERATOR op, string arg1, string arg2, string res)
+{
     Quad q = Quad(op, arg1, arg2, res);
     icode.push_back(q);
 }
 
-bool Driver::validateID(string id) {
+bool Driver::validateID(string id)
+{
     return ts.has(id);
 }
 
-vector<string> Driver::idVec(string id) {
+vector<string> Driver::idVec(string id)
+{
     vector<string> result;
     result.push_back(id);
 
     return result;
 }
 
-void Driver::addSym(string id, int type, string cat) {
-    if (ts.has(id)) {
+void Driver::addSym(string id, int type, string cat)
+{
+    if (ts.has(id))
+    {
         /*error*/
-    } else {
+    }
+    else
+    {
         ts.addSymbol(id, type, cat);
     }
 }
 
-string Driver::getICode() {
+string Driver::getICode()
+{
     string code = "";
     int lab = 0;
     bool b = false;
@@ -74,11 +85,10 @@ string Driver::getICode() {
     {
         Quad instruction = icode[i];
 
-        if (i < labels[lab]) 
+        if (i < labels[lab])
         {
             ++lab;
-
-        } 
+        }
         else if (i == labels[lab])
         {
             code += "L" + to_string(lab) + ": ";
@@ -92,6 +102,45 @@ string Driver::getICode() {
 
         code += instruction.genCode() + "\n";
     }
-    
+
     return code;
+}
+
+void Driver::asigOp(OPERATOR op, expresion a, expresion b)
+{
+    if (a.type == b.type)
+    {
+        string at = a.temp;
+        string bt = b.temp;
+        string empty = "";
+
+        string tmp = newTmp();
+        pushQuad(op, at, bt, tmp);
+        pushQuad(COPY, tmp, empty, at);
+    }
+    else
+    {
+        /*error*/
+    }
+}
+
+void Driver::incdec(expresion e, OPERATOR op)
+{
+    if (e.type == 1)
+    {
+        string a = e.temp;
+        string one = newTmp();
+        pushQuad(COPY, "1", "", one);
+        string temp = newTmp();
+        pushQuad(op, one, a, temp);
+    }
+    else
+    {
+        /*error*/
+        error("Tipos incompatibles");
+    }
+}
+
+void Driver::error(string msg) {
+    /*TODO*/
 }
