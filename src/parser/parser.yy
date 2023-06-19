@@ -23,6 +23,10 @@
         int type;
         int index;
     };
+    struct tipo_arreglo {
+        int type;
+        int size;
+    };
 }
 
 %parse-param { Lexer &lexer }
@@ -76,6 +80,7 @@
 %type <literal> literal 
 %type <expresion> expresion 
 %type <vector<std::string>> lista_id 
+%type <tipo_arreglo<std::int>> tipo_arreglo
 %start programa
 
 %%
@@ -150,7 +155,17 @@ nombre_tipo: //falta una producción para buscar una estructura definida por el 
     | VOID {}
     ;
 tipo_arreglo:
-    LBRACK expresion RBRACK tipo_arreglo {}
+    LBRACK expresion RBRACK tipo_arreglo {
+        if ($$2.type == 1) {
+            if ($$2.data > 0) {
+                $$.type = driver.addToTypeTab("ARRAY", $2.type * $$2.data);
+            } else {
+                driver.error("El indice debe de ser mayor a 0");
+            }
+        } else {
+            driver.error("El indice debe de ser entero");
+        }
+    }
     | /*empty*/ {}
     ;
 tipo_estructura:

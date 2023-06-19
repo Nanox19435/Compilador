@@ -36,3 +36,7 @@ string TypeTab::getName(int id)
 {
     return types[id].name;
 }
+
+int TypeTab::ttsize() {
+    return types.size();
+}

@@ -54,6 +54,8 @@ public:
     /* Regresa en forma de string el código intermedio que se generó.*/
     string getICode();
 
+    /*Añade nuevo tipo a tabla de símbolos*/
+    int addToTypeTab(string name, int size);
 };
 
 #endif

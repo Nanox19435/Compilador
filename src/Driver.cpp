@@ -87,3 +87,10 @@ string Driver::getICode() {
     
     return code;
 }
+
+    int addToTypeTab(string name, int size)
+    {   
+        int id = tt.ttsize();
+        tt.addType(id, name, size)
+        return id;
+    }
