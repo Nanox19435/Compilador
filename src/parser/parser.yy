@@ -208,7 +208,22 @@ decl_loc:
     ;
 sentencia_simple:
     expresion {}
-    | incdec {}
+    | incdec {
+    	if ($1.type == 1 ) {
+     	$$.type = 1 ;
+        string a = $1.temp;
+        string b = $2.temp;
+        $$.temp = driver.newTmp();
+     	if($$.){
+            driver.pushQuad(INCR, a, b, $$.temp);
+        }else{
+        	driver.pushQuad(DECR, a, b, $$.temp);
+        }
+     } else {
+            /*error*/
+            driver.error("Tipos incompatibles"); 
+        }
+    }
     | asig {}
     ;
 asig:
