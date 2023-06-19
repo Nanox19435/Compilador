@@ -48,9 +48,10 @@ public:
 
     /* Valida una id, es decir, regresa si está disponible o no.*/
     bool validateID(string id);
-    /* Genera un vector que contiene a la id recibida. Si la id se encuentra en uso, regresa un vector vacío y manda un error léxico.*/
+    /* Genera un vector que contiene a la id recibida.*/
     vector<string> idVec(string id);
-
+    /* Función para agregar un símbolo a la tabla de símbolos.*/
+    void addSym(string id, int type, string cat);
     /* Regresa en forma de string el código intermedio que se generó.*/
     string getICode();
 

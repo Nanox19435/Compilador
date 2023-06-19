@@ -48,13 +48,17 @@ bool Driver::validateID(string id) {
 
 vector<string> Driver::idVec(string id) {
     vector<string> result;
-    if (ts.has(id)) {
-        
-    } else {
-        /*error*/
-    }
+    result.push_back(id);
 
     return result;
+}
+
+void Driver::addSym(string id, int type, string cat) {
+    if (ts.has(id)) {
+        /*error*/
+    } else {
+        ts.addSymbol(id, type, cat);
+    }
 }
 
 string Driver::getICode() {

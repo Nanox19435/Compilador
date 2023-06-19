@@ -47,6 +47,8 @@
 // "%code requires" blocks.
 #line 7 "parser.yy"
 
+    #include <string>
+    #include <vector>
     
     class Lexer;
     class Driver;
@@ -58,7 +60,7 @@
 
     struct expresion {
         int type;
-        string temp;
+        std::string temp;
     };
 
     struct lista_id {
@@ -66,7 +68,7 @@
         int index;
     };
 
-#line 70 "Parser.hpp"
+#line 72 "Parser.hpp"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -206,7 +208,7 @@
 #endif
 
 namespace yy {
-#line 210 "Parser.hpp"
+#line 212 "Parser.hpp"
 
 
 
@@ -433,6 +435,7 @@ namespace yy {
       char dummy2[sizeof (expresion)];
 
       // INTV
+      // tipo
       char dummy3[sizeof (int)];
 
       // literal
@@ -445,8 +448,9 @@ namespace yy {
       // F64V
       char dummy5[sizeof (std::string)];
 
+      // lista_id_const
       // lista_id
-      char dummy6[sizeof (vector<std::string>)];
+      char dummy6[sizeof (std::vector<std::string>)];
     };
 
     /// The size of the largest semantic type.
@@ -730,6 +734,7 @@ namespace yy {
         break;
 
       case symbol_kind::S_INTV: // INTV
+      case symbol_kind::S_tipo: // tipo
         value.move< int > (std::move (that.value));
         break;
 
@@ -745,8 +750,9 @@ namespace yy {
         value.move< std::string > (std::move (that.value));
         break;
 
+      case symbol_kind::S_lista_id_const: // lista_id_const
       case symbol_kind::S_lista_id: // lista_id
-        value.move< vector<std::string> > (std::move (that.value));
+        value.move< std::vector<std::string> > (std::move (that.value));
         break;
 
       default:
@@ -831,12 +837,12 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, vector<std::string>&& v)
+      basic_symbol (typename Base::kind_type t, std::vector<std::string>&& v)
         : Base (t)
         , value (std::move (v))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const vector<std::string>& v)
+      basic_symbol (typename Base::kind_type t, const std::vector<std::string>& v)
         : Base (t)
         , value (v)
       {}
@@ -876,6 +882,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_INTV: // INTV
+      case symbol_kind::S_tipo: // tipo
         value.template destroy< int > ();
         break;
 
@@ -891,8 +898,9 @@ switch (yykind)
         value.template destroy< std::string > ();
         break;
 
+      case symbol_kind::S_lista_id_const: // lista_id_const
       case symbol_kind::S_lista_id: // lista_id
-        value.template destroy< vector<std::string> > ();
+        value.template destroy< std::vector<std::string> > ();
         break;
 
       default:
@@ -2400,6 +2408,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_INTV: // INTV
+      case symbol_kind::S_tipo: // tipo
         value.copy< int > (YY_MOVE (that.value));
         break;
 
@@ -2415,8 +2424,9 @@ switch (yykind)
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_lista_id_const: // lista_id_const
       case symbol_kind::S_lista_id: // lista_id
-        value.copy< vector<std::string> > (YY_MOVE (that.value));
+        value.copy< std::vector<std::string> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -2460,6 +2470,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_INTV: // INTV
+      case symbol_kind::S_tipo: // tipo
         value.move< int > (YY_MOVE (s.value));
         break;
 
@@ -2475,8 +2486,9 @@ switch (yykind)
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_lista_id_const: // lista_id_const
       case symbol_kind::S_lista_id: // lista_id
-        value.move< vector<std::string> > (YY_MOVE (s.value));
+        value.move< std::vector<std::string> > (YY_MOVE (s.value));
         break;
 
       default:
@@ -2544,7 +2556,7 @@ switch (yykind)
 
 
 } // yy
-#line 2548 "Parser.hpp"
+#line 2560 "Parser.hpp"
 
 
 
