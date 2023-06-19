@@ -140,3 +140,7 @@ void Driver::incdec(expresion e, OPERATOR op)
         error("Tipos incompatibles");
     }
 }
+
+void Driver::error(string msg) {
+    /*TODO*/
+}

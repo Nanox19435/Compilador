@@ -1146,7 +1146,7 @@ namespace yy {
   case 67: // asig: izq ASIG expresion
 #line 228 "parser.yy"
                        {
-        if (izq.type != expresion.type) {
+        if (yystack_[2].value.as < expresion > ().type != yystack_[0].value.as < expresion > ().type) {
             string a = yystack_[2].value.as < expresion > ().temp;
             string b = yystack_[0].value.as < expresion > ().temp;
 
@@ -1160,31 +1160,31 @@ namespace yy {
 
   case 68: // asig: izq SASIG expresion
 #line 238 "parser.yy"
-                          {driver.asigOp(OP_ADD, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ())}
+                          {driver.asigOp(OP_ADD, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ());}
 #line 1165 "Parser.cpp"
     break;
 
   case 69: // asig: izq RASIG expresion
 #line 239 "parser.yy"
-                          {driver.asigOp(OP_SUB, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ())}
+                          {driver.asigOp(OP_SUB, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ());}
 #line 1171 "Parser.cpp"
     break;
 
   case 70: // asig: izq PASIG expresion
 #line 240 "parser.yy"
-                          {driver.asigOp(OP_MUL, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ())}
+                          {driver.asigOp(OP_MUL, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ());}
 #line 1177 "Parser.cpp"
     break;
 
   case 71: // asig: izq DASIG expresion
 #line 241 "parser.yy"
-                          {driver.asigOp(OP_DIV, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ())}
+                          {driver.asigOp(OP_DIV, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ());}
 #line 1183 "Parser.cpp"
     break;
 
   case 72: // asig: izq MASIG expresion
 #line 242 "parser.yy"
-                          {driver.asigOp(OP_MOD, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ())}
+                          {driver.asigOp(OP_MOD, yystack_[2].value.as < expresion > (), yystack_[0].value.as < expresion > ());}
 #line 1189 "Parser.cpp"
     break;
 

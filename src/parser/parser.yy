@@ -226,7 +226,7 @@ sentencia_simple:
     ;
 asig:
     izq ASIG expresion {
-        if (izq.type != expresion.type) {
+        if ($1.type != $3.type) {
             string a = $1.temp;
             string b = $3.temp;
 
@@ -235,11 +235,11 @@ asig:
             /*error*/
         }
     }
-    | izq SASIG expresion {driver.asigOp(OP_ADD, $1, $3)}
-    | izq RASIG expresion {driver.asigOp(OP_SUB, $1, $3)}
-    | izq PASIG expresion {driver.asigOp(OP_MUL, $1, $3)}
-    | izq DASIG expresion {driver.asigOp(OP_DIV, $1, $3)}
-    | izq MASIG expresion {driver.asigOp(OP_MOD, $1, $3)}
+    | izq SASIG expresion {driver.asigOp(OP_ADD, $1, $3);}
+    | izq RASIG expresion {driver.asigOp(OP_SUB, $1, $3);}
+    | izq PASIG expresion {driver.asigOp(OP_MUL, $1, $3);}
+    | izq DASIG expresion {driver.asigOp(OP_DIV, $1, $3);}
+    | izq MASIG expresion {driver.asigOp(OP_MOD, $1, $3);}
     ;
 incdec:
     expresion INCR { driver.incdec($1, OP_ADD); }

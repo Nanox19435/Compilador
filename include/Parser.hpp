@@ -427,6 +427,7 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // izq
       // expresion
       char dummy1[sizeof (expresion)];
 
@@ -668,24 +669,23 @@ namespace yy {
         S_sentencia_simple = 91,                 // sentencia_simple
         S_asig = 92,                             // asig
         S_incdec = 93,                           // incdec
-        S_op_asig = 94,                          // op_asig
-        S_sentencia_if = 95,                     // sentencia_if
-        S_sentencia_switch = 96,                 // sentencia_switch
-        S_expr_casos = 97,                       // expr_casos
-        S_expr_caso = 98,                        // expr_caso
-        S_caso = 99,                             // caso
-        S_sentencia_for = 100,                   // sentencia_for
-        S_clausula_for = 101,                    // clausula_for
-        S_sentencia_return = 102,                // sentencia_return
-        S_izq = 103,                             // izq
-        S_dato_miembro = 104,                    // dato_miembro
-        S_parte_arreglo = 105,                   // parte_arreglo
-        S_llamada_funcion = 106,                 // llamada_funcion
-        S_args = 107,                            // args
-        S_lista_args = 108,                      // lista_args
-        S_expresion = 109,                       // expresion
-        S_conversion = 110,                      // conversion
-        S_literal = 111                          // literal
+        S_sentencia_if = 94,                     // sentencia_if
+        S_sentencia_switch = 95,                 // sentencia_switch
+        S_expr_casos = 96,                       // expr_casos
+        S_expr_caso = 97,                        // expr_caso
+        S_caso = 98,                             // caso
+        S_sentencia_for = 99,                    // sentencia_for
+        S_clausula_for = 100,                    // clausula_for
+        S_sentencia_return = 101,                // sentencia_return
+        S_izq = 102,                             // izq
+        S_dato_miembro = 103,                    // dato_miembro
+        S_parte_arreglo = 104,                   // parte_arreglo
+        S_llamada_funcion = 105,                 // llamada_funcion
+        S_args = 106,                            // args
+        S_lista_args = 107,                      // lista_args
+        S_expresion = 108,                       // expresion
+        S_conversion = 109,                      // conversion
+        S_literal = 110                          // literal
       };
     };
 
@@ -720,6 +720,7 @@ namespace yy {
       {
         switch (this->kind ())
     {
+      case symbol_kind::S_izq: // izq
       case symbol_kind::S_expresion: // expresion
         value.move< expresion > (std::move (that.value));
         break;
@@ -852,6 +853,7 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
+      case symbol_kind::S_izq: // izq
       case symbol_kind::S_expresion: // expresion
         value.template destroy< expresion > ();
         break;
@@ -2322,8 +2324,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 536,     ///< Last index in yytable_.
-      yynnts_ = 47,  ///< Number of nonterminal symbols.
+      yylast_ = 528,     ///< Last index in yytable_.
+      yynnts_ = 46,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
 
@@ -2336,7 +2338,7 @@ switch (yykind)
 
 
 } // yy
-#line 2340 "Parser.hpp"
+#line 2342 "Parser.hpp"
 
 
 
