@@ -5,16 +5,30 @@
 %define api.parser.class {Parser}
 
 %code requires{
+    #include <string>
+    #include <vector>
     
     class Lexer;
+    class Driver;
     
     struct literal {
         int type;
-        void* data;
+        std::string data;
+    };
+
+    struct expresion {
+        int type;
+        std::string temp;
+    };
+
+    struct lista_id {
+        int type;
+        int index;
     };
 }
 
 %parse-param { Lexer &lexer }
+%parse-param { Driver &driver}
 
 %code{
     #include <iostream>
@@ -22,19 +36,20 @@
     using namespace std;
 
     #include "Lexer.hpp"
+    #include "Driver.hpp"
+    #include "Quad.hpp"
+    #include <iterator>
     
     #define yylex lexer.yylex
 }
 
-%define api.token.raw
-%define api.token.constructor
 %define api.value.type variant
 %define parse.assert
 
 %token <std::string> ID STR CHAR
-%token <int> INTV
+%token <std::string> INTV
 %token <std::string> F32V F64V
-%token <bool> TRUE FALSE
+%token TRUE FALSE
 %token VOID BOOL INT F32 F64
 %token PYC COL COMA
 %nonassoc VAR CONST PROTO IF ELSE FOR CASE SWITCH DEFAULT STRUCT FUNC RETURN BREAK CONTINUE PRINT READ 
@@ -57,40 +72,67 @@
 
 
 %type programa
-%type <declaraciones> declaraciones 
-%type <declaracion> declaracion
+%type <int> tipo
+%type <int> nombre_tipo
 %type <literal> literal 
+%type <expresion> izq
 %type <expresion> expresion 
-%type lista_id 
+%type <std::vector<std::string>> lista_id 
+%type <std::vector<std::string>> lista_id_const
 %start programa
 
 %%
 programa:
-    declaraciones {}
+    declaraciones
     ;
 declaraciones: 
-    declaraciones {$2.type = $1.type} declaracion 
-    | /* empty */ {}
+    declaraciones declaracion 
+    | /* empty */ 
     ;
 declaracion:
-    decl_const {}
-    | decl_var {}
-    | decl_proto {}
-    | decl_func {}
+    decl_const PYC
+    | decl_var PYC
+    | decl_proto PYC
+    | decl_func 
     ;
 decl_const:
-    CONST tipo lista_id_const {}
+    CONST tipo lista_id_const { for(string id : $3) driver.addSym(id, $2, "const"); }
     ;
 lista_id_const:
-    lista_id_const COMA ID ASIG literal {}
-    | ID ASIG literal {}
+    lista_id_const COMA ID ASIG literal 
+    {
+        std::vector<std::string> id_l = $1;
+        std::vector<std::string> single = driver.idVec($3);
+        id_l.insert(
+            id_l.end(),
+            std::make_move_iterator(single.begin()),
+            std::make_move_iterator(single.end())
+        );
+
+        $$ = id_l;
+    }
+    | ID ASIG literal { $$ = driver.idVec($1); }
     ;
 decl_var:
-    VAR tipo lista_id {}
+    VAR tipo lista_id { for(string id : $3) driver.addSym(id, $2, "var"); }
     ;
 lista_id:
-    {$1.type = $$.type} lista_id COMA {ID.tipo = $$.type} ID
-    | ID {id.type = $$.type} ID
+    lista_id COMA ID 
+    {
+        std::vector<std::string> id_l = $1;
+        std::vector<std::string> single = driver.idVec($3);
+        id_l.insert(
+            id_l.end(),
+            std::make_move_iterator(single.begin()),
+            std::make_move_iterator(single.end())
+        );
+
+        $$ = id_l;
+    }
+    | ID 
+    {
+        $$ = driver.idVec($1);
+    }
     ;
 decl_proto:
     PROTO tipo ID LPAR lista_tipos RPAR {}
@@ -111,10 +153,9 @@ tipo:
     | tipo_estructura {}
     | nombre_tipo MUL {}
     ;
-nombre_tipo: //falta una producción para buscar una estructura definida por el usuario.
-    nombre_tipo {}
+nombre_tipo:
     CHAR {}
-    | INT {}
+    | INT { $$ = 1; }
     | F32 {}
     | F64 {}
     | STR {}
@@ -179,24 +220,30 @@ decl_loc:
     | VAR nombre_tipo tipo_arreglo lista_id {}
     ;
 sentencia_simple:
-    expresion {}
-    | incdec {}
-    | asig {}
+    expresion
+    | incdec
+    | asig
     ;
 asig:
-    izq op_asig expresion {}
+    izq ASIG expresion {
+        if ($1.type != $3.type) {
+            string a = $1.temp;
+            string b = $3.temp;
+
+            driver.pushQuad(COPY, a, "", b);
+        } else {
+            /*error*/
+        }
+    }
+    | izq SASIG expresion {driver.asigOp(OP_ADD, $1, $3);}
+    | izq RASIG expresion {driver.asigOp(OP_SUB, $1, $3);}
+    | izq PASIG expresion {driver.asigOp(OP_MUL, $1, $3);}
+    | izq DASIG expresion {driver.asigOp(OP_DIV, $1, $3);}
+    | izq MASIG expresion {driver.asigOp(OP_MOD, $1, $3);}
     ;
 incdec:
-    expresion INCR {}
-    | expresion DECR {}
-    ;
-op_asig:
-    ASIG {}
-    | SASIG {}
-    | RASIG {}
-    | PASIG {}
-    | DASIG {}
-    | MASIG {}
+    expresion INCR { driver.incdec($1, OP_ADD); }
+    | expresion DECR { driver.incdec($1, OP_SUB); }
     ;
 sentencia_if:
     IF expresion bloque {
@@ -272,120 +319,31 @@ lista_args:
     | expresion {}
     ;
 expresion:
-    expresion OR expresion { 
-        if ($1.type == 0 == $3.type) {
-            $$.type = 0 ;
-            $$.data = $1.data || $3.data;
-        } else {
-            /*error*/
-        }
-       }
-    | expresion AND expresion {
-        if ($1.type == 0 == $3.type) {
-            $$.type = 0 ;
-            $$.data = $1.data && $3.data;
-        } else {
-            /*error*/
-        }
+    expresion OR expresion { driver.expr($1, OP_OR, $3); }
+    | expresion AND expresion { driver.expr($1, OP_AND, $3); }
+    | expresion EQ expresion { driver.expr($1, OP_EQ, $3); }
+    | expresion NEQ expresion { driver.expr($1, OP_NEQ, $3); }
+    | expresion LESS expresion { driver.expr($1, OP_LESS, $3); }
+    | expresion LEQ expresion { driver.expr($1, OP_LEQ, $3); }
+    | expresion GREAT expresion { driver.expr($1, OP_GREAT, $3); }
+    | expresion GEQ expresion { driver.expr($1, OP_GEQ, $3); }
+    | expresion PLUS expresion { driver.expr($1, OP_ADD, $3); }
+    | expresion SUB expresion { driver.expr($1, OP_SUB, $3); }
+    | expresion MUL expresion { driver.expr($1, OP_MUL, $3); }
+    | expresion DIV expresion { driver.expr($1, OP_DIV, $3); }
+    | expresion MOD expresion { driver.expr($1, OP_MOD, $3); }
+    | izq { $$ = $1; }
+    | literal 
+    {  
+        expresion e;
+        std::string empty = "";
+        e.type = $1.type;
+        e.temp = driver.newTmp();
+        driver.pushQuad(COPY, $1.data, empty, e.temp);
+
+        $$ = e;
     }
-    | expresion EQ expresion {
-        if ($1.type == $3.type) {
-            $$.type = 0 ;
-            $$.data = $1.data == $3.data;
-        } else {
-            $$.type = 0 ;
-            $$.data = FALSE;
-            /*error*/
-        }
-    }
-    | expresion NEQ expresion {
-        if ($1.type == $3.type) {
-            $$.type = 0 ;
-            $$.data = $1.data != $3.data;
-        } else {
-            /*error*/
-            $$.type = 0 ;
-            $$.data = TRUE;
-        }
-    }
-    | expresion LESS expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data < $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion LEQ expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data <= $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion GREAT expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data > $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion GEQ expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data >= $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion PLUS expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data + $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion SUB expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data - $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion MUL expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data * $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion DIV expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data / $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | expresion MOD expresion {
-        if ($1.type == 1 == $3.type) {
-            $$.type = 1 ;
-            $$.data = $1.data / $3.data;
-        } else {
-            /*error*/
-        }
-    }
-    | izq {}
-    //| op_unario expr_unaria {} este está raro no sé que quieren acá
-    | literal {}
-    | LPAR expresion RPAR {
-        $$.data = $2.data ;
-    }
+    | LPAR expresion RPAR { $$ = $2; }
     | conversion {}
     ;
 conversion:
@@ -396,7 +354,7 @@ literal:
     { 
         literal l; 
         l.type = 0;
-        l.data = &$1;
+        l.data = "true";
 
         $$ = l;
     }
@@ -404,7 +362,7 @@ literal:
     { 
         literal l; 
         l.type = 0;
-        l.data = &$1;
+        l.data = "false";
 
         $$ = l;
     }
@@ -412,7 +370,7 @@ literal:
     { 
         literal l; 
         l.type = 1;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -420,7 +378,7 @@ literal:
     { 
         literal l; 
         l.type = 2;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -428,7 +386,7 @@ literal:
     { 
         literal l; 
         l.type = 3;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -436,7 +394,7 @@ literal:
     { 
         literal l; 
         l.type = 4;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -444,7 +402,7 @@ literal:
     { 
         literal l; 
         l.type = 5;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
