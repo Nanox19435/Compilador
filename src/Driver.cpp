@@ -10,14 +10,18 @@ Driver::Driver(string filename) {
     fb.open(filename, ios::in);
     istream in(&fb);
     
-    Lexer lexer(&in);
-    parser = new yy::Parser(lexer, *this);
+    lexer = new Lexer(&in);
+    parser = new yy::Parser(*lexer, *this);
+
+
 };
 
 
 Driver::~Driver() {
     delete (parser);
     parser = nullptr;
+    delete (lexer);
+    lexer = nullptr;
 }
 
 string Driver::newLabel() {

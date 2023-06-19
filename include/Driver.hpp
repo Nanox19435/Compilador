@@ -27,9 +27,11 @@ class Driver
 
         vector<Quad> icode;
         vector<int> labels;
+
+        Lexer *lexer = nullptr;
         yy::Parser *parser = nullptr;
 public:
-    Driver(string flename);
+    Driver(string filename);
     ~Driver();
 
     //Funciones para código intermedio.

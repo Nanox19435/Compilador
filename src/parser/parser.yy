@@ -43,8 +43,6 @@
     #define yylex lexer.yylex
 }
 
-%define api.token.raw
-%define api.token.constructor
 %define api.value.type variant
 %define parse.assert
 
@@ -75,6 +73,7 @@
 
 %type programa
 %type <int> tipo
+%type <int> nombre_tipo
 %type <literal> literal 
 %type <expresion> expresion 
 %type <std::vector<std::string>> lista_id 
@@ -83,16 +82,16 @@
 
 %%
 programa:
-    declaraciones 
+    declaraciones
     ;
 declaraciones: 
     declaraciones declaracion 
     | /* empty */ 
     ;
 declaracion:
-    decl_const 
-    | decl_var 
-    | decl_proto 
+    decl_const PYC
+    | decl_var PYC
+    | decl_proto PYC
     | decl_func 
     ;
 decl_const:
@@ -153,10 +152,9 @@ tipo:
     | tipo_estructura {}
     | nombre_tipo MUL {}
     ;
-nombre_tipo: //falta una producción para buscar una estructura definida por el usuario.
-    nombre_tipo {}
+nombre_tipo:
     CHAR {}
-    | INT {}
+    | INT { $$ = 1; }
     | F32 {}
     | F64 {}
     | STR {}

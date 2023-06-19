@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
         cout << "Faltan argumentos" << endl;
         return EXIT_FAILURE;
     }
-
-    Driver driver = Driver(string(argv[1]));
+    string filename = argv[1];
+    Driver driver = Driver(filename);
 
     driver.parse();
     cout << driver.getICode() << endl;
