@@ -42,7 +42,7 @@
 
 
 // Unqualified %code blocks.
-#line 21 "parser.yy"
+#line 31 "parser.yy"
 
     #include <iostream>
     #include <fstream>
@@ -50,10 +50,13 @@
 
     #include "Lexer.hpp"
     #include "Driver.hpp"
+    #include "Quad.hpp"
+    #include <vector>
+    #include <iterator>
     
     #define yylex lexer.yylex
 
-#line 57 "Parser.cpp"
+#line 60 "Parser.cpp"
 
 
 #ifndef YY_
@@ -126,7 +129,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 130 "Parser.cpp"
+#line 133 "Parser.cpp"
 
   /// Build a parser object.
   Parser::Parser (Lexer &lexer_yyarg, Driver &driver_yyarg)
@@ -200,6 +203,10 @@ namespace yy {
         value.YY_MOVE_OR_COPY< bool > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.YY_MOVE_OR_COPY< expresion > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.YY_MOVE_OR_COPY< int > (YY_MOVE (that.value));
         break;
@@ -214,6 +221,10 @@ namespace yy {
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.YY_MOVE_OR_COPY< vector<std::string> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -236,6 +247,10 @@ namespace yy {
         value.move< bool > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.move< expresion > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.move< int > (YY_MOVE (that.value));
         break;
@@ -250,6 +265,10 @@ namespace yy {
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.move< std::string > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.move< vector<std::string> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -272,6 +291,10 @@ namespace yy {
         value.copy< bool > (that.value);
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.copy< expresion > (that.value);
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.copy< int > (that.value);
         break;
@@ -286,6 +309,10 @@ namespace yy {
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.copy< std::string > (that.value);
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.copy< vector<std::string> > (that.value);
         break;
 
       default:
@@ -306,6 +333,10 @@ namespace yy {
         value.move< bool > (that.value);
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        value.move< expresion > (that.value);
+        break;
+
       case symbol_kind::S_INTV: // INTV
         value.move< int > (that.value);
         break;
@@ -320,6 +351,10 @@ namespace yy {
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.move< std::string > (that.value);
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        value.move< vector<std::string> > (that.value);
         break;
 
       default:
@@ -581,6 +616,10 @@ namespace yy {
         yylhs.value.emplace< bool > ();
         break;
 
+      case symbol_kind::S_expresion: // expresion
+        yylhs.value.emplace< expresion > ();
+        break;
+
       case symbol_kind::S_INTV: // INTV
         yylhs.value.emplace< int > ();
         break;
@@ -595,6 +634,10 @@ namespace yy {
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         yylhs.value.emplace< std::string > ();
+        break;
+
+      case symbol_kind::S_lista_id: // lista_id
+        yylhs.value.emplace< vector<std::string> > ();
         break;
 
       default:
@@ -612,691 +655,816 @@ namespace yy {
           switch (yyn)
             {
   case 2: // programa: declaraciones
-#line 69 "parser.yy"
+#line 83 "parser.yy"
                   {}
-#line 618 "Parser.cpp"
+#line 661 "Parser.cpp"
     break;
 
   case 4: // declaraciones: %empty
-#line 73 "parser.yy"
+#line 87 "parser.yy"
                   {}
-#line 624 "Parser.cpp"
+#line 667 "Parser.cpp"
     break;
 
   case 5: // declaracion: decl_const
-#line 76 "parser.yy"
+#line 90 "parser.yy"
                {}
-#line 630 "Parser.cpp"
+#line 673 "Parser.cpp"
     break;
 
   case 6: // declaracion: decl_var
-#line 77 "parser.yy"
+#line 91 "parser.yy"
                {}
-#line 636 "Parser.cpp"
+#line 679 "Parser.cpp"
     break;
 
   case 7: // declaracion: decl_proto
-#line 78 "parser.yy"
+#line 92 "parser.yy"
                  {}
-#line 642 "Parser.cpp"
+#line 685 "Parser.cpp"
     break;
 
   case 8: // declaracion: decl_func
-#line 79 "parser.yy"
+#line 93 "parser.yy"
                 {}
-#line 648 "Parser.cpp"
+#line 691 "Parser.cpp"
     break;
 
   case 9: // decl_const: CONST tipo lista_id_const
-#line 82 "parser.yy"
+#line 96 "parser.yy"
                               {}
-#line 654 "Parser.cpp"
+#line 697 "Parser.cpp"
     break;
 
   case 10: // lista_id_const: lista_id_const COMA ID ASIG literal
-#line 85 "parser.yy"
+#line 99 "parser.yy"
                                         {}
-#line 660 "Parser.cpp"
+#line 703 "Parser.cpp"
     break;
 
   case 11: // lista_id_const: ID ASIG literal
-#line 86 "parser.yy"
+#line 100 "parser.yy"
                       {}
-#line 666 "Parser.cpp"
+#line 709 "Parser.cpp"
     break;
 
   case 12: // decl_var: VAR tipo lista_id
-#line 89 "parser.yy"
+#line 103 "parser.yy"
                       {}
-#line 672 "Parser.cpp"
+#line 715 "Parser.cpp"
+    break;
+
+  case 13: // lista_id: lista_id COMA ID
+#line 107 "parser.yy"
+    {
+        vector<std::string> id_l = yystack_[2].value.as < vector<std::string> > ();
+        vector<std::string> single = driver.idVec(yystack_[0].value.as < std::string > ());
+        id_l.insert(
+            id_l.end(),
+            std::make_move_iterator(single.begin()),
+            std::make_move_iterator(single.end())
+        );
+
+        yylhs.value.as < vector<std::string> > () = id_l;
+    }
+#line 731 "Parser.cpp"
+    break;
+
+  case 14: // lista_id: ID
+#line 119 "parser.yy"
+    {
+        yylhs.value.as < vector<std::string> > () = driver.idVec(yystack_[0].value.as < std::string > ());
+    }
+#line 739 "Parser.cpp"
     break;
 
   case 15: // decl_proto: PROTO tipo ID LPAR lista_tipos RPAR
-#line 96 "parser.yy"
+#line 124 "parser.yy"
                                         {}
-#line 678 "Parser.cpp"
+#line 745 "Parser.cpp"
     break;
 
   case 16: // lista_tipos: tipos
-#line 99 "parser.yy"
+#line 127 "parser.yy"
           {}
-#line 684 "Parser.cpp"
+#line 751 "Parser.cpp"
     break;
 
   case 17: // lista_tipos: %empty
-#line 100 "parser.yy"
+#line 128 "parser.yy"
                 {}
-#line 690 "Parser.cpp"
+#line 757 "Parser.cpp"
     break;
 
   case 18: // tipos: tipos COMA tipo
-#line 103 "parser.yy"
+#line 131 "parser.yy"
                     {}
-#line 696 "Parser.cpp"
+#line 763 "Parser.cpp"
     break;
 
   case 19: // tipos: tipo
-#line 104 "parser.yy"
+#line 132 "parser.yy"
            {}
-#line 702 "Parser.cpp"
+#line 769 "Parser.cpp"
     break;
 
   case 20: // decl_func: FUNC tipo ID LPAR lista_param RPAR bloque
-#line 107 "parser.yy"
+#line 135 "parser.yy"
                                               {}
-#line 708 "Parser.cpp"
+#line 775 "Parser.cpp"
     break;
 
   case 21: // tipo: nombre_tipo tipo_arreglo
-#line 110 "parser.yy"
+#line 138 "parser.yy"
                              {}
-#line 714 "Parser.cpp"
+#line 781 "Parser.cpp"
     break;
 
   case 22: // tipo: tipo_estructura
-#line 111 "parser.yy"
+#line 139 "parser.yy"
                       {}
-#line 720 "Parser.cpp"
+#line 787 "Parser.cpp"
     break;
 
   case 23: // tipo: nombre_tipo MUL
-#line 112 "parser.yy"
+#line 140 "parser.yy"
                       {}
-#line 726 "Parser.cpp"
+#line 793 "Parser.cpp"
     break;
 
   case 24: // $@1: %empty
-#line 115 "parser.yy"
+#line 143 "parser.yy"
                 {}
-#line 732 "Parser.cpp"
+#line 799 "Parser.cpp"
     break;
 
   case 25: // nombre_tipo: nombre_tipo $@1 CHAR
-#line 116 "parser.yy"
+#line 144 "parser.yy"
          {}
-#line 738 "Parser.cpp"
+#line 805 "Parser.cpp"
     break;
 
   case 26: // nombre_tipo: INT
-#line 117 "parser.yy"
+#line 145 "parser.yy"
           {}
-#line 744 "Parser.cpp"
+#line 811 "Parser.cpp"
     break;
 
   case 27: // nombre_tipo: F32
-#line 118 "parser.yy"
+#line 146 "parser.yy"
           {}
-#line 750 "Parser.cpp"
+#line 817 "Parser.cpp"
     break;
 
   case 28: // nombre_tipo: F64
-#line 119 "parser.yy"
+#line 147 "parser.yy"
           {}
-#line 756 "Parser.cpp"
+#line 823 "Parser.cpp"
     break;
 
   case 29: // nombre_tipo: STR
-#line 120 "parser.yy"
+#line 148 "parser.yy"
           {}
-#line 762 "Parser.cpp"
+#line 829 "Parser.cpp"
     break;
 
   case 30: // nombre_tipo: BOOL
-#line 121 "parser.yy"
+#line 149 "parser.yy"
            {}
-#line 768 "Parser.cpp"
+#line 835 "Parser.cpp"
     break;
 
   case 31: // nombre_tipo: VOID
-#line 122 "parser.yy"
+#line 150 "parser.yy"
            {}
-#line 774 "Parser.cpp"
+#line 841 "Parser.cpp"
     break;
 
   case 32: // tipo_arreglo: LBRACK expresion RBRACK tipo_arreglo
-#line 125 "parser.yy"
+#line 153 "parser.yy"
                                          {}
-#line 780 "Parser.cpp"
+#line 847 "Parser.cpp"
     break;
 
   case 33: // tipo_arreglo: %empty
-#line 126 "parser.yy"
+#line 154 "parser.yy"
                 {}
-#line 786 "Parser.cpp"
+#line 853 "Parser.cpp"
     break;
 
   case 34: // tipo_estructura: STRUCT LBRACE decl_campo RBRACE
-#line 129 "parser.yy"
+#line 157 "parser.yy"
                                     {}
-#line 792 "Parser.cpp"
+#line 859 "Parser.cpp"
     break;
 
   case 35: // tipo_estructura: STRUCT ID LBRACE decl_campo RBRACE
-#line 130 "parser.yy"
+#line 158 "parser.yy"
                                          {}
-#line 798 "Parser.cpp"
+#line 865 "Parser.cpp"
     break;
 
   case 36: // decl_campo: tipo lista_id PYC decl_campo
-#line 133 "parser.yy"
+#line 161 "parser.yy"
                                  {}
-#line 804 "Parser.cpp"
+#line 871 "Parser.cpp"
     break;
 
   case 37: // decl_campo: %empty
-#line 134 "parser.yy"
+#line 162 "parser.yy"
                 {}
-#line 810 "Parser.cpp"
+#line 877 "Parser.cpp"
     break;
 
   case 38: // lista_param: decl_params
-#line 137 "parser.yy"
+#line 165 "parser.yy"
                 {}
-#line 816 "Parser.cpp"
+#line 883 "Parser.cpp"
     break;
 
   case 39: // lista_param: %empty
-#line 138 "parser.yy"
+#line 166 "parser.yy"
                 {}
-#line 822 "Parser.cpp"
+#line 889 "Parser.cpp"
     break;
 
   case 40: // decl_params: decl_params COMA decl_param
-#line 141 "parser.yy"
+#line 169 "parser.yy"
                                 {}
-#line 828 "Parser.cpp"
+#line 895 "Parser.cpp"
     break;
 
   case 41: // decl_params: decl_param
-#line 142 "parser.yy"
+#line 170 "parser.yy"
                  {}
-#line 834 "Parser.cpp"
+#line 901 "Parser.cpp"
     break;
 
   case 42: // decl_param: tipo_param ID
-#line 145 "parser.yy"
+#line 173 "parser.yy"
                   {}
-#line 840 "Parser.cpp"
+#line 907 "Parser.cpp"
     break;
 
   case 43: // tipo_param: nombre_tipo tipo_param_arr
-#line 148 "parser.yy"
+#line 176 "parser.yy"
                                {}
-#line 846 "Parser.cpp"
+#line 913 "Parser.cpp"
     break;
 
   case 44: // tipo_param: STRUCT ID
-#line 149 "parser.yy"
+#line 177 "parser.yy"
                 {}
-#line 852 "Parser.cpp"
+#line 919 "Parser.cpp"
     break;
 
   case 45: // tipo_param: nombre_tipo MUL
-#line 150 "parser.yy"
+#line 178 "parser.yy"
                       {}
-#line 858 "Parser.cpp"
+#line 925 "Parser.cpp"
     break;
 
   case 46: // tipo_param_arr: LBRACK expresion RBRACK tipo_param_arr
-#line 153 "parser.yy"
+#line 181 "parser.yy"
                                            {}
-#line 864 "Parser.cpp"
+#line 931 "Parser.cpp"
     break;
 
   case 47: // tipo_param_arr: %empty
-#line 154 "parser.yy"
+#line 182 "parser.yy"
                 {}
-#line 870 "Parser.cpp"
+#line 937 "Parser.cpp"
     break;
 
   case 48: // bloque: LBRACE lista_sentencias RBRACE
-#line 157 "parser.yy"
+#line 185 "parser.yy"
                                    {}
-#line 876 "Parser.cpp"
+#line 943 "Parser.cpp"
     break;
 
   case 49: // lista_sentencias: lista_sentencias sentencia
-#line 160 "parser.yy"
+#line 188 "parser.yy"
                                {}
-#line 882 "Parser.cpp"
+#line 949 "Parser.cpp"
     break;
 
   case 51: // sentencia: decl_loc
-#line 164 "parser.yy"
+#line 192 "parser.yy"
              {}
-#line 888 "Parser.cpp"
+#line 955 "Parser.cpp"
     break;
 
   case 52: // sentencia: sentencia_simple PYC
-#line 165 "parser.yy"
+#line 193 "parser.yy"
                            {}
-#line 894 "Parser.cpp"
+#line 961 "Parser.cpp"
     break;
 
   case 53: // sentencia: sentencia_return PYC
-#line 166 "parser.yy"
+#line 194 "parser.yy"
                            {}
-#line 900 "Parser.cpp"
+#line 967 "Parser.cpp"
     break;
 
   case 54: // sentencia: BREAK PYC
-#line 167 "parser.yy"
+#line 195 "parser.yy"
                 {}
-#line 906 "Parser.cpp"
+#line 973 "Parser.cpp"
     break;
 
   case 55: // sentencia: CONTINUE PYC
-#line 168 "parser.yy"
+#line 196 "parser.yy"
                    {}
-#line 912 "Parser.cpp"
+#line 979 "Parser.cpp"
     break;
 
   case 56: // sentencia: bloque
-#line 169 "parser.yy"
+#line 197 "parser.yy"
              {}
-#line 918 "Parser.cpp"
+#line 985 "Parser.cpp"
     break;
 
   case 57: // sentencia: sentencia_if
-#line 170 "parser.yy"
+#line 198 "parser.yy"
                    {}
-#line 924 "Parser.cpp"
+#line 991 "Parser.cpp"
     break;
 
   case 58: // sentencia: sentencia_switch
-#line 171 "parser.yy"
+#line 199 "parser.yy"
                        {}
-#line 930 "Parser.cpp"
+#line 997 "Parser.cpp"
     break;
 
   case 59: // sentencia: sentencia_for
-#line 172 "parser.yy"
+#line 200 "parser.yy"
                     {}
-#line 936 "Parser.cpp"
+#line 1003 "Parser.cpp"
     break;
 
   case 60: // sentencia: PRINT expresion PYC
-#line 173 "parser.yy"
+#line 201 "parser.yy"
                           {}
-#line 942 "Parser.cpp"
+#line 1009 "Parser.cpp"
     break;
 
   case 61: // sentencia: READ ID PYC
-#line 174 "parser.yy"
+#line 202 "parser.yy"
                   {}
-#line 948 "Parser.cpp"
+#line 1015 "Parser.cpp"
     break;
 
   case 62: // decl_loc: VAR nombre_tipo MUL lista_id
-#line 177 "parser.yy"
+#line 205 "parser.yy"
                                  {}
-#line 954 "Parser.cpp"
+#line 1021 "Parser.cpp"
     break;
 
   case 63: // decl_loc: VAR STRUCT ID lista_id
-#line 178 "parser.yy"
+#line 206 "parser.yy"
                              {}
-#line 960 "Parser.cpp"
+#line 1027 "Parser.cpp"
     break;
 
   case 64: // decl_loc: VAR nombre_tipo tipo_arreglo lista_id
-#line 179 "parser.yy"
+#line 207 "parser.yy"
                                             {}
-#line 966 "Parser.cpp"
+#line 1033 "Parser.cpp"
     break;
 
   case 65: // sentencia_simple: expresion
-#line 182 "parser.yy"
+#line 210 "parser.yy"
               {}
-#line 972 "Parser.cpp"
+#line 1039 "Parser.cpp"
     break;
 
   case 66: // sentencia_simple: incdec
-#line 183 "parser.yy"
+#line 211 "parser.yy"
              {}
-#line 978 "Parser.cpp"
+#line 1045 "Parser.cpp"
     break;
 
   case 67: // sentencia_simple: asig
-#line 184 "parser.yy"
+#line 212 "parser.yy"
            {}
-#line 984 "Parser.cpp"
+#line 1051 "Parser.cpp"
     break;
 
   case 68: // asig: izq op_asig expresion
-#line 187 "parser.yy"
+#line 215 "parser.yy"
                           {}
-#line 990 "Parser.cpp"
+#line 1057 "Parser.cpp"
     break;
 
   case 69: // incdec: expresion INCR
-#line 190 "parser.yy"
+#line 218 "parser.yy"
                    {}
-#line 996 "Parser.cpp"
+#line 1063 "Parser.cpp"
     break;
 
   case 70: // incdec: expresion DECR
-#line 191 "parser.yy"
+#line 219 "parser.yy"
                      {}
-#line 1002 "Parser.cpp"
+#line 1069 "Parser.cpp"
     break;
 
   case 71: // op_asig: ASIG
-#line 194 "parser.yy"
+#line 222 "parser.yy"
          {}
-#line 1008 "Parser.cpp"
+#line 1075 "Parser.cpp"
     break;
 
   case 72: // op_asig: SASIG
-#line 195 "parser.yy"
+#line 223 "parser.yy"
             {}
-#line 1014 "Parser.cpp"
+#line 1081 "Parser.cpp"
     break;
 
   case 73: // op_asig: RASIG
-#line 196 "parser.yy"
+#line 224 "parser.yy"
             {}
-#line 1020 "Parser.cpp"
+#line 1087 "Parser.cpp"
     break;
 
   case 74: // op_asig: PASIG
-#line 197 "parser.yy"
+#line 225 "parser.yy"
             {}
-#line 1026 "Parser.cpp"
+#line 1093 "Parser.cpp"
     break;
 
   case 75: // op_asig: DASIG
-#line 198 "parser.yy"
+#line 226 "parser.yy"
             {}
-#line 1032 "Parser.cpp"
+#line 1099 "Parser.cpp"
     break;
 
   case 76: // op_asig: MASIG
-#line 199 "parser.yy"
+#line 227 "parser.yy"
             {}
-#line 1038 "Parser.cpp"
+#line 1105 "Parser.cpp"
     break;
 
   case 77: // sentencia_if: IF expresion bloque
-#line 202 "parser.yy"
+#line 230 "parser.yy"
                         {}
-#line 1044 "Parser.cpp"
+#line 1111 "Parser.cpp"
     break;
 
   case 78: // sentencia_if: IF expresion bloque ELSE bloque
-#line 203 "parser.yy"
+#line 231 "parser.yy"
                                       {}
-#line 1050 "Parser.cpp"
+#line 1117 "Parser.cpp"
     break;
 
   case 79: // sentencia_switch: SWITCH sentencia_simple LBRACE expr_casos RBRACE
-#line 206 "parser.yy"
+#line 234 "parser.yy"
                                                      {}
-#line 1056 "Parser.cpp"
+#line 1123 "Parser.cpp"
     break;
 
   case 80: // expr_casos: expr_casos expr_caso
-#line 209 "parser.yy"
+#line 237 "parser.yy"
                          {}
-#line 1062 "Parser.cpp"
+#line 1129 "Parser.cpp"
     break;
 
   case 81: // expr_casos: expr_caso
-#line 210 "parser.yy"
+#line 238 "parser.yy"
                 {}
-#line 1068 "Parser.cpp"
+#line 1135 "Parser.cpp"
     break;
 
   case 82: // expr_caso: caso COL lista_sentencias
-#line 213 "parser.yy"
+#line 241 "parser.yy"
                               {}
-#line 1074 "Parser.cpp"
+#line 1141 "Parser.cpp"
     break;
 
   case 83: // caso: CASE expresion
-#line 216 "parser.yy"
+#line 244 "parser.yy"
                    {}
-#line 1080 "Parser.cpp"
+#line 1147 "Parser.cpp"
     break;
 
   case 84: // caso: DEFAULT
-#line 217 "parser.yy"
+#line 245 "parser.yy"
               {}
-#line 1086 "Parser.cpp"
+#line 1153 "Parser.cpp"
     break;
 
   case 85: // sentencia_for: FOR LPAR clausula_for RPAR bloque
-#line 220 "parser.yy"
+#line 248 "parser.yy"
                                       {}
-#line 1092 "Parser.cpp"
+#line 1159 "Parser.cpp"
     break;
 
   case 86: // clausula_for: sentencia_simple PYC expresion PYC sentencia_simple
-#line 223 "parser.yy"
+#line 251 "parser.yy"
                                                         {}
-#line 1098 "Parser.cpp"
+#line 1165 "Parser.cpp"
     break;
 
   case 87: // clausula_for: expresion
-#line 224 "parser.yy"
+#line 252 "parser.yy"
                 {}
-#line 1104 "Parser.cpp"
+#line 1171 "Parser.cpp"
     break;
 
   case 88: // sentencia_return: RETURN expresion
-#line 227 "parser.yy"
+#line 255 "parser.yy"
                      {}
-#line 1110 "Parser.cpp"
+#line 1177 "Parser.cpp"
     break;
 
   case 89: // sentencia_return: RETURN
-#line 228 "parser.yy"
+#line 256 "parser.yy"
              {}
-#line 1116 "Parser.cpp"
+#line 1183 "Parser.cpp"
     break;
 
   case 90: // izq: ID dato_miembro
-#line 231 "parser.yy"
+#line 259 "parser.yy"
                     {}
-#line 1122 "Parser.cpp"
+#line 1189 "Parser.cpp"
     break;
 
   case 91: // izq: ID parte_arreglo
-#line 232 "parser.yy"
+#line 260 "parser.yy"
                        {}
-#line 1128 "Parser.cpp"
+#line 1195 "Parser.cpp"
     break;
 
   case 92: // izq: ID llamada_funcion
-#line 233 "parser.yy"
+#line 261 "parser.yy"
                          {}
-#line 1134 "Parser.cpp"
+#line 1201 "Parser.cpp"
     break;
 
   case 93: // dato_miembro: DOT ID dato_miembro
-#line 236 "parser.yy"
+#line 264 "parser.yy"
                         {}
-#line 1140 "Parser.cpp"
+#line 1207 "Parser.cpp"
     break;
 
   case 94: // dato_miembro: %empty
-#line 237 "parser.yy"
+#line 265 "parser.yy"
                 {}
-#line 1146 "Parser.cpp"
+#line 1213 "Parser.cpp"
     break;
 
   case 95: // parte_arreglo: LBRACK expresion RBRACK parte_arreglo
-#line 240 "parser.yy"
+#line 268 "parser.yy"
                                           {}
-#line 1152 "Parser.cpp"
+#line 1219 "Parser.cpp"
     break;
 
   case 96: // parte_arreglo: LBRACK expresion RBRACK
-#line 241 "parser.yy"
+#line 269 "parser.yy"
                               {}
-#line 1158 "Parser.cpp"
+#line 1225 "Parser.cpp"
     break;
 
   case 97: // llamada_funcion: LPAR args RPAR
-#line 244 "parser.yy"
+#line 272 "parser.yy"
                    {}
-#line 1164 "Parser.cpp"
+#line 1231 "Parser.cpp"
     break;
 
   case 98: // args: lista_args
-#line 247 "parser.yy"
+#line 275 "parser.yy"
                {}
-#line 1170 "Parser.cpp"
+#line 1237 "Parser.cpp"
     break;
 
   case 99: // args: %empty
-#line 248 "parser.yy"
+#line 276 "parser.yy"
                 {}
-#line 1176 "Parser.cpp"
+#line 1243 "Parser.cpp"
     break;
 
   case 100: // lista_args: expresion COMA lista_args
-#line 251 "parser.yy"
+#line 279 "parser.yy"
                               {}
-#line 1182 "Parser.cpp"
+#line 1249 "Parser.cpp"
     break;
 
   case 101: // lista_args: expresion
-#line 252 "parser.yy"
+#line 280 "parser.yy"
                 {}
-#line 1188 "Parser.cpp"
+#line 1255 "Parser.cpp"
     break;
 
   case 102: // expresion: expresion OR expresion
-#line 255 "parser.yy"
-                           {}
-#line 1194 "Parser.cpp"
-    break;
-
-  case 103: // expresion: expresion AND expresion
-#line 256 "parser.yy"
-                              {}
-#line 1200 "Parser.cpp"
-    break;
-
-  case 104: // expresion: expresion EQ expresion
-#line 257 "parser.yy"
-                             {}
-#line 1206 "Parser.cpp"
-    break;
-
-  case 105: // expresion: expresion NEQ expresion
-#line 258 "parser.yy"
-                              {}
-#line 1212 "Parser.cpp"
-    break;
-
-  case 106: // expresion: expresion LESS expresion
-#line 259 "parser.yy"
-                               {}
-#line 1218 "Parser.cpp"
-    break;
-
-  case 107: // expresion: expresion LEQ expresion
-#line 260 "parser.yy"
-                              {}
-#line 1224 "Parser.cpp"
-    break;
-
-  case 108: // expresion: expresion GREAT expresion
-#line 261 "parser.yy"
-                                {}
-#line 1230 "Parser.cpp"
-    break;
-
-  case 109: // expresion: expresion GEQ expresion
-#line 262 "parser.yy"
-                              {}
-#line 1236 "Parser.cpp"
-    break;
-
-  case 110: // expresion: expresion PLUS expresion
-#line 263 "parser.yy"
-                               {}
-#line 1242 "Parser.cpp"
-    break;
-
-  case 111: // expresion: expresion SUB expresion
-#line 264 "parser.yy"
-                              {}
-#line 1248 "Parser.cpp"
-    break;
-
-  case 112: // expresion: expresion MUL expresion
-#line 265 "parser.yy"
-                              {}
-#line 1254 "Parser.cpp"
-    break;
-
-  case 113: // expresion: expresion DIV expresion
-#line 266 "parser.yy"
-                              {}
-#line 1260 "Parser.cpp"
-    break;
-
-  case 114: // expresion: expresion MOD expresion
-#line 267 "parser.yy"
-                              {}
-#line 1266 "Parser.cpp"
-    break;
-
-  case 115: // expresion: izq
-#line 268 "parser.yy"
-          {}
+#line 283 "parser.yy"
+                           { 
+        if (yystack_[2].value.as < expresion > ().type == 0 && 0 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 0 ;
+            string a = yystack_[2].value.as < expresion > ().temp;
+            string b = yystack_[0].value.as < expresion > ().temp;
+            yylhs.value.as < expresion > ().temp = driver.newTmp();
+            driver.pushQuad(OR, a, b, yylhs.value.as < expresion > ().temp);
+        } else {
+            /*error*/
+            driver.error("Tipos incompatibles"); 
+        }
+       }
 #line 1272 "Parser.cpp"
     break;
 
+  case 103: // expresion: expresion AND expresion
+#line 295 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 0 && 0 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 0 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data && yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1285 "Parser.cpp"
+    break;
+
+  case 104: // expresion: expresion EQ expresion
+#line 303 "parser.yy"
+                             {
+        if (yystack_[2].value.as < expresion > ().type == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 0 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data == yystack_[0].value.as < expresion > ().data;
+        } else {
+            yylhs.value.as < expresion > ().type = 0 ;
+            yylhs.value.as < expresion > ().data = FALSE;
+            /*error*/
+        }
+    }
+#line 1300 "Parser.cpp"
+    break;
+
+  case 105: // expresion: expresion NEQ expresion
+#line 313 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 0 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data != yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+            yylhs.value.as < expresion > ().type = 0 ;
+            yylhs.value.as < expresion > ().data = TRUE;
+        }
+    }
+#line 1315 "Parser.cpp"
+    break;
+
+  case 106: // expresion: expresion LESS expresion
+#line 323 "parser.yy"
+                               {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data < yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1328 "Parser.cpp"
+    break;
+
+  case 107: // expresion: expresion LEQ expresion
+#line 331 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data <= yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1341 "Parser.cpp"
+    break;
+
+  case 108: // expresion: expresion GREAT expresion
+#line 339 "parser.yy"
+                                {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data > yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1354 "Parser.cpp"
+    break;
+
+  case 109: // expresion: expresion GEQ expresion
+#line 347 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data >= yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1367 "Parser.cpp"
+    break;
+
+  case 110: // expresion: expresion PLUS expresion
+#line 355 "parser.yy"
+                               {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data + yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1380 "Parser.cpp"
+    break;
+
+  case 111: // expresion: expresion SUB expresion
+#line 363 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data - yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1393 "Parser.cpp"
+    break;
+
+  case 112: // expresion: expresion MUL expresion
+#line 371 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data * yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1406 "Parser.cpp"
+    break;
+
+  case 113: // expresion: expresion DIV expresion
+#line 379 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data / yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1419 "Parser.cpp"
+    break;
+
+  case 114: // expresion: expresion MOD expresion
+#line 387 "parser.yy"
+                              {
+        if (yystack_[2].value.as < expresion > ().type == 1 == yystack_[0].value.as < expresion > ().type) {
+            yylhs.value.as < expresion > ().type = 1 ;
+            yylhs.value.as < expresion > ().data = yystack_[2].value.as < expresion > ().data / yystack_[0].value.as < expresion > ().data;
+        } else {
+            /*error*/
+        }
+    }
+#line 1432 "Parser.cpp"
+    break;
+
+  case 115: // expresion: izq
+#line 395 "parser.yy"
+          {}
+#line 1438 "Parser.cpp"
+    break;
+
   case 116: // expresion: literal
-#line 270 "parser.yy"
+#line 397 "parser.yy"
               {}
-#line 1278 "Parser.cpp"
+#line 1444 "Parser.cpp"
     break;
 
   case 117: // expresion: LPAR expresion RPAR
-#line 271 "parser.yy"
-                          {}
-#line 1284 "Parser.cpp"
+#line 398 "parser.yy"
+                          {
+        yylhs.value.as < expresion > ().data = yystack_[1].value.as < expresion > ().data ;
+    }
+#line 1452 "Parser.cpp"
     break;
 
   case 118: // expresion: conversion
-#line 272 "parser.yy"
+#line 401 "parser.yy"
                  {}
-#line 1290 "Parser.cpp"
+#line 1458 "Parser.cpp"
     break;
 
   case 119: // conversion: nombre_tipo LPAR expresion RPAR
-#line 275 "parser.yy"
+#line 404 "parser.yy"
                                     {}
-#line 1296 "Parser.cpp"
+#line 1464 "Parser.cpp"
     break;
 
   case 120: // literal: TRUE
-#line 279 "parser.yy"
+#line 408 "parser.yy"
     { 
         literal l; 
         l.type = 0;
@@ -1304,11 +1472,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1308 "Parser.cpp"
+#line 1476 "Parser.cpp"
     break;
 
   case 121: // literal: FALSE
-#line 287 "parser.yy"
+#line 416 "parser.yy"
     { 
         literal l; 
         l.type = 0;
@@ -1316,11 +1484,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1320 "Parser.cpp"
+#line 1488 "Parser.cpp"
     break;
 
   case 122: // literal: INTV
-#line 295 "parser.yy"
+#line 424 "parser.yy"
     { 
         literal l; 
         l.type = 1;
@@ -1328,11 +1496,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1332 "Parser.cpp"
+#line 1500 "Parser.cpp"
     break;
 
   case 123: // literal: F32V
-#line 303 "parser.yy"
+#line 432 "parser.yy"
     { 
         literal l; 
         l.type = 2;
@@ -1340,11 +1508,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1344 "Parser.cpp"
+#line 1512 "Parser.cpp"
     break;
 
   case 124: // literal: F64V
-#line 311 "parser.yy"
+#line 440 "parser.yy"
     { 
         literal l; 
         l.type = 3;
@@ -1352,11 +1520,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1356 "Parser.cpp"
+#line 1524 "Parser.cpp"
     break;
 
   case 125: // literal: CHAR
-#line 319 "parser.yy"
+#line 448 "parser.yy"
     { 
         literal l; 
         l.type = 4;
@@ -1364,11 +1532,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1368 "Parser.cpp"
+#line 1536 "Parser.cpp"
     break;
 
   case 126: // literal: STR
-#line 327 "parser.yy"
+#line 456 "parser.yy"
     { 
         literal l; 
         l.type = 5;
@@ -1376,11 +1544,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1380 "Parser.cpp"
+#line 1548 "Parser.cpp"
     break;
 
 
-#line 1384 "Parser.cpp"
+#line 1552 "Parser.cpp"
 
             default:
               break;
@@ -1862,19 +2030,19 @@ namespace yy {
   const short
   Parser::yyrline_[] =
   {
-       0,    69,    69,    72,    73,    76,    77,    78,    79,    82,
-      85,    86,    89,    92,    93,    96,    99,   100,   103,   104,
-     107,   110,   111,   112,   115,   115,   117,   118,   119,   120,
-     121,   122,   125,   126,   129,   130,   133,   134,   137,   138,
-     141,   142,   145,   148,   149,   150,   153,   154,   157,   160,
-     161,   164,   165,   166,   167,   168,   169,   170,   171,   172,
-     173,   174,   177,   178,   179,   182,   183,   184,   187,   190,
-     191,   194,   195,   196,   197,   198,   199,   202,   203,   206,
-     209,   210,   213,   216,   217,   220,   223,   224,   227,   228,
-     231,   232,   233,   236,   237,   240,   241,   244,   247,   248,
-     251,   252,   255,   256,   257,   258,   259,   260,   261,   262,
-     263,   264,   265,   266,   267,   268,   270,   271,   272,   275,
-     278,   286,   294,   302,   310,   318,   326
+       0,    83,    83,    86,    87,    90,    91,    92,    93,    96,
+      99,   100,   103,   106,   118,   124,   127,   128,   131,   132,
+     135,   138,   139,   140,   143,   143,   145,   146,   147,   148,
+     149,   150,   153,   154,   157,   158,   161,   162,   165,   166,
+     169,   170,   173,   176,   177,   178,   181,   182,   185,   188,
+     189,   192,   193,   194,   195,   196,   197,   198,   199,   200,
+     201,   202,   205,   206,   207,   210,   211,   212,   215,   218,
+     219,   222,   223,   224,   225,   226,   227,   230,   231,   234,
+     237,   238,   241,   244,   245,   248,   251,   252,   255,   256,
+     259,   260,   261,   264,   265,   268,   269,   272,   275,   276,
+     279,   280,   283,   295,   303,   313,   323,   331,   339,   347,
+     355,   363,   371,   379,   387,   395,   397,   398,   401,   404,
+     407,   415,   423,   431,   439,   447,   455
   };
 
   void
@@ -1906,9 +2074,9 @@ namespace yy {
 
 
 } // yy
-#line 1910 "Parser.cpp"
+#line 2078 "Parser.cpp"
 
-#line 335 "parser.yy"
+#line 464 "parser.yy"
 
 
 void yy::Parser::error(const std::string &err_message)

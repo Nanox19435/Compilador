@@ -22,6 +22,9 @@ class Driver
         int global_type;
         int global_dir;
 
+        SymTab ts;
+        TypeTab tt;
+
         vector<Quad> icode;
         vector<int> labels;
         yy::Parser *parser = nullptr;
@@ -43,8 +46,14 @@ public:
     /* Informa de la ocurrencia de un error léxico, como una discrepancia de tipos.*/
     void error(string msg);
 
+    /* Valida una id, es decir, regresa si está disponible o no.*/
+    bool validateID(string id);
+    /* Genera un vector que contiene a la id recibida. Si la id se encuentra en uso, regresa un vector vacío y manda un error léxico.*/
+    vector<string> idVec(string id);
+
     /* Regresa en forma de string el código intermedio que se generó.*/
     string getICode();
+
 };
 
 #endif

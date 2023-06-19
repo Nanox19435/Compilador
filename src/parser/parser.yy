@@ -35,6 +35,9 @@
 
     #include "Lexer.hpp"
     #include "Driver.hpp"
+    #include "Quad.hpp"
+    #include <vector>
+    #include <iterator>
     
     #define yylex lexer.yylex
 }
@@ -72,7 +75,7 @@
 %type programa
 %type <literal> literal 
 %type <expresion> expresion 
-%type lista_id 
+%type <vector<std::string>> lista_id 
 %start programa
 
 %%
@@ -100,8 +103,22 @@ decl_var:
     VAR tipo lista_id {}
     ;
 lista_id:
-     lista_id COMA ID
-    | ID
+    lista_id COMA ID 
+    {
+        vector<std::string> id_l = $1;
+        vector<std::string> single = driver.idVec($3);
+        id_l.insert(
+            id_l.end(),
+            std::make_move_iterator(single.begin()),
+            std::make_move_iterator(single.end())
+        );
+
+        $$ = id_l;
+    }
+    | ID 
+    {
+        $$ = driver.idVec($1);
+    }
     ;
 decl_proto:
     PROTO tipo ID LPAR lista_tipos RPAR {}
@@ -267,7 +284,7 @@ expresion:
         if ($1.type == 0 && 0 == $3.type) {
             $$.type = 0 ;
             string a = $1.temp;
-            string b = $2.temp;
+            string b = $3.temp;
             $$.temp = driver.newTmp();
             driver.pushQuad(OR, a, b, $$.temp);
         } else {
