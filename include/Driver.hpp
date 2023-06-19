@@ -60,6 +60,7 @@ public:
     // Acciones semánticas repetitivas:
     void asigOp(OPERATOR op, expresion a, expresion b);
     void incdec(expresion e, OPERATOR op);
+    expresion expr(expresion izq, OPERATOR op, expresion der);
 };
 
 #endif

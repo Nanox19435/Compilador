@@ -1352,124 +1352,122 @@ namespace yy {
 
   case 100: // expresion: expresion OR expresion
 #line 302 "parser.yy"
-                           { 
-        if (yystack_[2].value.as < expresion > ().type == 0 && 0 == yystack_[0].value.as < expresion > ().type) {
-            yylhs.value.as < expresion > ().type = 0 ;
-            string a = yystack_[2].value.as < expresion > ().temp;
-            string b = yystack_[0].value.as < expresion > ().temp;
-            yylhs.value.as < expresion > ().temp = driver.newTmp();
-            driver.pushQuad(OP_OR, a, b, yylhs.value.as < expresion > ().temp);
-        } else {
-            /*error*/
-        }
-       }
-#line 1367 "Parser.cpp"
+                           { driver.expr(yystack_[2].value.as < expresion > (), OP_OR, yystack_[0].value.as < expresion > ()); }
+#line 1357 "Parser.cpp"
     break;
 
   case 101: // expresion: expresion AND expresion
-#line 313 "parser.yy"
-                              {}
-#line 1373 "Parser.cpp"
+#line 303 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_AND, yystack_[0].value.as < expresion > ()); }
+#line 1363 "Parser.cpp"
     break;
 
   case 102: // expresion: expresion EQ expresion
-#line 314 "parser.yy"
-                             {}
-#line 1379 "Parser.cpp"
+#line 304 "parser.yy"
+                             { driver.expr(yystack_[2].value.as < expresion > (), OP_EQ, yystack_[0].value.as < expresion > ()); }
+#line 1369 "Parser.cpp"
     break;
 
   case 103: // expresion: expresion NEQ expresion
-#line 315 "parser.yy"
-                              {}
-#line 1385 "Parser.cpp"
+#line 305 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_NEQ, yystack_[0].value.as < expresion > ()); }
+#line 1375 "Parser.cpp"
     break;
 
   case 104: // expresion: expresion LESS expresion
-#line 316 "parser.yy"
-                               {}
-#line 1391 "Parser.cpp"
+#line 306 "parser.yy"
+                               { driver.expr(yystack_[2].value.as < expresion > (), OP_LESS, yystack_[0].value.as < expresion > ()); }
+#line 1381 "Parser.cpp"
     break;
 
   case 105: // expresion: expresion LEQ expresion
-#line 317 "parser.yy"
-                              {}
-#line 1397 "Parser.cpp"
+#line 307 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_LEQ, yystack_[0].value.as < expresion > ()); }
+#line 1387 "Parser.cpp"
     break;
 
   case 106: // expresion: expresion GREAT expresion
-#line 318 "parser.yy"
-                                {}
-#line 1403 "Parser.cpp"
+#line 308 "parser.yy"
+                                { driver.expr(yystack_[2].value.as < expresion > (), OP_GREAT, yystack_[0].value.as < expresion > ()); }
+#line 1393 "Parser.cpp"
     break;
 
   case 107: // expresion: expresion GEQ expresion
-#line 319 "parser.yy"
-                              {}
-#line 1409 "Parser.cpp"
+#line 309 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_GEQ, yystack_[0].value.as < expresion > ()); }
+#line 1399 "Parser.cpp"
     break;
 
   case 108: // expresion: expresion PLUS expresion
-#line 320 "parser.yy"
-                               {}
-#line 1415 "Parser.cpp"
+#line 310 "parser.yy"
+                               { driver.expr(yystack_[2].value.as < expresion > (), OP_ADD, yystack_[0].value.as < expresion > ()); }
+#line 1405 "Parser.cpp"
     break;
 
   case 109: // expresion: expresion SUB expresion
-#line 321 "parser.yy"
-                              {}
-#line 1421 "Parser.cpp"
+#line 311 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_SUB, yystack_[0].value.as < expresion > ()); }
+#line 1411 "Parser.cpp"
     break;
 
   case 110: // expresion: expresion MUL expresion
-#line 322 "parser.yy"
-                              {}
-#line 1427 "Parser.cpp"
+#line 312 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_MUL, yystack_[0].value.as < expresion > ()); }
+#line 1417 "Parser.cpp"
     break;
 
   case 111: // expresion: expresion DIV expresion
-#line 323 "parser.yy"
-                              {}
-#line 1433 "Parser.cpp"
+#line 313 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_DIV, yystack_[0].value.as < expresion > ()); }
+#line 1423 "Parser.cpp"
     break;
 
   case 112: // expresion: expresion MOD expresion
-#line 324 "parser.yy"
-                              {}
-#line 1439 "Parser.cpp"
+#line 314 "parser.yy"
+                              { driver.expr(yystack_[2].value.as < expresion > (), OP_MOD, yystack_[0].value.as < expresion > ()); }
+#line 1429 "Parser.cpp"
     break;
 
   case 113: // expresion: izq
-#line 325 "parser.yy"
-          {}
-#line 1445 "Parser.cpp"
+#line 315 "parser.yy"
+          { yylhs.value.as < expresion > () = yystack_[0].value.as < expresion > (); }
+#line 1435 "Parser.cpp"
     break;
 
   case 114: // expresion: literal
-#line 327 "parser.yy"
-              {}
-#line 1451 "Parser.cpp"
+#line 317 "parser.yy"
+    {  
+        expresion e;
+        std::string empty = "";
+        e.type = yystack_[0].value.as < literal > ().type;
+        e.temp = driver.newTmp();
+        driver.pushQuad(COPY, yystack_[0].value.as < literal > ().data, empty, e.temp);
+
+        yylhs.value.as < expresion > () = e;
+    }
+#line 1449 "Parser.cpp"
     break;
 
   case 115: // expresion: LPAR expresion RPAR
-#line 328 "parser.yy"
+#line 326 "parser.yy"
                           { yylhs.value.as < expresion > () = yystack_[1].value.as < expresion > (); }
-#line 1457 "Parser.cpp"
+#line 1455 "Parser.cpp"
     break;
 
   case 116: // expresion: conversion
-#line 329 "parser.yy"
+#line 327 "parser.yy"
                  {}
-#line 1463 "Parser.cpp"
+#line 1461 "Parser.cpp"
     break;
 
   case 117: // conversion: nombre_tipo LPAR expresion RPAR
-#line 332 "parser.yy"
+#line 330 "parser.yy"
                                     {}
-#line 1469 "Parser.cpp"
+#line 1467 "Parser.cpp"
     break;
 
   case 118: // literal: TRUE
-#line 336 "parser.yy"
+#line 334 "parser.yy"
     { 
         literal l; 
         l.type = 0;
@@ -1477,11 +1475,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1481 "Parser.cpp"
+#line 1479 "Parser.cpp"
     break;
 
   case 119: // literal: FALSE
-#line 344 "parser.yy"
+#line 342 "parser.yy"
     { 
         literal l; 
         l.type = 0;
@@ -1489,11 +1487,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1493 "Parser.cpp"
+#line 1491 "Parser.cpp"
     break;
 
   case 120: // literal: INTV
-#line 352 "parser.yy"
+#line 350 "parser.yy"
     { 
         literal l; 
         l.type = 1;
@@ -1501,11 +1499,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1505 "Parser.cpp"
+#line 1503 "Parser.cpp"
     break;
 
   case 121: // literal: F32V
-#line 360 "parser.yy"
+#line 358 "parser.yy"
     { 
         literal l; 
         l.type = 2;
@@ -1513,11 +1511,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1517 "Parser.cpp"
+#line 1515 "Parser.cpp"
     break;
 
   case 122: // literal: F64V
-#line 368 "parser.yy"
+#line 366 "parser.yy"
     { 
         literal l; 
         l.type = 3;
@@ -1525,11 +1523,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1529 "Parser.cpp"
+#line 1527 "Parser.cpp"
     break;
 
   case 123: // literal: CHAR
-#line 376 "parser.yy"
+#line 374 "parser.yy"
     { 
         literal l; 
         l.type = 4;
@@ -1537,11 +1535,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1541 "Parser.cpp"
+#line 1539 "Parser.cpp"
     break;
 
   case 124: // literal: STR
-#line 384 "parser.yy"
+#line 382 "parser.yy"
     { 
         literal l; 
         l.type = 5;
@@ -1549,11 +1547,11 @@ namespace yy {
 
         yylhs.value.as < literal > () = l;
     }
-#line 1553 "Parser.cpp"
+#line 1551 "Parser.cpp"
     break;
 
 
-#line 1557 "Parser.cpp"
+#line 1555 "Parser.cpp"
 
             default:
               break;
@@ -2048,9 +2046,9 @@ namespace yy {
      240,   241,   242,   245,   246,   249,   250,   253,   256,   257,
      260,   263,   264,   267,   270,   271,   274,   275,   278,   279,
      280,   283,   284,   287,   288,   291,   294,   295,   298,   299,
-     302,   313,   314,   315,   316,   317,   318,   319,   320,   321,
-     322,   323,   324,   325,   327,   328,   329,   332,   335,   343,
-     351,   359,   367,   375,   383
+     302,   303,   304,   305,   306,   307,   308,   309,   310,   311,
+     312,   313,   314,   315,   316,   326,   327,   330,   333,   341,
+     349,   357,   365,   373,   381
   };
 
   void
@@ -2134,9 +2132,9 @@ namespace yy {
   }
 
 } // yy
-#line 2138 "Parser.cpp"
+#line 2136 "Parser.cpp"
 
-#line 392 "parser.yy"
+#line 390 "parser.yy"
 
 
 void yy::Parser::error(const std::string &err_message)

@@ -141,6 +141,27 @@ void Driver::incdec(expresion e, OPERATOR op)
     }
 }
 
-void Driver::error(string msg) {
+expresion Driver::expr(expresion izq, OPERATOR op, expresion der)
+{
+    expresion e;
+    if (izq.type == 0 && 0 == der.type)
+    {
+        e.type = 0;
+        string a = izq.temp;
+        string b = der.temp;
+        e.temp = newTmp();
+        pushQuad(OP_AND, a, b, e.temp);
+    }
+    else
+    {
+        /*error*/
+        error("Tipos incompatibles");
+    }
+
+    return e;
+}
+
+void Driver::error(string msg)
+{
     /*TODO*/
 }
