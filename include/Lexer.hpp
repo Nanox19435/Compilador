@@ -14,7 +14,6 @@ public:
 
     using FlexLexer::yylex;
     virtual int yylex(yy::Parser::value_type *const lval);
-    //virtual int lexwrap(yy::Parser::value_type *t);
 
 private:
     const int ERROR = -1;
