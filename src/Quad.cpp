@@ -28,13 +28,29 @@ string Quad::genCode() {
             return "if " + arg1 + " goto " + arg2;
         case GOTO:
             return "goto " + arg1;
-        case ADD:
+        case OP_OR:
+            return res + " = " + arg1 + " OR " + arg2;
+        case OP_AND:
+            return res + " = " + arg1 + " AND " + arg2;
+        case OP_EQ:
+            return res + " = " + arg1 + " == " + arg2;
+        case OP_NEQ:
+            return res + " = " + arg1 + " ≠ " + arg2;
+        case OP_LESS:
+            return res + " = " + arg1 + " < " + arg2;
+        case OP_LEQ:
+            return res + " = " + arg1 + " ≤ " + arg2;
+        case OP_GREAT:
+            return res + " = " + arg1 + " > " + arg2;
+        case OP_GEQ:
+            return res + " = " + arg1 + " ≥ " + arg2;
+        case OP_ADD:
             return res + " = " + arg1 + " + " + arg2;
-        case SUB:
+        case OP_SUB:
             return res + " = " + arg1 + " - " + arg2;
-        case MUL:
+        case OP_MUL:
             return res + " = " + arg1 + " * " + arg2;
-        case DIV:
+        case OP_DIV:
             return res + " = " + arg1 + " / " + arg2;
         case COPY:
             return res + " = " + arg1;
