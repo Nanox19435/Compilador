@@ -15,8 +15,8 @@ int main(int argc, char *argv[]) {
     string filename = argv[1];
     Driver driver = Driver(filename);
 
-    driver.parse();
-    cout << driver.getICode() << endl;
+    int i = driver.parse();
+    cout << i << endl;
 
     return 0;
 }

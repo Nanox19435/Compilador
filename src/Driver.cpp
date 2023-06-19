@@ -33,8 +33,8 @@ string Driver::newTmp() {
     return "t" + numTemp++;
 }
 
-void Driver::parse() {
-    parser->parse();
+int Driver::parse() {
+    return parser->parse();
 }
 
 void Driver::pushQuad(Quad q) {

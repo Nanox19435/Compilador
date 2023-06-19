@@ -55,7 +55,7 @@
     
     struct literal {
         int type;
-        void* data;
+        std::string data;
     };
 
     struct expresion {
@@ -427,31 +427,27 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // TRUE
-      // FALSE
-      char dummy1[sizeof (bool)];
-
       // expresion
-      char dummy2[sizeof (expresion)];
+      char dummy1[sizeof (expresion)];
 
-      // INTV
       // tipo
       // nombre_tipo
-      char dummy3[sizeof (int)];
+      char dummy2[sizeof (int)];
 
       // literal
-      char dummy4[sizeof (literal)];
+      char dummy3[sizeof (literal)];
 
       // ID
       // STR
       // CHAR
+      // INTV
       // F32V
       // F64V
-      char dummy5[sizeof (std::string)];
+      char dummy4[sizeof (std::string)];
 
       // lista_id_const
       // lista_id
-      char dummy6[sizeof (std::vector<std::string>)];
+      char dummy5[sizeof (std::vector<std::string>)];
     };
 
     /// The size of the largest semantic type.
@@ -724,16 +720,10 @@ namespace yy {
       {
         switch (this->kind ())
     {
-      case symbol_kind::S_TRUE: // TRUE
-      case symbol_kind::S_FALSE: // FALSE
-        value.move< bool > (std::move (that.value));
-        break;
-
       case symbol_kind::S_expresion: // expresion
         value.move< expresion > (std::move (that.value));
         break;
 
-      case symbol_kind::S_INTV: // INTV
       case symbol_kind::S_tipo: // tipo
       case symbol_kind::S_nombre_tipo: // nombre_tipo
         value.move< int > (std::move (that.value));
@@ -746,6 +736,7 @@ namespace yy {
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_STR: // STR
       case symbol_kind::S_CHAR: // CHAR
+      case symbol_kind::S_INTV: // INTV
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.move< std::string > (std::move (that.value));
@@ -774,18 +765,6 @@ namespace yy {
 #else
       basic_symbol (typename Base::kind_type t)
         : Base (t)
-      {}
-#endif
-
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, bool&& v)
-        : Base (t)
-        , value (std::move (v))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const bool& v)
-        : Base (t)
-        , value (v)
       {}
 #endif
 
@@ -873,16 +852,10 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
-      case symbol_kind::S_TRUE: // TRUE
-      case symbol_kind::S_FALSE: // FALSE
-        value.template destroy< bool > ();
-        break;
-
       case symbol_kind::S_expresion: // expresion
         value.template destroy< expresion > ();
         break;
 
-      case symbol_kind::S_INTV: // INTV
       case symbol_kind::S_tipo: // tipo
       case symbol_kind::S_nombre_tipo: // nombre_tipo
         value.template destroy< int > ();
@@ -895,6 +868,7 @@ switch (yykind)
       case symbol_kind::S_ID: // ID
       case symbol_kind::S_STR: // STR
       case symbol_kind::S_CHAR: // CHAR
+      case symbol_kind::S_INTV: // INTV
       case symbol_kind::S_F32V: // F32V
       case symbol_kind::S_F64V: // F64V
         value.template destroy< std::string > ();
@@ -1004,31 +978,7 @@ switch (yykind)
 #if !defined _MSC_VER || defined __clang__
         YY_ASSERT (tok == token::YYEOF
                    || (token::YYerror <= tok && tok <= token::YYUNDEF)
-                   || (token::VOID <= tok && tok <= token::RBRACK));
-#endif
-      }
-#if 201103L <= YY_CPLUSPLUS
-      symbol_type (int tok, bool v)
-        : super_type (token_kind_type (tok), std::move (v))
-#else
-      symbol_type (int tok, const bool& v)
-        : super_type (token_kind_type (tok), v)
-#endif
-      {
-#if !defined _MSC_VER || defined __clang__
-        YY_ASSERT ((token::TRUE <= tok && tok <= token::FALSE));
-#endif
-      }
-#if 201103L <= YY_CPLUSPLUS
-      symbol_type (int tok, int v)
-        : super_type (token_kind_type (tok), std::move (v))
-#else
-      symbol_type (int tok, const int& v)
-        : super_type (token_kind_type (tok), v)
-#endif
-      {
-#if !defined _MSC_VER || defined __clang__
-        YY_ASSERT (tok == token::INTV);
+                   || (token::TRUE <= tok && tok <= token::RBRACK));
 #endif
       }
 #if 201103L <= YY_CPLUSPLUS
@@ -1040,8 +990,7 @@ switch (yykind)
 #endif
       {
 #if !defined _MSC_VER || defined __clang__
-        YY_ASSERT ((token::ID <= tok && tok <= token::CHAR)
-                   || (token::F32V <= tok && tok <= token::F64V));
+        YY_ASSERT ((token::ID <= tok && tok <= token::F64V));
 #endif
       }
     };
@@ -1187,14 +1136,14 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_INTV (int v)
+      make_INTV (std::string v)
       {
         return symbol_type (token::INTV, std::move (v));
       }
 #else
       static
       symbol_type
-      make_INTV (const int& v)
+      make_INTV (const std::string& v)
       {
         return symbol_type (token::INTV, v);
       }
@@ -1232,31 +1181,31 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_TRUE (bool v)
+      make_TRUE ()
       {
-        return symbol_type (token::TRUE, std::move (v));
+        return symbol_type (token::TRUE);
       }
 #else
       static
       symbol_type
-      make_TRUE (const bool& v)
+      make_TRUE ()
       {
-        return symbol_type (token::TRUE, v);
+        return symbol_type (token::TRUE);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_FALSE (bool v)
+      make_FALSE ()
       {
-        return symbol_type (token::FALSE, std::move (v));
+        return symbol_type (token::FALSE);
       }
 #else
       static
       symbol_type
-      make_FALSE (const bool& v)
+      make_FALSE ()
       {
-        return symbol_type (token::FALSE, v);
+        return symbol_type (token::FALSE);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -2387,7 +2336,7 @@ switch (yykind)
 
 
 } // yy
-#line 2391 "Parser.hpp"
+#line 2340 "Parser.hpp"
 
 
 

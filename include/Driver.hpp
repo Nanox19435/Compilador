@@ -40,7 +40,7 @@ public:
     string newTmp();
 
     /*Realiza el análisis semántico y sintáctico*/
-    void parse();
+    int parse();
     
     /* Agrega una nueva instrucción de 3 direcciones.*/
     void pushQuad(Quad q);

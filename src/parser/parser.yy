@@ -13,7 +13,7 @@
     
     struct literal {
         int type;
-        void* data;
+        std::string data;
     };
 
     struct expresion {
@@ -47,9 +47,9 @@
 %define parse.assert
 
 %token <std::string> ID STR CHAR
-%token <int> INTV
+%token <std::string> INTV
 %token <std::string> F32V F64V
-%token <bool> TRUE FALSE
+%token TRUE FALSE
 %token VOID BOOL INT F32 F64
 %token PYC COL COMA
 %nonassoc VAR CONST PROTO IF ELSE FOR CASE SWITCH DEFAULT STRUCT FUNC RETURN BREAK CONTINUE PRINT READ 
@@ -329,7 +329,7 @@ literal:
     { 
         literal l; 
         l.type = 0;
-        l.data = &$1;
+        l.data = "true";
 
         $$ = l;
     }
@@ -337,7 +337,7 @@ literal:
     { 
         literal l; 
         l.type = 0;
-        l.data = &$1;
+        l.data = "false";
 
         $$ = l;
     }
@@ -345,7 +345,7 @@ literal:
     { 
         literal l; 
         l.type = 1;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -353,7 +353,7 @@ literal:
     { 
         literal l; 
         l.type = 2;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -361,7 +361,7 @@ literal:
     { 
         literal l; 
         l.type = 3;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -369,7 +369,7 @@ literal:
     { 
         literal l; 
         l.type = 4;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
@@ -377,7 +377,7 @@ literal:
     { 
         literal l; 
         l.type = 5;
-        l.data = &$1;
+        l.data = lexer.YYText();
 
         $$ = l;
     }
