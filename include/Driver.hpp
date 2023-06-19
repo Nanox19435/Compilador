@@ -57,6 +57,9 @@ public:
     /* Regresa en forma de string el código intermedio que se generó.*/
     string getICode();
 
+    // Acciones semánticas repetitivas:
+    void asigOp(OPERATOR op, expresion a, expresion b);
+    void incdec(expresion e, OPERATOR op);
 };
 
 #endif

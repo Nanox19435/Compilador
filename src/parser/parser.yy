@@ -75,6 +75,7 @@
 %type <int> tipo
 %type <int> nombre_tipo
 %type <literal> literal 
+%type <expresion> izq
 %type <expresion> expresion 
 %type <std::vector<std::string>> lista_id 
 %type <std::vector<std::string>> lista_id_const
@@ -219,39 +220,30 @@ decl_loc:
     | VAR nombre_tipo tipo_arreglo lista_id {}
     ;
 sentencia_simple:
-    expresion {}
-    | incdec {
-    	if ($1.type == 1 ) {
-     	$$.type = 1 ;
-        string a = $1.temp;
-        string b = $2.temp;
-        $$.temp = driver.newTmp();
-     	if($$.){
-            driver.pushQuad(INCR, a, b, $$.temp);
-        }else{
-        	driver.pushQuad(DECR, a, b, $$.temp);
-        }
-     } else {
-            /*error*/
-            driver.error("Tipos incompatibles"); 
-        }
-    }
-    | asig {}
+    expresion
+    | incdec
+    | asig
     ;
 asig:
-    izq op_asig expresion {}
+    izq ASIG expresion {
+        if (izq.type != expresion.type) {
+            string a = $1.temp;
+            string b = $3.temp;
+
+            driver.pushQuad(COPY, a, "", b);
+        } else {
+            /*error*/
+        }
+    }
+    | izq SASIG expresion {driver.asigOp(OP_ADD, $1, $3)}
+    | izq RASIG expresion {driver.asigOp(OP_SUB, $1, $3)}
+    | izq PASIG expresion {driver.asigOp(OP_MUL, $1, $3)}
+    | izq DASIG expresion {driver.asigOp(OP_DIV, $1, $3)}
+    | izq MASIG expresion {driver.asigOp(OP_MOD, $1, $3)}
     ;
 incdec:
-    expresion INCR {}
-    | expresion DECR {}
-    ;
-op_asig:
-    ASIG {}
-    | SASIG {}
-    | RASIG {}
-    | PASIG {}
-    | DASIG {}
-    | MASIG {}
+    expresion INCR { driver.incdec($1, OP_ADD); }
+    | expresion DECR { driver.incdec($1, OP_SUB); }
     ;
 sentencia_if:
     IF expresion bloque {}
