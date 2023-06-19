@@ -27,9 +27,11 @@ class Driver
 
         vector<Quad> icode;
         vector<int> labels;
+
+        Lexer *lexer = nullptr;
         yy::Parser *parser = nullptr;
 public:
-    Driver(string flename);
+    Driver(string filename);
     ~Driver();
 
     //Funciones para código intermedio.
@@ -38,7 +40,7 @@ public:
     string newTmp();
 
     /*Realiza el análisis semántico y sintáctico*/
-    void parse();
+    int parse();
     
     /* Agrega una nueva instrucción de 3 direcciones.*/
     void pushQuad(Quad q);
@@ -48,9 +50,10 @@ public:
 
     /* Valida una id, es decir, regresa si está disponible o no.*/
     bool validateID(string id);
-    /* Genera un vector que contiene a la id recibida. Si la id se encuentra en uso, regresa un vector vacío y manda un error léxico.*/
+    /* Genera un vector que contiene a la id recibida.*/
     vector<string> idVec(string id);
-
+    /* Función para agregar un símbolo a la tabla de símbolos.*/
+    void addSym(string id, int type, string cat);
     /* Regresa en forma de string el código intermedio que se generó.*/
     string getICode();
 

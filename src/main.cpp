@@ -12,11 +12,11 @@ int main(int argc, char *argv[]) {
         cout << "Faltan argumentos" << endl;
         return EXIT_FAILURE;
     }
+    string filename = argv[1];
+    Driver driver = Driver(filename);
 
-    Driver driver = Driver(string(argv[1]));
-
-    driver.parse();
-    cout << driver.getICode() << endl;
+    int i = driver.parse();
+    cout << i << endl;
 
     return 0;
 }

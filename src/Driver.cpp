@@ -10,14 +10,18 @@ Driver::Driver(string filename) {
     fb.open(filename, ios::in);
     istream in(&fb);
     
-    Lexer lexer(&in);
-    parser = new yy::Parser(lexer, *this);
+    lexer = new Lexer(&in);
+    parser = new yy::Parser(*lexer, *this);
+
+
 };
 
 
 Driver::~Driver() {
     delete (parser);
     parser = nullptr;
+    delete (lexer);
+    lexer = nullptr;
 }
 
 string Driver::newLabel() {
@@ -29,8 +33,8 @@ string Driver::newTmp() {
     return "t" + numTemp++;
 }
 
-void Driver::parse() {
-    parser->parse();
+int Driver::parse() {
+    return parser->parse();
 }
 
 void Driver::pushQuad(Quad q) {
@@ -48,13 +52,17 @@ bool Driver::validateID(string id) {
 
 vector<string> Driver::idVec(string id) {
     vector<string> result;
-    if (ts.has(id)) {
-        
-    } else {
-        /*error*/
-    }
+    result.push_back(id);
 
     return result;
+}
+
+void Driver::addSym(string id, int type, string cat) {
+    if (ts.has(id)) {
+        /*error*/
+    } else {
+        ts.addSymbol(id, type, cat);
+    }
 }
 
 string Driver::getICode() {
