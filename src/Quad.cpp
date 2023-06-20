@@ -24,7 +24,7 @@ Quad::~Quad()
 string Quad::genCode() {
     switch (op)
         {
-        case IF:
+        case IFGOTO:
             return "if " + arg1 + " goto " + arg2;
         case GOTO:
             return "goto " + arg1;

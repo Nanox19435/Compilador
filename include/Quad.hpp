@@ -5,7 +5,7 @@
 using namespace std;
 
 enum OPERATOR {
-    IF,
+    IFGOTO,
     GOTO,
     OP_OR,
     OP_AND,

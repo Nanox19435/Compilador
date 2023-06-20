@@ -25,6 +25,7 @@ class TypeTab
         ~TypeTab();
         void addType(int id, string name, int size);
         void addType(int id, string name, int size, int base);
+        bool has(int id);
         int getSize(int id);
         string getName(int id);
 };

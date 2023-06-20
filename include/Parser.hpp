@@ -53,6 +53,11 @@
     class Lexer;
     class Driver;
     
+    struct Arg {
+        int type;
+        std::string id;
+    };
+
     struct literal {
         int type;
         std::string data;
@@ -68,7 +73,7 @@
         int index;
     };
 
-#line 72 "Parser.hpp"
+#line 77 "Parser.hpp"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -208,7 +213,7 @@
 #endif
 
 namespace yy {
-#line 212 "Parser.hpp"
+#line 217 "Parser.hpp"
 
 
 
@@ -652,40 +657,41 @@ namespace yy {
         S_lista_tipos = 74,                      // lista_tipos
         S_tipos = 75,                            // tipos
         S_decl_func = 76,                        // decl_func
-        S_tipo = 77,                             // tipo
-        S_nombre_tipo = 78,                      // nombre_tipo
-        S_tipo_arreglo = 79,                     // tipo_arreglo
-        S_tipo_estructura = 80,                  // tipo_estructura
-        S_decl_campo = 81,                       // decl_campo
-        S_lista_param = 82,                      // lista_param
-        S_decl_params = 83,                      // decl_params
-        S_decl_param = 84,                       // decl_param
-        S_tipo_param = 85,                       // tipo_param
-        S_tipo_param_arr = 86,                   // tipo_param_arr
-        S_bloque = 87,                           // bloque
-        S_lista_sentencias = 88,                 // lista_sentencias
-        S_sentencia = 89,                        // sentencia
-        S_decl_loc = 90,                         // decl_loc
-        S_sentencia_simple = 91,                 // sentencia_simple
-        S_asig = 92,                             // asig
-        S_incdec = 93,                           // incdec
-        S_sentencia_if = 94,                     // sentencia_if
-        S_sentencia_switch = 95,                 // sentencia_switch
-        S_expr_casos = 96,                       // expr_casos
-        S_expr_caso = 97,                        // expr_caso
-        S_caso = 98,                             // caso
-        S_sentencia_for = 99,                    // sentencia_for
-        S_clausula_for = 100,                    // clausula_for
-        S_sentencia_return = 101,                // sentencia_return
-        S_izq = 102,                             // izq
-        S_dato_miembro = 103,                    // dato_miembro
-        S_parte_arreglo = 104,                   // parte_arreglo
-        S_llamada_funcion = 105,                 // llamada_funcion
-        S_args = 106,                            // args
-        S_lista_args = 107,                      // lista_args
-        S_expresion = 108,                       // expresion
-        S_conversion = 109,                      // conversion
-        S_literal = 110                          // literal
+        S_77_1 = 77,                             // $@1
+        S_tipo = 78,                             // tipo
+        S_nombre_tipo = 79,                      // nombre_tipo
+        S_tipo_arreglo = 80,                     // tipo_arreglo
+        S_tipo_estructura = 81,                  // tipo_estructura
+        S_decl_campo = 82,                       // decl_campo
+        S_lista_param = 83,                      // lista_param
+        S_decl_params = 84,                      // decl_params
+        S_decl_param = 85,                       // decl_param
+        S_tipo_param = 86,                       // tipo_param
+        S_tipo_param_arr = 87,                   // tipo_param_arr
+        S_bloque = 88,                           // bloque
+        S_lista_sentencias = 89,                 // lista_sentencias
+        S_sentencia = 90,                        // sentencia
+        S_decl_loc = 91,                         // decl_loc
+        S_sentencia_simple = 92,                 // sentencia_simple
+        S_asig = 93,                             // asig
+        S_incdec = 94,                           // incdec
+        S_sentencia_if = 95,                     // sentencia_if
+        S_sentencia_switch = 96,                 // sentencia_switch
+        S_expr_casos = 97,                       // expr_casos
+        S_expr_caso = 98,                        // expr_caso
+        S_caso = 99,                             // caso
+        S_sentencia_for = 100,                   // sentencia_for
+        S_clausula_for = 101,                    // clausula_for
+        S_sentencia_return = 102,                // sentencia_return
+        S_izq = 103,                             // izq
+        S_dato_miembro = 104,                    // dato_miembro
+        S_parte_arreglo = 105,                   // parte_arreglo
+        S_llamada_funcion = 106,                 // llamada_funcion
+        S_args = 107,                            // args
+        S_lista_args = 108,                      // lista_args
+        S_expresion = 109,                       // expresion
+        S_conversion = 110,                      // conversion
+        S_literal = 111                          // literal
       };
     };
 
@@ -2324,8 +2330,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 528,     ///< Last index in yytable_.
-      yynnts_ = 46,  ///< Number of nonterminal symbols.
+      yylast_ = 530,     ///< Last index in yytable_.
+      yynnts_ = 47,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
 
@@ -2338,7 +2344,7 @@ switch (yykind)
 
 
 } // yy
-#line 2342 "Parser.hpp"
+#line 2348 "Parser.hpp"
 
 
 

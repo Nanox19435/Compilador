@@ -11,6 +11,11 @@
     class Lexer;
     class Driver;
     
+    struct Arg {
+        int type;
+        std::string id;
+    };
+
     struct literal {
         int type;
         std::string data;
@@ -77,6 +82,8 @@
 %type <literal> literal 
 %type <expresion> izq
 %type <expresion> expresion 
+%type <std::vector<Arg>> args
+%type <std::vector<Arg>> lista_args
 %type <std::vector<std::string>> lista_id 
 %type <std::vector<std::string>> lista_id_const
 %start programa
@@ -146,7 +153,11 @@ tipos:
     | tipo {}
     ;
 decl_func:
-    FUNC tipo ID LPAR lista_param RPAR bloque {} 
+    FUNC tipo ID LPAR lista_param RPAR {
+        driver.function($2, $3);
+    } bloque {
+        driver.end_func($2, $3, $5);
+    }
     ;
 tipo:
     nombre_tipo tipo_arreglo {}
@@ -291,12 +302,37 @@ llamada_funcion:
     LPAR args RPAR {}
     ;
 args:
-    lista_args {}
-    | /*empty*/ {}
+    lista_args { $$ = $1; }
+    | /*empty*/ {
+        std::vector<Arg> r;
+        $$ = r;
+    }
     ;
 lista_args:
-    expresion COMA lista_args {}
-    | expresion {}
+    tipo ID COMA lista_args {
+        std::vector<Arg> a_l = $4;
+        Arg a;
+        a.type = $1;
+        a.id = $2;
+        std::vector<std::string> single;
+        single.push_back(a);
+        a_l.insert(
+            a_l.end(),
+            std::make_move_iterator(single.begin()),
+            std::make_move_iterator(single.end())
+        );
+
+        $$ = id_l;
+    }
+    | tipo ID {
+        std::vector<Arg> res;
+        Arg a;
+        a.type = $1;
+        a.id = $2;
+        res.push_back(a);
+
+        $$ = res;
+    }
     ;
 expresion:
     expresion OR expresion { driver.expr($1, OP_OR, $3); }

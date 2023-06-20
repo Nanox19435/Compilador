@@ -10,6 +10,7 @@ Driver::Driver(string filename)
     filebuf fb;
     fb.open(filename, ios::in);
     istream in(&fb);
+    ts.push_back(SymTab());
 
     lexer = new Lexer(&in);
     parser = new yy::Parser(*lexer, *this);
@@ -25,13 +26,22 @@ Driver::~Driver()
 
 string Driver::newLabel()
 {
-    labels.push_back(icode.size());
-    return "L" + to_string(labels.size());
+    string label = "L" + to_string(label_counter);
+    vector<Quad>i;
+    icode[label] = i; 
+    return label;
 }
 
 string Driver::newTmp()
 {
     return "t" + numTemp++;
+}
+
+string Driver::label(string l)
+{
+    vector<Quad> i;
+    icode[l] = i;
+    return l;
 }
 
 int Driver::parse()
@@ -41,18 +51,29 @@ int Driver::parse()
 
 void Driver::pushQuad(Quad q)
 {
-    icode.push_back(q);
+    icode[current_label].push_back(q);
 }
 
 void Driver::pushQuad(OPERATOR op, string arg1, string arg2, string res)
 {
     Quad q = Quad(op, arg1, arg2, res);
-    icode.push_back(q);
+    icode[current_label].push_back(q);
+}
+
+void Driver::pushQuad(Quad q, string label)
+{
+    icode[label].push_back(q);
+}
+
+void Driver::pushQuad(OPERATOR op, string arg1, string arg2, string res, string label)
+{
+    Quad q = Quad(op, arg1, arg2, res);
+    icode[label].push_back(q);
 }
 
 bool Driver::validateID(string id)
 {
-    return ts.has(id);
+    return ts[0].has(id);
 }
 
 vector<string> Driver::idVec(string id)
@@ -65,43 +86,33 @@ vector<string> Driver::idVec(string id)
 
 void Driver::addSym(string id, int type, string cat)
 {
-    if (ts.has(id))
+    if (ts[0].has(id))
     {
         /*error*/
     }
     else
     {
-        ts.addSymbol(id, type, cat);
+        ts[0].addSymbol(id, type, cat);
     }
 }
 
 string Driver::getICode()
 {
     string code = "";
-    int lab = 0;
-    bool b = false;
-    int size = icode.size();
-    for (int i = 0; i < size; i++)
+    std::map<string, vector<Quad>>::iterator it = icode.begin();
+
+    while (it != icode.end())
     {
-        Quad instruction = icode[i];
+        string label = it->first;
+        vector<Quad> icode = it->second;
 
-        if (i < labels[lab])
+        code += label + ":\n";
+        for (Quad q : icode)
         {
-            ++lab;
+            code += "    " + q.genCode();
         }
-        else if (i == labels[lab])
-        {
-            code += "L" + to_string(lab) + ": ";
-            b = true;
-            lab++;
-        }
-        else if (b)
-        {
-            code += "    ";
-        }
-
-        code += instruction.genCode() + "\n";
     }
+    
 
     return code;
 }
@@ -159,6 +170,21 @@ expresion Driver::expr(expresion izq, OPERATOR op, expresion der)
     }
 
     return e;
+}
+
+void Driver::function(int type, string id) 
+{
+    if (ts[0].has(id))
+    {
+        /*error*/
+    } else {
+        SymTab s = SymTab();
+        ts.push_back(s);
+
+        string l = label(id);
+        current_label = l;
+    }
+    
 }
 
 void Driver::error(string msg)

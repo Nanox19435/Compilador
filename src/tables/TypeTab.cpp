@@ -27,6 +27,10 @@ void TypeTab::addType(int id, string name, int size)
     types[id] = Type(name, size);
 }
 
+bool TypeTab::has(int id) {
+    return types.find(id) != types.end();
+}
+
 int TypeTab::getSize(int id) 
 {
     return types[id].size;
