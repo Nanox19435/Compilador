@@ -10,11 +10,6 @@
     
     class Lexer;
     class Driver;
-    
-    struct Arg {
-        int type;
-        std::string id;
-    };
 
     struct literal {
         int type;
@@ -257,9 +252,29 @@ incdec:
     | expresion DECR { driver.incdec($1, OP_SUB); }
     ;
 sentencia_if:
-    IF expresion bloque {}
-    | IF expresion bloque ELSE bloque {}
+    IF expresion bloque {
+      if($2.type==0){
+        if($2.data){
+          $$.data=$3.data;
+        }  
+      }else{
+        /*error*/
+      }  
+
+    }
+    | IF expresion bloque ELSE bloque {
+       if($2.type==0) { // 
+         if($2.data){
+           $$.data=$3.data;
+         }else{
+           $$.type=$5.data;
+         }   
+       }else{
+        /*error*/
+       }
+    }
     ;
+
 sentencia_switch:
     SWITCH sentencia_simple LBRACE expr_casos RBRACE {}
     ;
